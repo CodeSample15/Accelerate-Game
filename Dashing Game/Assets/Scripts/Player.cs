@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
     public Slider health_bar;
     public Slider dash_meter;
     public TextMeshProUGUI scoreText;
+    public Animator bar_animation;
     #endregion
 
     #region Private Variables
@@ -51,14 +52,14 @@ public class Player : MonoBehaviour
         movementSpeed = 10f;
         dashSpeed = 15f;
         jumpForce = 9f;
-        minDashPower = 20;
-        dashRechargeRate = 20f;
+        minDashPower = 30;
+        dashRechargeRate = 15f;
         dashDischargeRate = 40f;
         enemyDamage = 5;
 
         //fixed variables for things like health and the amount of dash ability left
         health = 100f;
-        dashPower = 0f;
+        dashPower = 100f;
         dashing = false;
         score = 0;
         pointsPerKill = 15;
@@ -77,6 +78,9 @@ public class Player : MonoBehaviour
         if (dashPower >= minDashPower)
         {
             dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1); //checking if the dash button is pressed or not
+
+            //resetting the dash animation
+            bar_animation.SetTrigger("Stop");
         }
         else if(dashing && dashPower > 0)
         {
@@ -92,6 +96,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            bar_animation.SetTrigger("Recharge");
             dashing = false;
         }
 
@@ -99,14 +104,17 @@ public class Player : MonoBehaviour
         //refilling the dash meter
         if(!dashing && dashPower < 100)
         {
+            //if the player doesn't have enough dash ability and isn't dashing, recharge
             dashPower += Time.deltaTime * dashRechargeRate;
         }
         else if(dashPower > 100)
         {
+            //if the player has more dash ability than the max, reset it to the max
             dashPower = 100;
         }
         else if(dashing)
         {
+            //if dashing, subtract the proper amount of dash ability
             dashPower -= dashDischargeRate * Time.deltaTime;
         }
 

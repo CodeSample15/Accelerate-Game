@@ -6,9 +6,9 @@ public class BackgroundRender : MonoBehaviour
 {
     [SerializeField] GameObject backgroundObject;
     [SerializeField] Vector2 StartPos;
-    [SerializeField] Vector2 EndPos;
     [SerializeField] float BackgroundWidth;
     [SerializeField] float BackgroundHeight;
+    [SerializeField] int Size;
 
     private float xPos;
     private float yPos;
@@ -18,16 +18,20 @@ public class BackgroundRender : MonoBehaviour
     {
         xPos = StartPos.x;
         yPos = StartPos.y;
-        int maxX = (int)Mathf.Ceil(EndPos.x / BackgroundWidth);
-        int maxY = (int)Mathf.Ceil(EndPos.y / BackgroundHeight);
 
         //render background
-        for (int y = 0; y < maxY; y++)
+        for (int y = 0; y < Size; y++)
         {
-            for(int x=0; y < maxX; x++)
-            {
+            GameObject temp = Instantiate(backgroundObject, new Vector3(0, 0, 0), Quaternion.identity);
+            temp.GetComponent<Background>().x = 0;
+            temp.GetComponent<Background>().y = yPos;
+            temp.GetComponent<Background>().layer = y;
 
-            }
+            float color = y * 0.1f;
+            temp.GetComponent<Renderer>().material.SetColor("_BaseColor", new Color(color, color, color));
+            yPos += BackgroundHeight;
         }
+
+        backgroundObject.SetActive(false);
     }
 }
