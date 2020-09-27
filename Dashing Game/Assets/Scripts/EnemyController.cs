@@ -49,7 +49,7 @@ public class EnemyController : MonoBehaviour
             Vector2 spawnPosition = new Vector2(x, y);
 
             Enemies.Insert(0, Instantiate(enemy, spawnPosition, Quaternion.identity));
-            Enemies[0].GetComponent<Enemy>().clone = true;
+            Enemies[0].SetActive(true);
 
             //dictating how long the program should wait until the next enemy can be spawned---------------------
             float randomTime = Random.Range(minTimeUntilNextSpawn, maxTimeUntilNextSpawn);

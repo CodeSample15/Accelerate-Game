@@ -49,9 +49,9 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         //adjustable variables
-        movementSpeed = 10f;
+        movementSpeed = 6f;
         dashSpeed = 15f;
-        jumpForce = 9f;
+        jumpForce = 16f;
         minDashPower = 30;
         dashRechargeRate = 15f;
         dashDischargeRate = 40f;
@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
         //fixed variables for things like health and the amount of dash ability left
         health = 100f;
         dashPower = 100f;
-        dashing = false;
+        dashing = false; 
         score = 0;
         pointsPerKill = 15;
 
@@ -183,6 +183,7 @@ public class Player : MonoBehaviour
             {
                 Destroy(other.gameObject);
                 score += pointsPerKill;
+                dashPower-=2;
             }
             else
             {
