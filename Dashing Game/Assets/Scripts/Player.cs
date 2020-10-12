@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityStandardAssets.CrossPlatformInput;
+using Boo.Lang;
 
 public class Player : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class Player : MonoBehaviour
     public Slider dash_meter;
     public TextMeshProUGUI scoreText;
     public Animator bar_animation;
+    public Animator damage_animation;
+    public ParticleSystem dash_particles;
+    public GameObject particle_holder;
+    public ParticleSystem enemy_death_particles;
     #endregion
 
     #region Private Variables
@@ -36,6 +41,9 @@ public class Player : MonoBehaviour
     private Vector2 lastDashDir; //for dashing
 
     private Vector3 velocity = Vector3.zero;
+
+    //lists / arrays
+    private List<ParticleSystem> enemyParticles;
     #endregion
 
     public int Score
@@ -65,6 +73,8 @@ public class Player : MonoBehaviour
         pointsPerKill = 15;
 
         lastDashDir = new Vector2(0, 1);
+
+        enemyParticles = new List<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -119,6 +129,17 @@ public class Player : MonoBehaviour
         }
 
 
+        //getting rid of any enemy particle systems that aren't active
+        for(int i=0; i<enemyParticles.Count; i++)
+        {
+            if(!enemyParticles[i].IsAlive())
+            {
+                Destroy(enemyParticles[i].gameObject);
+                enemyParticles.RemoveAt(i);
+            }
+        }
+
+
         //update UI
         health_bar.value = health / 100;
         dash_meter.value = dashPower / 100;
@@ -139,6 +160,9 @@ public class Player : MonoBehaviour
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .05f);
 
             lastDashDir = new Vector2(0, 1); //when the player starts to dash, they will always start by going up first
+
+            //hiding the particles
+            dash_particles.Stop();
         }
         else
         {
@@ -160,7 +184,18 @@ public class Player : MonoBehaviour
             targetVelocity = targetVelocity.normalized;
             targetVelocity *= dashSpeed;
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .02f);
+
+            //putting in the particles
+            if (!dash_particles.isPlaying)
+                dash_particles.Play();
+
+            particle_holder.transform.rotation = Quaternion.FromToRotation(Vector3.right, (Vector2)targetVelocity.normalized);
+            particle_holder.transform.Rotate(0, 0, -90);
         }
+
+
+        //Checking to see if the player is touching an enemy
+        Collider2D col = 
     }
 
     //public methods
@@ -184,10 +219,15 @@ public class Player : MonoBehaviour
                 Destroy(other.gameObject);
                 score += pointsPerKill;
                 dashPower-=2;
+
+                //particle effect
+                enemyParticles.Add(Instantiate(enemy_death_particles, other.gameObject.transform.position, Quaternion.identity));
+                enemyParticles[enemyParticles.Count - 1].Play();
             }
             else
             {
                 health -= enemyDamage;
+                damage_animation.SetTrigger("Damage");
             }
         }
     }
