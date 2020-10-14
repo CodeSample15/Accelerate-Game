@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Boo.Lang;
+using System.Data.SqlTypes;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using UnityStandardAssets.CrossPlatformInput;
-using Boo.Lang;
 
 public class Player : MonoBehaviour
 {
     #region Public Variables
+    public EnemyController enemy_controller;
     public Joystick joystick;
     public Slider health_bar;
     public Slider dash_meter;
@@ -49,6 +50,17 @@ public class Player : MonoBehaviour
     public int Score
     {
         get { return score; }
+    }
+
+    public float Health
+    {
+        get { return health; }
+        set { health = value; }
+    }
+
+    public bool isDashing
+    {
+        get { return dashing; }
     }
 
     // Start is called before the first frame update
@@ -192,10 +204,6 @@ public class Player : MonoBehaviour
             particle_holder.transform.rotation = Quaternion.FromToRotation(Vector3.right, (Vector2)targetVelocity.normalized);
             particle_holder.transform.Rotate(0, 0, -90);
         }
-
-
-        //Checking to see if the player is touching an enemy
-        Collider2D col = 
     }
 
     //public methods
@@ -209,25 +217,23 @@ public class Player : MonoBehaviour
         }
     }
 
-    //private methods
     private void OnCollisionEnter2D(Collision2D other)
     {
+        //if the player is dashing into an enemy, destroy that enemy
         if(other.gameObject.CompareTag("Enemy"))
         {
-            if (dashing)
+            if(dashing)
             {
-                Destroy(other.gameObject);
-                score += pointsPerKill;
-                dashPower-=2;
-
                 //particle effect
                 enemyParticles.Add(Instantiate(enemy_death_particles, other.gameObject.transform.position, Quaternion.identity));
                 enemyParticles[enemyParticles.Count - 1].Play();
-            }
-            else
-            {
-                health -= enemyDamage;
-                damage_animation.SetTrigger("Damage");
+
+                //updating stats
+                score += pointsPerKill;
+                dashPower -= 2;
+
+                //destroying enemy object
+                Destroy(other.gameObject);
             }
         }
     }

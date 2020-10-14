@@ -9,8 +9,10 @@ public class EnemyController : MonoBehaviour
     [SerializeField] public Vector2 PointTwo;
     public GameObject enemy;
 
+
     //private
     private List<GameObject> Enemies; //keeping track of the enemies so that they can be killed at the end of the round
+
     private float minTimeUntilNextSpawn;
     private float maxTimeUntilNextSpawn;
 
@@ -48,14 +50,28 @@ public class EnemyController : MonoBehaviour
             float y = Random.Range(PointOne.y, PointTwo.y);
             Vector2 spawnPosition = new Vector2(x, y);
 
-            Enemies.Insert(0, Instantiate(enemy, spawnPosition, Quaternion.identity));
-            Enemies[0].SetActive(true);
+            Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity));
+            Enemies[Enemies.Count - 1].SetActive(true);
+            Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = 1;
 
             //dictating how long the program should wait until the next enemy can be spawned---------------------
             float randomTime = Random.Range(minTimeUntilNextSpawn, maxTimeUntilNextSpawn);
             updateTimes();
 
             yield return new WaitForSeconds(randomTime);
+        }
+    }
+
+    void Update()
+    {
+        //looping through the enemies array to see if any of them are dead, and removing the ones that are
+        for(int i=0; i<Enemies.Count - 1; i++)
+        {
+            if(Enemies[i].gameObject == null)
+            {
+                Enemies.RemoveAt(i);
+                i--;
+            }
         }
     }
 

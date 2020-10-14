@@ -394,6 +394,7 @@ GameObject:
   - component: {fileID: 155607424}
   - component: {fileID: 155607428}
   - component: {fileID: 155607429}
+  - component: {fileID: 155607430}
   m_Layer: 2
   m_Name: Enemy
   m_TagString: Enemy
@@ -531,6 +532,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &155607430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155607423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a86646f4d5827c547a315678c3bd1b01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PlayerDamageAnimation: {fileID: 1729364508}
+  AttackSpeed: 2
+  GamePlayer: {fileID: 1729364502}
+  enemyController: {fileID: 2084067453}
+  Type: 0
 --- !u!1 &200079014
 GameObject:
   m_ObjectHideFlags: 0
@@ -21841,6 +21859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d974add3ebe6e6249aa20393a6ba2555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemy_controller: {fileID: 2084067453}
   joystick: {fileID: 239401879}
   health_bar: {fileID: 1665681305}
   dash_meter: {fileID: 596147752}
