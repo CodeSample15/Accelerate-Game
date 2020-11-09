@@ -5,10 +5,10 @@ using UnityEngine;
 public class PlayerFollow : MonoBehaviour
 {
     //public
-    [SerializeField]public GameObject player;
+    [SerializeField] public GameObject player;
     [SerializeField] public bool TrackX;
     [SerializeField] public bool TrackY;
-    [SerializeField]public float movementSpeed;
+    [SerializeField] public float movementSpeed;
     [SerializeField] public float yOffSet;
 
     // Update is called once per frame

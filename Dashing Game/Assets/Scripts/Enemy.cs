@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour
 
     private bool isAttacking;
 
-    private float MeleeDamage = 2;
+    private float MeleeDamage = 10;
     private float ShooterDamage = 4; //TODO: SHOOTER TYPE ENEMY
 
     void Awake()

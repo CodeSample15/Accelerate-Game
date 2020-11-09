@@ -8,10 +8,11 @@ public class EnemyController : MonoBehaviour
     [SerializeField] public Vector2 PointOne;
     [SerializeField] public Vector2 PointTwo;
     public GameObject enemy;
-
+    public ParticleSystem spawnParticles;
 
     //private
     private List<GameObject> Enemies; //keeping track of the enemies so that they can be killed at the end of the round
+    private List<ParticleSystem> SpawnParticlesList;
 
     private float minTimeUntilNextSpawn;
     private float maxTimeUntilNextSpawn;
@@ -28,6 +29,8 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         Enemies = new List<GameObject>();
+        SpawnParticlesList = new List<ParticleSystem>();
+
         minTimeUntilNextSpawn = 3f;
         maxTimeUntilNextSpawn = 10f;
 
@@ -46,13 +49,7 @@ public class EnemyController : MonoBehaviour
         while(spawning)
         {
             //spawning a new enemy in a random position----------------------------------------------------------
-            float x = Random.Range(PointOne.x, PointTwo.x);
-            float y = Random.Range(PointOne.y, PointTwo.y);
-            Vector2 spawnPosition = new Vector2(x, y);
-
-            Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity));
-            Enemies[Enemies.Count - 1].SetActive(true);
-            Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = 1;
+            StartCoroutine(spawnNewEnemy());
 
             //dictating how long the program should wait until the next enemy can be spawned---------------------
             float randomTime = Random.Range(minTimeUntilNextSpawn, maxTimeUntilNextSpawn);
@@ -60,6 +57,23 @@ public class EnemyController : MonoBehaviour
 
             yield return new WaitForSeconds(randomTime);
         }
+    }
+
+    IEnumerator spawnNewEnemy()
+    {
+        //spawning a new enemy in a random position----------------------------------------------------------
+        float x = Random.Range(PointOne.x, PointTwo.x);
+        float y = Random.Range(PointOne.y, PointTwo.y);
+        Vector2 spawnPosition = new Vector2(x, y);
+
+        SpawnParticlesList.Add(Instantiate(spawnParticles, spawnPosition, Quaternion.identity));
+        SpawnParticlesList[SpawnParticlesList.Count - 1].Play();
+
+        yield return new WaitForSeconds(0.3f); //letting the particles play before spawning the enemy
+
+        Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity));
+        Enemies[Enemies.Count - 1].SetActive(true);
+        Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = 1;
     }
 
     void Update()
@@ -70,6 +84,17 @@ public class EnemyController : MonoBehaviour
             if(Enemies[i].gameObject == null)
             {
                 Enemies.RemoveAt(i);
+                i--;
+            }
+        }
+
+        //looping throught the particles list and deleting non active particles
+        for(int i=0; i<SpawnParticlesList.Count - 1; i++)
+        {
+            if(!SpawnParticlesList[i].IsAlive())
+            {
+                Destroy(SpawnParticlesList[i].gameObject);
+                SpawnParticlesList.RemoveAt(i);
                 i--;
             }
         }

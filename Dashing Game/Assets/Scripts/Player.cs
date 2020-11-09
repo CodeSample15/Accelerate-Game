@@ -1,5 +1,4 @@
 ﻿using Boo.Lang;
-using System.Data.SqlTypes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,16 +7,16 @@ using UnityStandardAssets.CrossPlatformInput;
 public class Player : MonoBehaviour
 {
     #region Public Variables
-    public EnemyController enemy_controller;
-    public Joystick joystick;
-    public Slider health_bar;
-    public Slider dash_meter;
-    public TextMeshProUGUI scoreText;
-    public Animator bar_animation;
-    public Animator damage_animation;
-    public ParticleSystem dash_particles;
-    public GameObject particle_holder;
-    public ParticleSystem enemy_death_particles;
+    public EnemyController    enemy_controller;
+    public Joystick           joystick;
+    public Slider             health_bar;
+    public Slider             dash_meter;
+    public TextMeshProUGUI    scoreText;
+    public Animator           bar_animation;
+    public Animator           damage_animation;
+    public ParticleSystem     dash_particles;
+    public GameObject         particle_holder;
+    public ParticleSystem     enemy_death_particles;
     #endregion
 
     #region Private Variables
@@ -47,6 +46,12 @@ public class Player : MonoBehaviour
     private List<ParticleSystem> enemyParticles;
     #endregion
 
+    public float DashPower
+    {
+        get { return dashPower; }
+        set { dashPower = value; }
+    }
+
     public int Score
     {
         get { return score; }
@@ -73,7 +78,7 @@ public class Player : MonoBehaviour
         dashSpeed = 15f;
         jumpForce = 16f;
         minDashPower = 30;
-        dashRechargeRate = 15f;
+        dashRechargeRate = 3f;
         dashDischargeRate = 40f;
         enemyDamage = 5;
 
@@ -123,7 +128,7 @@ public class Player : MonoBehaviour
         }
 
 
-        //refilling the dash meter
+        //refilling the dash meter--------------------------------------
         if(!dashing && dashPower < 100)
         {
             //if the player doesn't have enough dash ability and isn't dashing, recharge
@@ -141,22 +146,24 @@ public class Player : MonoBehaviour
         }
 
 
-        //getting rid of any enemy particle systems that aren't active
+        //getting rid of any enemy particle systems that aren't active-----------------------
         for(int i=0; i<enemyParticles.Count; i++)
         {
             if(!enemyParticles[i].IsAlive())
             {
                 Destroy(enemyParticles[i].gameObject);
                 enemyParticles.RemoveAt(i);
+                i--;
             }
         }
 
 
-        //update UI
+        //update UI-----------------------------------
         health_bar.value = health / 100;
         dash_meter.value = dashPower / 100;
 
         scoreText.text = score.ToString();
+        //--------------------------------------------
     }
 
     private void FixedUpdate()
