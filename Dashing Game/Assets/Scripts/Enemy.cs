@@ -6,57 +6,85 @@ public class Enemy : MonoBehaviour
 {
     //public
     [SerializeField] public Animator PlayerDamageAnimation;
-    [SerializeField] public float AttackSpeed;
 
     public GameObject GamePlayer;
     public EnemyController enemyController;
 
     public int Type;
 
-    private bool isAttacking;
+    //Damage Data
+    private float MeleeDamage;
+    private float MeleeAttackSpeed;
 
-    private float MeleeDamage = 10;
-    private float ShooterDamage = 4; //TODO: SHOOTER TYPE ENEMY
+    private float ShooterDamage; //TODO: SHOOTER TYPE ENEMY
+    private float ShooterAttackSpeed;
+
+    private float AttackSpeed;
+
+    //Time Data
+    public float timeSinceLastAttack;
 
     void Awake()
     {
-        isAttacking = false;
+        #region Stats
+        //Melee:
+        MeleeDamage = 10;
+        MeleeAttackSpeed = 5;
+
+        //Shooter:
+        ShooterDamage = 4;
+        ShooterAttackSpeed = 3;
+        #endregion
+
+        timeSinceLastAttack = 0f; //Starts off being able to attack right away
     }
 
     void Update()
     {
-        if(!isAttacking)
+        //Controlling the stats of the enemy depending on what type it is
+        switch(Type)
         {
-            StartCoroutine(attack());
-            isAttacking = true;
-        }
-    }
+            case 0:
+                //Melee
+                AttackSpeed = MeleeAttackSpeed;
+                break;
 
-    IEnumerator attack()
-    {
-        switch (Type)
-        {
-            //melee type
             case 1:
-                Collider2D playerCol = GamePlayer.gameObject.GetComponent<Collider2D>();
-
-                if (isTouching(playerCol) && !GamePlayer.GetComponent<Player>().isDashing)
-                {
-                    //the player isn't dashing, so the enemy can attack
-                    PlayerDamageAnimation.SetTrigger("Damage");
-                    GamePlayer.GetComponent<Player>().Health -= MeleeDamage;
-                }
-
-                break;
-
-            //shooter type
-            case 2:
+                AttackSpeed = ShooterAttackSpeed;
                 break;
         }
 
-        yield return new WaitForSeconds(AttackSpeed);
+        //Attacking
+        if(timeSinceLastAttack >= AttackSpeed)
+        {
+            //Attack
+            switch (Type)
+            {
+                //melee type
+                case 1:
+                    Collider2D playerCol = GamePlayer.gameObject.GetComponent<Collider2D>();
 
-        isAttacking = false;
+                    if (isTouching(playerCol) && !GamePlayer.GetComponent<Player>().isDashing)
+                    {
+                        //the player isn't dashing, so the enemy can attack
+                        PlayerDamageAnimation.SetTrigger("Damage");
+                        GamePlayer.GetComponent<Player>().Health -= MeleeDamage;
+
+                        timeSinceLastAttack = 0f; //attacked, so the cooldown restarts
+                    }
+
+                    break;
+
+                //shooter type
+                case 2:
+                    break;
+            }
+        }
+        else
+        {
+            //Refill attack cooldown
+            timeSinceLastAttack += Time.deltaTime;
+        }
     }
 
     private bool isTouching(Collider2D target)
