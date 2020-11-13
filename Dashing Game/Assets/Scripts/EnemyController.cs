@@ -25,6 +25,12 @@ public class EnemyController : MonoBehaviour
 
     private bool spawning;
 
+    public bool Spawning
+    {
+        get { return spawning; }
+        set { spawning = value; }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,9 +77,12 @@ public class EnemyController : MonoBehaviour
 
         yield return new WaitForSeconds(0.3f); //letting the particles play before spawning the enemy
 
-        Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity));
-        Enemies[Enemies.Count - 1].SetActive(true);
-        Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = 1;
+        if (spawning)
+        {
+            Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity));
+            Enemies[Enemies.Count - 1].SetActive(true);
+            Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = 1;
+        }
     }
 
     void Update()

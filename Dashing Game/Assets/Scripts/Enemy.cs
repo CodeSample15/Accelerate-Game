@@ -5,6 +5,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     //public
+    [SerializeField] public Player player;
     [SerializeField] public Animator PlayerDamageAnimation;
 
     public GameObject GamePlayer;
@@ -41,6 +42,9 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        if (!player.isAlive)
+            Destroy(gameObject);
+
         //Controlling the stats of the enemy depending on what type it is
         switch(Type)
         {

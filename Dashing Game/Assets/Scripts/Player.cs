@@ -1,8 +1,9 @@
-﻿using Boo.Lang;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
@@ -68,6 +69,11 @@ public class Player : MonoBehaviour
         get { return dashing; }
     }
 
+    public bool isAlive
+    {
+        get { return health > 0; }
+    }
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -97,66 +103,74 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //get user controll input
-        movement.x = joystick.Horizontal;
-        movement.y = joystick.Vertical;
-
-        //only dashes if the dash meter is above a certain point
-        if (dashPower >= minDashPower)
+        if (isAlive)
         {
-            dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1); //checking if the dash button is pressed or not
+            //get user controll input
+            movement.x = joystick.Horizontal;
+            movement.y = joystick.Vertical;
 
-            //resetting the dash animation
-            bar_animation.SetTrigger("Stop");
-        }
-        else if(dashing && dashPower > 0)
-        {
-            if (dashPower <= 0)
+            //only dashes if the dash meter is above a certain point
+            if (dashPower >= minDashPower)
             {
-                dashing = false;
-                dashPower = 0;
+                dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1); //checking if the dash button is pressed or not
+
+                //resetting the dash animation
+                bar_animation.SetTrigger("Stop");
+            }
+            else if (dashing && dashPower > 0)
+            {
+                if (dashPower <= 0)
+                {
+                    dashing = false;
+                    dashPower = 0;
+                }
+                else
+                {
+                    dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1);
+                }
             }
             else
             {
-                dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1);
+                bar_animation.SetTrigger("Recharge");
+                dashing = false;
+            }
+
+
+            //refilling the dash meter--------------------------------------
+            if (!dashing && dashPower < 100)
+            {
+                //if the player doesn't have enough dash ability and isn't dashing, recharge
+                dashPower += Time.deltaTime * dashRechargeRate;
+            }
+            else if (dashPower > 100)
+            {
+                //if the player has more dash ability than the max, reset it to the max
+                dashPower = 100;
+            }
+            else if (dashing)
+            {
+                //if dashing, subtract the proper amount of dash ability
+                dashPower -= dashDischargeRate * Time.deltaTime;
+            }
+
+
+            //getting rid of any enemy particle systems that aren't active-----------------------
+            for (int i = 0; i < enemyParticles.Count; i++)
+            {
+                if (!enemyParticles[i].IsAlive())
+                {
+                    Destroy(enemyParticles[i].gameObject);
+                    enemyParticles.RemoveAt(i);
+                    i--;
+                }
             }
         }
         else
         {
-            bar_animation.SetTrigger("Recharge");
-            dashing = false;
+            //If the player is dead:
+            transform.position = Vector2.zero;
+            enemy_controller.Spawning = false;
         }
-
-
-        //refilling the dash meter--------------------------------------
-        if(!dashing && dashPower < 100)
-        {
-            //if the player doesn't have enough dash ability and isn't dashing, recharge
-            dashPower += Time.deltaTime * dashRechargeRate;
-        }
-        else if(dashPower > 100)
-        {
-            //if the player has more dash ability than the max, reset it to the max
-            dashPower = 100;
-        }
-        else if(dashing)
-        {
-            //if dashing, subtract the proper amount of dash ability
-            dashPower -= dashDischargeRate * Time.deltaTime;
-        }
-
-
-        //getting rid of any enemy particle systems that aren't active-----------------------
-        for(int i=0; i<enemyParticles.Count; i++)
-        {
-            if(!enemyParticles[i].IsAlive())
-            {
-                Destroy(enemyParticles[i].gameObject);
-                enemyParticles.RemoveAt(i);
-                i--;
-            }
-        }
-
 
         //update UI-----------------------------------
         health_bar.value = health / 100;
