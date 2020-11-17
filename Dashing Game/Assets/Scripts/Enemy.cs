@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    //public
+    //Public
     [SerializeField] public Player player;
+    [SerializeField] public GameObject playerGameObject;
     [SerializeField] public Animator PlayerDamageAnimation;
 
     public GameObject GamePlayer;
     public EnemyController enemyController;
 
     public int Type;
+
+    //Private
+    private Rigidbody2D rb;
 
     //Damage Data
     private float MeleeDamage;
@@ -20,6 +24,8 @@ public class Enemy : MonoBehaviour
     private float ShooterDamage; //TODO: SHOOTER TYPE ENEMY
     private float ShooterAttackSpeed;
 
+    private float ShooterRange;
+
     private float AttackSpeed;
 
     //Time Data
@@ -27,6 +33,8 @@ public class Enemy : MonoBehaviour
 
     void Awake()
     {
+        rb = GetComponent<Rigidbody2D>();
+
         #region Stats
         //Melee:
         MeleeDamage = 10;
@@ -35,6 +43,7 @@ public class Enemy : MonoBehaviour
         //Shooter:
         ShooterDamage = 4;
         ShooterAttackSpeed = 3;
+        ShooterRange = 10f;
         #endregion
 
         timeSinceLastAttack = 0f; //Starts off being able to attack right away
@@ -45,7 +54,7 @@ public class Enemy : MonoBehaviour
         if (!player.isAlive)
             Destroy(gameObject);
 
-        //Controlling the stats of the enemy depending on what type it is
+        //Controlling the stats and movement of the enemy depending on what type it is
         switch(Type)
         {
             case 0:
@@ -55,6 +64,15 @@ public class Enemy : MonoBehaviour
 
             case 1:
                 AttackSpeed = ShooterAttackSpeed;
+                if(distanceTo(playerGameObject) < ShooterRange)
+                {
+                    rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                }
+                else
+                {
+                    rb.constraints = RigidbodyConstraints2D.None;
+                }
+
                 break;
         }
 
@@ -89,6 +107,22 @@ public class Enemy : MonoBehaviour
             //Refill attack cooldown
             timeSinceLastAttack += Time.deltaTime;
         }
+    }
+
+    private float distanceTo(GameObject other)
+    {
+        float x1 = other.transform.position.x;
+        float y1 = other.transform.position.y;
+        float x2 = transform.position.x;
+        float y2 = transform.position.y;
+
+        x1 = x1 - x2;
+        y1 = y1 - y2;
+
+        x1 *= x1;
+        y1 *= y1;
+
+        return Mathf.Sqrt(x1 + y1);
     }
 
     private bool isTouching(Collider2D target)
