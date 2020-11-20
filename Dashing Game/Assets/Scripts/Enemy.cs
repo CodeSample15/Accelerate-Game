@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour
 {
     //Public
     [SerializeField] public Player player;
+    [SerializeField] public BulletController bulletController;
     [SerializeField] public GameObject playerGameObject;
     [SerializeField] public Animator PlayerDamageAnimation;
 
@@ -28,6 +29,9 @@ public class Enemy : MonoBehaviour
 
     private float AttackSpeed;
 
+    private bool InRange;
+    private float projectileSpeed;
+
     //Time Data
     public float timeSinceLastAttack;
 
@@ -44,6 +48,8 @@ public class Enemy : MonoBehaviour
         ShooterDamage = 4;
         ShooterAttackSpeed = 3;
         ShooterRange = 10f;
+
+        InRange = false;
         #endregion
 
         timeSinceLastAttack = 0f; //Starts off being able to attack right away
@@ -64,13 +70,17 @@ public class Enemy : MonoBehaviour
 
             case 1:
                 AttackSpeed = ShooterAttackSpeed;
+                projectileSpeed = 5f;
+
                 if(distanceTo(playerGameObject) < ShooterRange)
                 {
                     rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                    InRange = true;
                 }
                 else
                 {
                     rb.constraints = RigidbodyConstraints2D.None;
+                    InRange = false;
                 }
 
                 break;
@@ -99,6 +109,10 @@ public class Enemy : MonoBehaviour
 
                 //shooter type
                 case 2:
+                    if (InRange)
+                    {
+                        bulletController.shoot(transform.position, /*INSERT DIRECTION HERE*/, ShooterDamage, projectileSpeed, ShooterRange + 10);
+                    }
                     break;
             }
         }

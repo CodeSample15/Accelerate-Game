@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 89937084}
   m_Layer: 8
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -546,6 +546,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1729364503}
+  bulletController: {fileID: 0}
   playerGameObject: {fileID: 1729364502}
   PlayerDamageAnimation: {fileID: 1729364508}
   GamePlayer: {fileID: 1729364502}
@@ -761,7 +762,7 @@ GameObject:
   - component: {fileID: 302605863}
   m_Layer: 8
   m_Name: Plane (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1042,7 +1043,7 @@ GameObject:
   - component: {fileID: 424297883}
   m_Layer: 8
   m_Name: Plane (6)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1467,7 +1468,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23096
+  m_Name: pb_Mesh18810
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6892,7 +6893,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23198
+  m_Name: pb_Mesh18912
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -7064,7 +7065,7 @@ GameObject:
   - component: {fileID: 816763949}
   m_Layer: 8
   m_Name: Plane (5)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7235,7 +7236,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23262
+  m_Name: pb_Mesh18976
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -12636,7 +12637,7 @@ GameObject:
   - component: {fileID: 1088555158}
   m_Layer: 8
   m_Name: Plane (2)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -17819,7 +17820,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh22996
+  m_Name: pb_Mesh18712
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -22775,7 +22776,7 @@ GameObject:
   - component: {fileID: 1478772714}
   m_Layer: 8
   m_Name: Plane (4)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23104,7 +23105,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh22968
+  m_Name: pb_Mesh18690
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -23535,7 +23536,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh23144
+  m_Name: pb_Mesh18858
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -23893,7 +23894,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   data:
-    dataString: UEsDBBQAAAgIAACYn+ufW+fiYgIAAAYFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFlVE1zmzAQ/SsenWsPOHYSemsdx+khcSZOJxcuAi1GYyExkog/Mv7vXQlhiMsF8fbr7dsVX4RLU0NulV5pzp4VA/JzRNyZ/Bj1xic40K2SG36CzueDM1s6J+p93qjlCvHYhRlVgdU8/yW3wjlHCDaSF0pXS7aFhTLWIFxQYQBNWlkXLRH6GpEDvsaJCzniaXrnTic8JdHojMccpAXdu95M5sE1Do7juXdsZC5oVQNzrHv/+C6eJBE+SQhL7iZT9z279WES+wsR0eTGFVRCcBPoEXusffubugQNrn/GKXbrKTkGJfBtaR3zYey6KAzYIIWmxweuUbQ2KfmtWiUranYt0U8qGldmOm9JtUmf/7OPY28utKqeurpx5GrYkue7N3rMqbEDqYfww3fijdxTsaOZgI8S5ItaadVIhkarGxfaGJg+9J+X1hYl5Lseb6legU3dD6CbbDdX18PZd39YCF5lXvhZC2yE8nL7dQCNo/mDhP2ymJACUcfir4F3uh1uVTA8cm0smkKX0tHLVKOdK1l6zVw3jV0oLcHDgXQNkgp7fMU09nqEV7ZB2SvLI3X3JxQPtu5aXIV4uPePoivTq9pfhmVKtX8GU64bK7iEnrQzvKBOCyVlu2FDTbqwTaMLmg/Ctg1n31eLsOQW6DTJ8lmWJVEyHecsYuw+nt1ms4TOo3vid49L7JOK15ZokAenJvvkEves+62MVprWftuZpvsVP1VqIDmXhdrkGkCu2wwX4qCxCF5LtmQcBdqAtVz6eZOvlAiV74Cll0Sp73R5sJqmfZaU1PxTWYekZOH/Iyk5k/M/UEsDBBQAAAgIAACYn+vW38k/bQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM01VFQSi9KLMgoBooYgjilmSkgdrRSiqVZaqKRZVKySVKSpYGlkW5yikFKioWhiVmSiWWiqYGFUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAACYn+ufW+fiYgIAAAYFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAACYn+vW38k/bQAAAHgAAAAJACQAAAAAAAAAAAAAAK8CAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAZwMAAAAA
+    dataString: UEsDBBQAAAgIAACYn+vVuxGkYgIAAAcFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFlVMtymzAU/RWP1rUHHDsJ3bWO43SROBOnkw0bgS5GYyExkogfGf97r4QwxGWDOOc+zn2IL8KlqSG3Sq80Z8+KAfk5Iu5Mfox68gkOdKvkhp+gs/ngzJbOiHqbN2q5Qjx2bkZVYDXPf8mtcMYRgo3khdLVkm1hoYw1CBdUGEBKK+u8JUJfI3LA1zhxLkc8Te/c6YSnJBqd8ZiDtKB705vJPJjGwXA894aNzAWtamBOdW8f38WTJMInCW7J3WTqvme33k1ifcEjmty4hEoIboI8Yo+1L39Tl6DB1c84xWq9JKegBL4trVM+9F0XhQEbWqHp8YFrbFoblPxWbScranat0E8qGpdmOm9FtUGf/+PHsacLraqnLm8cuRy25PnujR5zauyg1UP44bvwRu6p2NFMwEcJ8kWttGokQ9Lqxrk2BqYP/eeltEUJ+a7HW6lXYFP3A+gm283V1XD21R8WgleZb/ysBTZC+Xb7dQCNo/mDgv2ymBACUafir4F3uh1uVSAeuTYWqVCldPIy1WhnSpa+Z66axi6UluDhILoGSYU9vmIYez3CK26Q9op5pO7+hOSB667FlYuHe/souqJe1f4yLFOq/TOYct1YwSX0oh3xgn1aKCnbDRv2pHPbNLqg+cBt23D2fbUIS26BTpMsn2VZEiXTcc4ixu7j2W02S+g8uid+97jEOql4bYWG9uDUZB9c4p51v5XRStPabzvTdL/ip0oNBXJZqE2uAeS6DXFRDhqz4L1kS8axQxuwlks/cPKVEqHyHbD0kjP1pS4PVtO0j5KSmn8q65CULPyPJCVncv4HUEsDBBQAAAgIAACYn+vW38k/bQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM01VFQSi9KLMgoBooYgjilmSkgdrRSiqVZaqKRZVKySVKSpYGlkW5yikFKioWhiVmSiWWiqYGFUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAACYn+vVuxGkYgIAAAcFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAACYn+vW38k/bQAAAHgAAAAJACQAAAAAAAAAAAAAAK8CAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAZwMAAAAA
     upgradeData: 
     file_cachedStartup: {fileID: 0}
     data_cachedStartup: 
@@ -23954,7 +23955,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh22922
+  m_Name: pb_Mesh18644
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -24126,7 +24127,7 @@ GameObject:
   - component: {fileID: 1864411448}
   m_Layer: 8
   m_Name: Plane (3)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24700,7 +24701,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2020673203}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 421.4}
+  m_LocalPosition: {x: 2.7, y: 0, z: 421.4}
   m_LocalScale: {x: 178.30363, y: 108.434845, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
