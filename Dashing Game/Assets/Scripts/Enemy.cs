@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Pathfinding;
 
 public class Enemy : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class Enemy : MonoBehaviour
 
     //Private
     private Rigidbody2D rb;
+    private AIPath path;
 
     //Damage Data
     private float MeleeDamage;
@@ -35,9 +37,13 @@ public class Enemy : MonoBehaviour
     //Time Data
     public float timeSinceLastAttack;
 
+    //Movement Data
+    private float speed;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        path = GetComponent<AIPath>();
 
         #region Stats
         //Melee:
@@ -47,10 +53,12 @@ public class Enemy : MonoBehaviour
         //Shooter:
         ShooterDamage = 4;
         ShooterAttackSpeed = 3;
-        ShooterRange = 10f;
+        ShooterRange = 8f;
 
         InRange = false;
         #endregion
+
+        speed = 9;
 
         timeSinceLastAttack = 0f; //Starts off being able to attack right away
     }
@@ -74,12 +82,14 @@ public class Enemy : MonoBehaviour
 
                 if(distanceTo(playerGameObject) < ShooterRange)
                 {
-                    rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                    //rb.constraints = RigidbodyConstraints2D.FreezeAll;
+                    path.maxSpeed = 0;
                     InRange = true;
                 }
                 else
                 {
-                    rb.constraints = RigidbodyConstraints2D.None;
+                    //rb.constraints = RigidbodyConstraints2D.None;
+                    path.maxSpeed = speed;
                     InRange = false;
                 }
 
@@ -93,7 +103,7 @@ public class Enemy : MonoBehaviour
             switch (Type)
             {
                 //melee type
-                case 1:
+                case 0:
                     Collider2D playerCol = GamePlayer.gameObject.GetComponent<Collider2D>();
 
                     if (isTouching(playerCol) && !GamePlayer.GetComponent<Player>().isDashing)
@@ -108,10 +118,18 @@ public class Enemy : MonoBehaviour
                     break;
 
                 //shooter type
-                case 2:
+                case 1:
                     if (InRange)
                     {
-                        bulletController.shoot(transform.position, /*INSERT DIRECTION HERE*/, ShooterDamage, projectileSpeed, ShooterRange + 10);
+                        //Calculating what direction the bullet should travel in
+                        Vector2 shootDir = new Vector2(transform.position.x - playerGameObject.transform.position.x, transform.position.y - playerGameObject.transform.position.y);
+                        shootDir *= -1;
+                        shootDir = shootDir.normalized;
+
+                        //Using the Bullet Controller script to instantiate a new bullet
+                        bulletController.shoot(transform.position, shootDir, playerGameObject.transform.position, ShooterDamage, projectileSpeed, ShooterRange + 10, 1);
+
+                        timeSinceLastAttack = 0f; //restart cooldown
                     }
                     break;
             }

@@ -2,53 +2,71 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D))]
 public class BulletCode : MonoBehaviour
 {
     [SerializeField] Player player;
+    public enum Types { inactive, lazer };
+    public Types type;
 
     //public
     public Vector2 direction;
+    public Quaternion rotation;
 
     public float damage;
     public float speed;
     public float range;
 
     //private
-    private Rigidbody2D rb;
     private float distanceTraveled;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        transform.rotation.SetLookRotation(direction);
-
         distanceTraveled = 0;
+
+        type = Types.inactive;
     }
 
     void Update()
     {
-        if(distanceTraveled > range)
+        #region Movement Code
+        //Movement --------------------------------------------------------------------------
+        transform.rotation = Quaternion.identity;
+
+        if (type == Types.lazer)
+        {
+            transform.Translate(direction * speed * Time.deltaTime);
+            distanceTraveled += speed * Time.deltaTime;
+        }
+
+        transform.rotation = rotation;
+        #endregion
+
+        if (distanceTraveled > range)
         {
             Destroy(gameObject);
         }
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    public void setType(int bulletType)
     {
-        rb.velocity = direction * speed;
-        distanceTraveled += speed;
+        if(bulletType == 0)
+        {
+            type = Types.inactive;
+        }
+        else if(bulletType == 1)
+        {
+            type = Types.lazer;
+        }
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Ground"))
         {
             Destroy(gameObject);
         }
-        else if(other.gameObject.CompareTag("Player"))
+        else if (other.gameObject.CompareTag("Player"))
         {
             player.Health -= damage;
             Destroy(gameObject);

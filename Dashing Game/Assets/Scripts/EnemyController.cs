@@ -81,7 +81,7 @@ public class EnemyController : MonoBehaviour
         {
             Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity));
             Enemies[Enemies.Count - 1].SetActive(true);
-            Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = 0;
+            Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = 1;
         }
     }
 
