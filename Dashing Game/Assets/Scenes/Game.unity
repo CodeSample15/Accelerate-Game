@@ -176,7 +176,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 41b693ec6d40eee47934dda0336bd64b, type: 3}
-  m_Color: {r: 0.7169812, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -551,6 +551,11 @@ MonoBehaviour:
   PlayerDamageAnimation: {fileID: 1729364508}
   GamePlayer: {fileID: 1729364502}
   enemyController: {fileID: 2084067453}
+  Colors:
+  - serializedVersion: 2
+    rgba: 3022971664
+  - serializedVersion: 2
+    rgba: 422
   Type: 0
   timeSinceLastAttack: 0
 --- !u!1 &162960800
@@ -1419,7 +1424,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 2310718744797f54e97b0a13bd9874dc, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1441,7 +1446,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ac5a199d913880b4bbae2ab1502ec2c3, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.09392524, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1459,8 +1464,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 533174120}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.1486, y: -0.673, z: 0}
-  m_LocalScale: {x: 0.102604456, y: 0.31399995, z: 1}
+  m_LocalPosition: {x: 7.612, y: 1.533, z: 0}
+  m_LocalScale: {x: 0.36497432, y: 0.10019738, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 13
@@ -1480,6 +1485,7 @@ MonoBehaviour:
   player: {fileID: 1729364503}
   type: 0
   direction: {x: 0, y: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 0}
   damage: 0
   speed: 0
   range: 0
@@ -6785,7 +6791,7 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.71
-  m_Color: {r: 0.7830189, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 00000000

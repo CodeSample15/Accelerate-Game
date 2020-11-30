@@ -18,8 +18,7 @@ public class BulletController : MonoBehaviour
         holder.GetComponent<BulletCode>().setType(type);
 
         //Calculating where the bullet should point
-        Vector2 dir = playerPosition - (Vector2)transform.position;
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
         holder.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
         holder.GetComponent<BulletCode>().rotation = holder.transform.rotation;

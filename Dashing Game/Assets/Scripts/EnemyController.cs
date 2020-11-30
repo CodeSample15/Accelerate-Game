@@ -79,9 +79,11 @@ public class EnemyController : MonoBehaviour
 
         if (spawning)
         {
+            int t = Random.Range(0,2); //getting a random enemy type to spawn
+
             Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity));
             Enemies[Enemies.Count - 1].SetActive(true);
-            Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = 1;
+            Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = t;
         }
     }
 

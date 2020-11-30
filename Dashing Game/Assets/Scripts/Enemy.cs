@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using UnityEngine.Experimental.Rendering.LWRP;
 
 public class Enemy : MonoBehaviour
 {
@@ -14,11 +15,15 @@ public class Enemy : MonoBehaviour
     public GameObject GamePlayer;
     public EnemyController enemyController;
 
+    public List<Color32> Colors;
+
     public int Type;
 
     //Private
     private Rigidbody2D rb;
     private AIPath path;
+    private SpriteRenderer sprite;
+    private Light2D light;
 
     //Damage Data
     private float MeleeDamage;
@@ -44,21 +49,25 @@ public class Enemy : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         path = GetComponent<AIPath>();
+        sprite = GetComponentInChildren<SpriteRenderer>();
+        light = GetComponentInChildren<Light2D>();
 
         #region Stats
         //Melee:
-        MeleeDamage = 10;
-        MeleeAttackSpeed = 5;
+        MeleeDamage = 15;
+        MeleeAttackSpeed = 2;
 
         //Shooter:
-        ShooterDamage = 4;
-        ShooterAttackSpeed = 3;
+        ShooterDamage = 10;
+        ShooterAttackSpeed = 1f;
         ShooterRange = 8f;
 
         InRange = false;
         #endregion
 
         speed = 9;
+
+        initColors();
 
         timeSinceLastAttack = 0f; //Starts off being able to attack right away
     }
@@ -67,6 +76,10 @@ public class Enemy : MonoBehaviour
     {
         if (!player.isAlive)
             Destroy(gameObject);
+
+        //Changing the color of the sprite and light of the enemy
+        sprite.color = Colors[Type];
+        light.color = Colors[Type];
 
         //Controlling the stats and movement of the enemy depending on what type it is
         switch(Type)
@@ -155,6 +168,14 @@ public class Enemy : MonoBehaviour
         y1 *= y1;
 
         return Mathf.Sqrt(x1 + y1);
+    }
+
+    private void initColors()
+    {
+        Colors = new List<Color32>();
+
+        Colors.Add(new Color32(255, 0, 0, 255)); //Red   (Melee Enemy)
+        Colors.Add(new Color32(0, 255, 0, 255)); //Green (Shooter Enemy)
     }
 
     private bool isTouching(Collider2D target)
