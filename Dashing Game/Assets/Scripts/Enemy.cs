@@ -25,14 +25,33 @@ public class Enemy : MonoBehaviour
     private SpriteRenderer sprite;
     private Light2D light;
 
-    //Damage Data
+    #region Enemy Data
+    //Melee
     private float MeleeDamage;
     private float MeleeAttackSpeed;
 
-    private float ShooterDamage; //TODO: SHOOTER TYPE ENEMY
+    //Shooter
+    private float ShooterDamage;
     private float ShooterAttackSpeed;
 
     private float ShooterRange;
+
+    //Bomber
+    private float BomberDamage;
+    private float Radius;
+
+    private bool Detonating;
+
+    private int framesPerColorChange;
+    private int currentFrame;
+
+    private float detonationTime;
+    private float timePassed;
+
+    //Ghost
+    private float GhostDamage;
+    private float GhostAttackSpeed;
+    #endregion
 
     private float AttackSpeed;
 
@@ -58,9 +77,25 @@ public class Enemy : MonoBehaviour
         MeleeAttackSpeed = 2;
 
         //Shooter:
-        ShooterDamage = 10;
+        ShooterDamage = 5;
         ShooterAttackSpeed = 1f;
         ShooterRange = 8f;
+
+        //Bomber:
+        BomberDamage = 30; //Damage at the center of the explosion (damage decreases with distance)
+        Radius = 10; //Blast radius
+
+        Detonating = false; //Telling the enemy how to move when detonating
+
+        framesPerColorChange = 3; //Changing the colors of the enemy rapidly to tell the player that the enemy will explode
+        currentFrame = 0;
+
+        detonationTime = 0; //How much time it takes for the enemy to explode
+        timePassed = 0;
+
+        //Ghost:
+        GhostDamage = 1;
+        GhostAttackSpeed = 0.1f;
 
         InRange = false;
         #endregion
@@ -81,7 +116,7 @@ public class Enemy : MonoBehaviour
         sprite.color = Colors[Type];
         light.color = Colors[Type];
 
-        //Controlling the stats and movement of the enemy depending on what type it is
+        //Controlling the stats and movement of the enemy depending on what type it is---------------------------------------------------------------------------------
         switch(Type)
         {
             case 0:
@@ -90,32 +125,53 @@ public class Enemy : MonoBehaviour
                 break;
 
             case 1:
+                //Shooter
                 AttackSpeed = ShooterAttackSpeed;
                 projectileSpeed = 5f;
 
                 if(distanceTo(playerGameObject) < ShooterRange)
                 {
-                    //rb.constraints = RigidbodyConstraints2D.FreezeAll;
                     path.maxSpeed = 0;
                     InRange = true;
                 }
                 else
                 {
-                    //rb.constraints = RigidbodyConstraints2D.None;
                     path.maxSpeed = speed;
                     InRange = false;
+                }
+                break;
+
+            case 2:
+                //Bomber
+                if (Detonating)
+                {
+                    path.maxSpeed = speed / 3;
+
+                    if(currentFrame < framesPerColorChange)
+                    {
+                        //TODO: COLOR CHANGES AND EXPLOSION
+                        currentFrame++;
+                    }
+                    else
+                    {
+                        currentFrame = 0;
+                    }
+                }
+                else
+                {
+                    path.maxSpeed = speed;
                 }
 
                 break;
         }
 
-        //Attacking
+        //Attacking-----------------------------------------------------------------------------------------------------
         if(timeSinceLastAttack >= AttackSpeed)
         {
             //Attack
             switch (Type)
             {
-                //melee type
+                //Melee type
                 case 0:
                     Collider2D playerCol = GamePlayer.gameObject.GetComponent<Collider2D>();
 
@@ -130,7 +186,7 @@ public class Enemy : MonoBehaviour
 
                     break;
 
-                //shooter type
+                //Shooter type
                 case 1:
                     if (InRange)
                     {
@@ -143,6 +199,14 @@ public class Enemy : MonoBehaviour
                         bulletController.shoot(transform.position, shootDir, playerGameObject.transform.position, ShooterDamage, projectileSpeed, ShooterRange + 10, 1);
 
                         timeSinceLastAttack = 0f; //restart cooldown
+                    }
+                    break;
+
+                //Bomber type
+                case 2:
+                    if(distanceTo(playerGameObject) <= Radius)
+                    {
+                        Detonating = true;
                     }
                     break;
             }
@@ -174,8 +238,10 @@ public class Enemy : MonoBehaviour
     {
         Colors = new List<Color32>();
 
-        Colors.Add(new Color32(255, 0, 0, 255)); //Red   (Melee Enemy)
-        Colors.Add(new Color32(0, 255, 0, 255)); //Green (Shooter Enemy)
+        Colors.Add(new Color32(255, 0, 0, 255));     //Red                (Melee Enemy)
+        Colors.Add(new Color32(0, 255, 0, 255));     //Green              (Shooter Enemy)
+        Colors.Add(new Color32(22, 174, 250, 255));  //Blue               (Bomber Enemy)
+        Colors.Add(new Color32(255, 255, 255, 150)); //Transparent White  (Ghost Enemy)
     }
 
     private bool isTouching(Collider2D target)
