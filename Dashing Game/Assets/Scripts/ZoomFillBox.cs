@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Experimental.Rendering.LWRP;
 
 public class ZoomFillBox : MonoBehaviour
 {
     [SerializeField] public Player player;
     [SerializeField] public ParticleSystem particleSystem;
-    [SerializeField] public Light2D light;
     [SerializeField] public float refillTime;
     [SerializeField] public int refillAmount;
 
@@ -31,13 +29,11 @@ public class ZoomFillBox : MonoBehaviour
         if(timeSinceLastRefill >= refillTime)
         {
             refilled = true;
-            light.enabled = true;
             particleSystem.Play();
         }
         else
         {
             timeSinceLastRefill += Time.deltaTime;
-            light.enabled = false;
             particleSystem.Stop();
         }
     }

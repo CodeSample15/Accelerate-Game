@@ -69,6 +69,7 @@ public class BulletCode : MonoBehaviour
         else if (other.gameObject.CompareTag("Player"))
         {
             player.Health -= damage;
+            player.character_animations.SetTrigger("Damage");
             Destroy(gameObject);
         }
     }

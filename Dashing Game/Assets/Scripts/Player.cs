@@ -8,6 +8,7 @@ using System.Collections.Generic;
 public class Player : MonoBehaviour
 {
     #region Public Variables
+    public Animator           character_animations;
     public EnemyController    enemy_controller;
     public Joystick           joystick;
     public Slider             health_bar;
@@ -164,6 +165,29 @@ public class Player : MonoBehaviour
                     i--;
                 }
             }
+
+            //handle animations--------------------------------------------- (Animations)
+            //set the speed of the running animation
+            character_animations.SetFloat("RunSpeed", movement.x);
+
+            if (Mathf.Abs(movement.x) > 0)
+                character_animations.SetBool("Running", true && !character_animations.GetBool("Falling"));
+            else
+                character_animations.SetBool("Running", false);
+
+            if(movement.x < 0)
+            {
+                //character is running to the left
+                transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+            }
+            else if(movement.x > 0)
+            {
+                //character is running to the right
+                transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+            }
+            
+            character_animations.SetBool("Falling", rb.velocity.y < -0.1 && !dashing);
+            //-------------------------------------------------------------- (Animations)
         }
         else
         {
@@ -231,8 +255,9 @@ public class Player : MonoBehaviour
     public void jump()
     {
         if (!dashing) {
-            if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 0.31f))
+            if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f))
             {
+                character_animations.SetTrigger("Jump");
                 rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             }
         }

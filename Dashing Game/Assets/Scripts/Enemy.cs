@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
-using UnityEngine.Experimental.Rendering.LWRP;
 
 public class Enemy : MonoBehaviour
 {
@@ -12,7 +11,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] public GameObject playerGameObject;
     [SerializeField] public Animator PlayerDamageAnimation;
 
-    public GameObject GamePlayer;
     public EnemyController enemyController;
 
     public List<Color32> Colors;
@@ -23,7 +21,6 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     private AIPath path;
     private SpriteRenderer sprite;
-    private Light2D light;
 
     #region Enemy Data
     //Melee
@@ -69,7 +66,6 @@ public class Enemy : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         path = GetComponent<AIPath>();
         sprite = GetComponentInChildren<SpriteRenderer>();
-        light = GetComponentInChildren<Light2D>();
 
         #region Stats
         //Melee:
@@ -114,7 +110,6 @@ public class Enemy : MonoBehaviour
 
         //Changing the color of the sprite and light of the enemy
         sprite.color = Colors[Type];
-        light.color = Colors[Type];
 
         //Controlling the stats and movement of the enemy depending on what type it is---------------------------------------------------------------------------------
         switch(Type)
@@ -173,13 +168,13 @@ public class Enemy : MonoBehaviour
             {
                 //Melee type
                 case 0:
-                    Collider2D playerCol = GamePlayer.gameObject.GetComponent<Collider2D>();
+                    Collider2D playerCol = playerGameObject.gameObject.GetComponent<Collider2D>();
 
-                    if (isTouching(playerCol) && !GamePlayer.GetComponent<Player>().isDashing)
+                    if (isTouching(playerCol) && !playerGameObject.GetComponent<Player>().isDashing)
                     {
                         //the player isn't dashing, so the enemy can attack
                         PlayerDamageAnimation.SetTrigger("Damage");
-                        GamePlayer.GetComponent<Player>().Health -= MeleeDamage;
+                        playerGameObject.GetComponent<Player>().Health -= MeleeDamage;
 
                         timeSinceLastAttack = 0f; //attacked, so the cooldown restarts
                     }
@@ -233,7 +228,7 @@ public class Enemy : MonoBehaviour
 
         return Mathf.Sqrt(x1 + y1);
     }
-
+    
     private void initColors()
     {
         Colors = new List<Color32>();

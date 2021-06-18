@@ -12,7 +12,7 @@ public class BackgroundRender : MonoBehaviour
 
     private float xPos;
     private float yPos;
-
+    
     // Start is called before the first frame update
     void Awake()
     {
