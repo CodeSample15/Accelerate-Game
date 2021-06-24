@@ -72,16 +72,18 @@ public class EnemyController : MonoBehaviour
         float y = Random.Range(PointOne.y, PointTwo.y);
         Vector2 spawnPosition = new Vector2(x, y);
 
+        int t = Random.Range(0, 2); //getting a random enemy type to spawn
+
+        Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity)); //create the enemy object
+
         SpawnParticlesList.Add(Instantiate(spawnParticles, spawnPosition, Quaternion.identity));
+        SpawnParticlesList[SpawnParticlesList.Count - 1].startColor = Enemies[Enemies.Count - 1].GetComponent<Enemy>().Colors[t-1];
         SpawnParticlesList[SpawnParticlesList.Count - 1].Play();
 
         yield return new WaitForSeconds(0.3f); //letting the particles play before spawning the enemy
 
         if (spawning)
         {
-            int t = Random.Range(0,2); //getting a random enemy type to spawn
-
-            Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity));
             Enemies[Enemies.Count - 1].SetActive(true);
             Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = t;
         }
