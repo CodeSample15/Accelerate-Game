@@ -24,8 +24,9 @@ public class Player : MonoBehaviour
     #region Private Variables
     private Rigidbody2D rb;
 
-    private float movementSpeed;
-    private float dashSpeed;
+    private float movementSpeed; // how fast the player travels at maximum speed
+    private float walkingSpeed; // where the animation will switch from walking to running
+    private float dashSpeed; // how fast the player travels when dashing
     private float jumpForce;
     private int minDashPower;
     private float dashRechargeRate;
@@ -82,6 +83,7 @@ public class Player : MonoBehaviour
 
         //adjustable variables
         movementSpeed = 6f;
+        walkingSpeed = 0.3f;
         dashSpeed = 15f;
         jumpForce = 16f;
         minDashPower = 30;
@@ -166,14 +168,25 @@ public class Player : MonoBehaviour
                 }
             }
 
-            //handle animations--------------------------------------------- (Animations)
+            //handle animations--------------------------------------------------------------------- (Animations)
             //set the speed of the running animation
             character_animations.SetFloat("RunSpeed", movement.x);
 
             if (Mathf.Abs(movement.x) > 0)
-                character_animations.SetBool("Running", true && !character_animations.GetBool("Falling"));
+                character_animations.SetBool("Running", !character_animations.GetBool("Falling"));
             else
                 character_animations.SetBool("Running", false);
+
+            //detecting if the player is traveling slow enough to be walking
+            if(Mathf.Abs(movement.x) <= walkingSpeed && movement.x != 0)
+            {
+                character_animations.SetBool("Walking", true);
+                character_animations.SetBool("Running", false);
+            }
+            else
+            {
+                character_animations.SetBool("Walking", false);
+            }
 
             if(movement.x < 0)
             {
@@ -187,7 +200,7 @@ public class Player : MonoBehaviour
             }
             
             character_animations.SetBool("Falling", rb.velocity.y < -0.1 && !dashing);
-            //-------------------------------------------------------------- (Animations)
+            //-------------------------------------------------------------------------------------- (Animations)
         }
         else
         {
