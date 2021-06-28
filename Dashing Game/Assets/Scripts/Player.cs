@@ -284,11 +284,7 @@ public class Player : MonoBehaviour
             if(dashing)
             {
                 //particle effect
-                int enemyType = other.gameObject.GetComponent<Enemy>().Type;
-                Color deathParticleColor = other.gameObject.GetComponent<Enemy>().getColor(enemyType);
-
                 enemyParticles.Add(Instantiate(enemy_death_particles, other.gameObject.transform.position, Quaternion.identity));
-                enemyParticles[enemyParticles.Count - 1].startColor = deathParticleColor;
                 enemyParticles[enemyParticles.Count - 1].Play();
 
                 //updating stats
