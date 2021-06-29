@@ -61,6 +61,7 @@ ScriptedImporter:
     maxTextureSizeSet: 0
     compressionQualitySet: 0
     textureFormatSet: 0
+    applyGammaDecoding: 0
   spriteImportData:
   - name: 
     originalName: 
@@ -5287,38 +5288,8 @@ ScriptedImporter:
       order: 0
     dimension: {x: 0, y: 0}
     characterGroups: []
-  boneGOs:
-  - go: {fileID: -435305941373942892, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 0
-  - go: {fileID: -9220366049960304588, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 1
-  - go: {fileID: 186318752177740414, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 2
-  - go: {fileID: -701925986255696878, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 3
-  - go: {fileID: -4193363540995091911, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 4
-  - go: {fileID: -2216018211989448469, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 5
-  - go: {fileID: -8347525220254623861, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 6
-  - go: {fileID: 7196491424811435425, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 7
-  - go: {fileID: -9050323537659993188, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 8
-  - go: {fileID: 3006650158750661903, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 9
-  - go: {fileID: 5712172115714951339, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 10
-  - go: {fileID: -1477899047837086435, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 11
-  - go: {fileID: 5734363157121862932, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 12
-  - go: {fileID: -4827197479969463434, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 13
-  - go: {fileID: 5305771106346569545, guid: 89049b797d238ea4b94dd189c5d331dc, type: 3}
-    index: 14
   generateGOHierarchy: 0
   textureAssetName: DashCharacter Texture
   prefabAssetName: DashCharacter Prefab
   spriteLibAssetName: DashCharacter Sprite Lib
+  secondarySpriteTextures: []
