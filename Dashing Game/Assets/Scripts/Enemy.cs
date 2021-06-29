@@ -213,6 +213,17 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    //public method for other scripts to access the different colors the enemies have
+    public Color getColor(int num)
+    {
+        initColors();
+
+        if (num < 0 || num >= Colors.Count)
+            return new Color(0,0,0); //return black if the color is not found
+
+        return Colors[num];
+    }
+
     private float distanceTo(GameObject other)
     {
         float x1 = other.transform.position.x;

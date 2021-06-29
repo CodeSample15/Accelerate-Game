@@ -75,9 +75,11 @@ public class EnemyController : MonoBehaviour
         int t = Random.Range(0, 2); //getting a random enemy type to spawn
 
         Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity)); //create the enemy object
-
         SpawnParticlesList.Add(Instantiate(spawnParticles, spawnPosition, Quaternion.identity));
-        SpawnParticlesList[SpawnParticlesList.Count - 1].startColor = Enemies[Enemies.Count - 1].GetComponent<Enemy>().Colors[t-1];
+
+        //converting the color32 of the enemy color to regular color
+        Color enemyColor = Enemies[Enemies.Count - 1].GetComponent<Enemy>().getColor(t);
+        SpawnParticlesList[SpawnParticlesList.Count - 1].startColor = enemyColor;
         SpawnParticlesList[SpawnParticlesList.Count - 1].Play();
 
         yield return new WaitForSeconds(0.3f); //letting the particles play before spawning the enemy
