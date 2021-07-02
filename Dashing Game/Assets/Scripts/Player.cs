@@ -19,6 +19,7 @@ public class Player : MonoBehaviour
     public ParticleSystem     dash_particles;
     public GameObject         particle_holder;
     public ParticleSystem     enemy_death_particles;
+    public ParticleController particleController;
     #endregion
 
     #region Private Variables
@@ -86,9 +87,9 @@ public class Player : MonoBehaviour
         walkingSpeed = 0.3f;
         dashSpeed = 15f;
         jumpForce = 16f;
-        minDashPower = 30;
-        dashRechargeRate = 3f;
-        dashDischargeRate = 40f;
+        minDashPower = 20;
+        dashRechargeRate = 3.2f;
+        dashDischargeRate = 35f;
         enemyDamage = 5;
 
         //fixed variables for things like health and the amount of dash ability left
@@ -287,8 +288,10 @@ public class Player : MonoBehaviour
                 int enemyType = other.gameObject.GetComponent<Enemy>().Type;
                 Color deathParticleColor = other.gameObject.GetComponent<Enemy>().getColor(enemyType);
 
+                //setting the color of the enemy death particles
                 enemyParticles.Add(Instantiate(enemy_death_particles, other.gameObject.transform.position, Quaternion.identity));
-                enemyParticles[enemyParticles.Count - 1].startColor = deathParticleColor;
+                ParticleSystem.MainModule settings = enemyParticles[enemyParticles.Count - 1].main;
+                settings.startColor = deathParticleColor;
                 enemyParticles[enemyParticles.Count - 1].Play();
 
                 //updating stats

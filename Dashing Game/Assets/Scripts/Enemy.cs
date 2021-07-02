@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour
     private AIPath path;
     private SpriteRenderer sprite;
 
+
     #region Enemy Data
     //Melee
     private float MeleeDamage;
@@ -41,6 +42,10 @@ public class Enemy : MonoBehaviour
 
     private int framesPerColorChange;
     private int currentFrame;
+    private bool normalColor;
+
+    private Color32 detonatingColor;
+    public ParticleSystem explosionEffect; // belongs in the public variables but it's put here for better organization
 
     private float detonationTime;
     private float timePassed;
@@ -83,8 +88,11 @@ public class Enemy : MonoBehaviour
 
         Detonating = false; //Telling the enemy how to move when detonating
 
-        framesPerColorChange = 3; //Changing the colors of the enemy rapidly to tell the player that the enemy will explode
+        framesPerColorChange = 10; //Changing the colors of the enemy rapidly to tell the player that the enemy will explode
         currentFrame = 0;
+        normalColor = true;
+
+        detonatingColor = new Color32(0, 0, 255, 255);
 
         detonationTime = 0; //How much time it takes for the enemy to explode
         timePassed = 0;
@@ -107,9 +115,6 @@ public class Enemy : MonoBehaviour
     {
         if (!player.isAlive)
             Destroy(gameObject);
-
-        //Changing the color of the sprite and light of the enemy
-        sprite.color = Colors[Type];
 
         //Controlling the stats and movement of the enemy depending on what type it is---------------------------------------------------------------------------------
         switch(Type)
@@ -144,11 +149,18 @@ public class Enemy : MonoBehaviour
 
                     if(currentFrame < framesPerColorChange)
                     {
-                        //TODO: COLOR CHANGES AND EXPLOSION
                         currentFrame++;
                     }
                     else
                     {
+                        //swap colors
+                        if (!normalColor)
+                            sprite.color = Colors[Type];
+                        else
+                            sprite.color = detonatingColor;
+
+                        normalColor = !normalColor;
+
                         currentFrame = 0;
                     }
                 }
@@ -199,9 +211,25 @@ public class Enemy : MonoBehaviour
 
                 //Bomber type
                 case 2:
-                    if(distanceTo(playerGameObject) <= Radius)
+                    if(distanceTo(playerGameObject) <= Radius && !Detonating)
                     {
                         Detonating = true;
+                    }
+
+                    if (Detonating)
+                    {
+                        if(timePassed < detonationTime)
+                        {
+                            //explode-----------------------------------------------------------------------
+
+                            //make new explosion particles and move them to the location of the enemy
+
+                            //damage place based off of distance from explosion location
+                        }
+                        else
+                        {
+                            timePassed += Time.deltaTime;
+                        }
                     }
                     break;
             }
@@ -222,6 +250,12 @@ public class Enemy : MonoBehaviour
             return new Color(0,0,0); //return black if the color is not found
 
         return Colors[num];
+    }
+
+    public void Colorize()
+    {
+        //Changing the color of the sprite and light of the enemy
+        sprite.color = Colors[Type];
     }
 
     private float distanceTo(GameObject other)

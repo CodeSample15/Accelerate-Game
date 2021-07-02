@@ -72,14 +72,15 @@ public class EnemyController : MonoBehaviour
         float y = Random.Range(PointOne.y, PointTwo.y);
         Vector2 spawnPosition = new Vector2(x, y);
 
-        int t = Random.Range(0, 2); //getting a random enemy type to spawn
+        int t = Random.Range(0, 3); //getting a random enemy type to spawn
 
         Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity)); //create the enemy object
         SpawnParticlesList.Add(Instantiate(spawnParticles, spawnPosition, Quaternion.identity));
 
         //converting the color32 of the enemy color to regular color
         Color enemyColor = Enemies[Enemies.Count - 1].GetComponent<Enemy>().getColor(t);
-        SpawnParticlesList[SpawnParticlesList.Count - 1].startColor = enemyColor;
+        ParticleSystem.MainModule settings = SpawnParticlesList[SpawnParticlesList.Count - 1].main;
+        settings.startColor = enemyColor;
         SpawnParticlesList[SpawnParticlesList.Count - 1].Play();
 
         yield return new WaitForSeconds(0.3f); //letting the particles play before spawning the enemy
@@ -88,6 +89,7 @@ public class EnemyController : MonoBehaviour
         {
             Enemies[Enemies.Count - 1].SetActive(true);
             Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = t;
+            Enemies[Enemies.Count - 1].GetComponent<Enemy>().Colorize();
         }
     }
 
