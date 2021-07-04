@@ -45,11 +45,9 @@ public class Player : MonoBehaviour
     private Vector2 lastDashDir; //for dashing
 
     private Vector3 velocity = Vector3.zero;
-
-    //lists / arrays
-    private List<ParticleSystem> enemyParticles;
     #endregion
 
+    #region public versions of private variables
     public float DashPower
     {
         get { return dashPower; }
@@ -76,6 +74,7 @@ public class Player : MonoBehaviour
     {
         get { return health > 0; }
     }
+    #endregion
 
     // Start is called before the first frame update
     void Awake()
@@ -100,8 +99,6 @@ public class Player : MonoBehaviour
         pointsPerKill = 15;
 
         lastDashDir = new Vector2(0, 1);
-
-        enemyParticles = new List<ParticleSystem>();
     }
 
     // Update is called once per frame
@@ -155,18 +152,6 @@ public class Player : MonoBehaviour
             {
                 //if dashing, subtract the proper amount of dash ability
                 dashPower -= dashDischargeRate * Time.deltaTime;
-            }
-
-
-            //getting rid of any enemy particle systems that aren't active-----------------------
-            for (int i = 0; i < enemyParticles.Count; i++)
-            {
-                if (!enemyParticles[i].IsAlive())
-                {
-                    Destroy(enemyParticles[i].gameObject);
-                    enemyParticles.RemoveAt(i);
-                    i--;
-                }
             }
 
             //handle animations--------------------------------------------------------------------- (Animations)
@@ -288,11 +273,10 @@ public class Player : MonoBehaviour
                 int enemyType = other.gameObject.GetComponent<Enemy>().Type;
                 Color deathParticleColor = other.gameObject.GetComponent<Enemy>().getColor(enemyType);
 
-                //setting the color of the enemy death particles
-                enemyParticles.Add(Instantiate(enemy_death_particles, other.gameObject.transform.position, Quaternion.identity));
-                ParticleSystem.MainModule settings = enemyParticles[enemyParticles.Count - 1].main;
+                //making enemy particles and setting the color of the enemy death particles
+                particleController.AddParticles(Instantiate(enemy_death_particles, other.gameObject.transform.position, Quaternion.identity));
+                ParticleSystem.MainModule settings = particleController.Particles[particleController.Particles.Count - 1].main;
                 settings.startColor = deathParticleColor;
-                enemyParticles[enemyParticles.Count - 1].Play();
 
                 //updating stats
                 score += pointsPerKill;

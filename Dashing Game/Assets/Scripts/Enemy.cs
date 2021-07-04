@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] public Animator PlayerDamageAnimation;
 
     public EnemyController enemyController;
+    public ParticleController particleController;
 
     public List<Color32> Colors;
 
@@ -37,6 +38,7 @@ public class Enemy : MonoBehaviour
     //Bomber
     private float BomberDamage;
     private float Radius;
+    private float BomberDamageDampener;
 
     private bool Detonating;
 
@@ -46,6 +48,7 @@ public class Enemy : MonoBehaviour
 
     private Color32 detonatingColor;
     public ParticleSystem explosionEffect; // belongs in the public variables but it's put here for better organization
+    public CameraShake cameraShake;
 
     private float detonationTime;
     private float timePassed;
@@ -83,8 +86,9 @@ public class Enemy : MonoBehaviour
         ShooterRange = 8f;
 
         //Bomber:
-        BomberDamage = 30; //Damage at the center of the explosion (damage decreases with distance)
-        Radius = 10; //Blast radius
+        BomberDamage = 25; //Damage at the center of the explosion (damage decreases with distance)
+        Radius = 4.3f; //Blast radius
+        BomberDamageDampener = 6; //Controlling how limited the bomber's damage is to the distance of the player
 
         Detonating = false; //Telling the enemy how to move when detonating
 
@@ -94,7 +98,7 @@ public class Enemy : MonoBehaviour
 
         detonatingColor = new Color32(0, 0, 255, 255);
 
-        detonationTime = 0; //How much time it takes for the enemy to explode
+        detonationTime = 2; //How much time it takes for the enemy to explode
         timePassed = 0;
 
         //Ghost:
@@ -145,7 +149,7 @@ public class Enemy : MonoBehaviour
                 //Bomber
                 if (Detonating)
                 {
-                    path.maxSpeed = speed / 3;
+                    path.maxSpeed = speed / 2.4f;
 
                     if(currentFrame < framesPerColorChange)
                     {
@@ -218,13 +222,25 @@ public class Enemy : MonoBehaviour
 
                     if (Detonating)
                     {
-                        if(timePassed < detonationTime)
+                        if(timePassed > detonationTime)
                         {
                             //explode-----------------------------------------------------------------------
 
                             //make new explosion particles and move them to the location of the enemy
+                            particleController.AddParticles(Instantiate(explosionEffect, transform.position, Quaternion.Euler(new Vector3(90,0,0))));
 
                             //damage place based off of distance from explosion location
+                            float damage = Mathf.Clamp(BomberDamage - (distanceTo(playerGameObject) * BomberDamageDampener), 0, BomberDamage); //calculating damage
+
+                            if (damage > 0 && distanceTo(playerGameObject) < Radius/2)
+                            {
+                                PlayerDamageAnimation.SetTrigger("Damage");
+                                playerGameObject.GetComponent<Player>().Health -= damage;
+                            }
+
+                            cameraShake.Shake();
+
+                            Destroy(gameObject); //destroy the bomber
                         }
                         else
                         {

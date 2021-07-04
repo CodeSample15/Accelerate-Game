@@ -9,10 +9,10 @@ public class EnemyController : MonoBehaviour
     [SerializeField] public Vector2 PointTwo;
     public GameObject enemy;
     public ParticleSystem spawnParticles;
+    public ParticleController particleController;
 
     //private
     private List<GameObject> Enemies; //keeping track of the enemies so that they can be killed at the end of the round
-    private List<ParticleSystem> SpawnParticlesList;
 
     private float minTimeUntilNextSpawn;
     private float maxTimeUntilNextSpawn;
@@ -35,7 +35,6 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         Enemies = new List<GameObject>();
-        SpawnParticlesList = new List<ParticleSystem>();
 
         minTimeUntilNextSpawn = 3f;
         maxTimeUntilNextSpawn = 10f;
@@ -72,16 +71,16 @@ public class EnemyController : MonoBehaviour
         float y = Random.Range(PointOne.y, PointTwo.y);
         Vector2 spawnPosition = new Vector2(x, y);
 
-        int t = Random.Range(0, 3); //getting a random enemy type to spawn
+        //int t = Random.Range(0, 3); //getting a random enemy type to spawn
+        int t = 2; //TEMP
 
         Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity)); //create the enemy object
-        SpawnParticlesList.Add(Instantiate(spawnParticles, spawnPosition, Quaternion.identity));
+        particleController.AddParticles(Instantiate(spawnParticles, spawnPosition, Quaternion.identity));
 
         //converting the color32 of the enemy color to regular color
         Color enemyColor = Enemies[Enemies.Count - 1].GetComponent<Enemy>().getColor(t);
-        ParticleSystem.MainModule settings = SpawnParticlesList[SpawnParticlesList.Count - 1].main;
+        ParticleSystem.MainModule settings = particleController.Particles[particleController.Particles.Count - 1].main;
         settings.startColor = enemyColor;
-        SpawnParticlesList[SpawnParticlesList.Count - 1].Play();
 
         yield return new WaitForSeconds(0.3f); //letting the particles play before spawning the enemy
 
@@ -101,17 +100,6 @@ public class EnemyController : MonoBehaviour
             if(Enemies[i].gameObject == null)
             {
                 Enemies.RemoveAt(i);
-                i--;
-            }
-        }
-
-        //looping throught the particles list and deleting non active particles
-        for(int i=0; i<SpawnParticlesList.Count - 1; i++)
-        {
-            if(!SpawnParticlesList[i].IsAlive())
-            {
-                Destroy(SpawnParticlesList[i].gameObject);
-                SpawnParticlesList.RemoveAt(i);
                 i--;
             }
         }
