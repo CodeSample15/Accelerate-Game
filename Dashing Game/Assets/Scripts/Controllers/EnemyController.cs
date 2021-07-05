@@ -25,6 +25,11 @@ public class EnemyController : MonoBehaviour
 
     private bool spawning;
 
+    public List<GameObject> ActiveEnemies
+    {
+        get { return Enemies; }
+    }
+
     public bool Spawning
     {
         get { return spawning; }
@@ -71,8 +76,7 @@ public class EnemyController : MonoBehaviour
         float y = Random.Range(PointOne.y, PointTwo.y);
         Vector2 spawnPosition = new Vector2(x, y);
 
-        //int t = Random.Range(0, 3); //getting a random enemy type to spawn
-        int t = 2; //TEMP
+        int t = Random.Range(0, 3); //getting a random enemy type to spawn
 
         Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity)); //create the enemy object
         particleController.AddParticles(Instantiate(spawnParticles, spawnPosition, Quaternion.identity));
@@ -94,15 +98,25 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
+        //clearDeadEnemies();
+    }
+
+    //public methods
+    public void clearEnemy(int number)
+    {
+        Enemies.RemoveAt(number);
+
+        /*
         //looping through the enemies array to see if any of them are dead, and removing the ones that are
-        for(int i=0; i<Enemies.Count - 1; i++)
+        for (int i = 0; i < Enemies.Count - 1; i++)
         {
-            if(Enemies[i].gameObject == null)
+            if (Enemies[i].gameObject == null)
             {
                 Enemies.RemoveAt(i);
                 i--;
             }
         }
+        */
     }
 
     //private methods

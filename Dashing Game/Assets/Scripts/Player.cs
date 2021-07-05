@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
 
     #region Private Variables
     private Rigidbody2D rb;
+    private Collider2D col;
 
     private float movementSpeed; // how fast the player travels at maximum speed
     private float walkingSpeed; // where the animation will switch from walking to running
@@ -80,6 +81,7 @@ public class Player : MonoBehaviour
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<Collider2D>();
 
         //adjustable variables
         movementSpeed = 6f;
@@ -187,6 +189,9 @@ public class Player : MonoBehaviour
             
             character_animations.SetBool("Falling", rb.velocity.y < -0.1 && !dashing);
             //-------------------------------------------------------------------------------------- (Animations)
+
+            //detect collisions with enemies
+            DetectEnemies();
         }
         else
         {
@@ -262,29 +267,56 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Detecting if the player is touching any enemies and destroying them if the player is dashing
+    /// 
+    /// The script will loop through each active enemy gameobject in the EnemyController's active enemies array to search for collisions between the two gameobjects
+    /// </summary>
+    private void DetectEnemies()
+    {
+        if (dashing)
+        {
+            Collider2D other;
+
+            //looping through each enemy and checking if it is colliding with the player
+            for (int i = 0; i < enemy_controller.ActiveEnemies.Count; i++)
+            {
+                other = enemy_controller.ActiveEnemies[i].GetComponent<Collider2D>();
+
+                if (other.IsTouching(col))
+                {
+
+                    //particle effect
+                    int enemyType = other.gameObject.GetComponent<Enemy>().Type;
+                    Color deathParticleColor = other.gameObject.GetComponent<Enemy>().getColor(enemyType);
+
+                    //making enemy particles and setting the color of the enemy death particles
+                    particleController.AddParticles(Instantiate(enemy_death_particles, other.gameObject.transform.position, Quaternion.identity));
+                    ParticleSystem.MainModule settings = particleController.Particles[particleController.Particles.Count - 1].main;
+                    settings.startColor = deathParticleColor;
+
+                    //updating stats
+                    score += pointsPerKill;
+                    dashPower -= 2;
+
+                    //destroying enemy object
+                    Destroy(other.gameObject);
+
+                    enemy_controller.clearEnemy(i); //clear out the dead enemy from the list
+                    i--;
+                }
+            }
+        }
+    }
+
+    /*
     private void OnCollisionEnter2D(Collision2D other)
     {
         //if the player is dashing into an enemy, destroy that enemy
         if(other.gameObject.CompareTag("Enemy"))
         {
-            if(dashing)
-            {
-                //particle effect
-                int enemyType = other.gameObject.GetComponent<Enemy>().Type;
-                Color deathParticleColor = other.gameObject.GetComponent<Enemy>().getColor(enemyType);
-
-                //making enemy particles and setting the color of the enemy death particles
-                particleController.AddParticles(Instantiate(enemy_death_particles, other.gameObject.transform.position, Quaternion.identity));
-                ParticleSystem.MainModule settings = particleController.Particles[particleController.Particles.Count - 1].main;
-                settings.startColor = deathParticleColor;
-
-                //updating stats
-                score += pointsPerKill;
-                dashPower -= 2;
-
-                //destroying enemy object
-                Destroy(other.gameObject);
-            }
+            
         }
     }
+    */
 }

@@ -149,7 +149,7 @@ public class Enemy : MonoBehaviour
                 //Bomber
                 if (Detonating)
                 {
-                    path.maxSpeed = speed / 2.4f;
+                    path.maxSpeed = speed / 1.6f;
 
                     if(currentFrame < framesPerColorChange)
                     {
@@ -238,7 +238,7 @@ public class Enemy : MonoBehaviour
                                 playerGameObject.GetComponent<Player>().Health -= damage;
                             }
 
-                            cameraShake.Shake();
+                            cameraShake.Shake(); //some visual feedback that an explosion just happened
 
                             Destroy(gameObject); //destroy the bomber
                         }
