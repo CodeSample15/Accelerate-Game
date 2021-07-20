@@ -98,12 +98,21 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        //clearDeadEnemies();
+        //looping through the enemies array to see if any of them are dead, and removing the ones that are
+        for (int i = 0; i < Enemies.Count - 1; i++)
+        {
+            if (Enemies[i].gameObject == null)
+            {
+                Enemies.RemoveAt(i);
+                i--;
+            }
+        }
     }
 
     //public methods
     public void clearEnemy(int number)
     {
+        Destroy(Enemies[number].gameObject);
         Enemies.RemoveAt(number);
 
         /*

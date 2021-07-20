@@ -281,42 +281,30 @@ public class Player : MonoBehaviour
             //looping through each enemy and checking if it is colliding with the player
             for (int i = 0; i < enemy_controller.ActiveEnemies.Count; i++)
             {
-                other = enemy_controller.ActiveEnemies[i].GetComponent<Collider2D>();
-
-                if (other.IsTouching(col))
+                if (enemy_controller.ActiveEnemies[i].gameObject != null)
                 {
+                    other = enemy_controller.ActiveEnemies[i].GetComponent<Collider2D>();
 
-                    //particle effect
-                    int enemyType = other.gameObject.GetComponent<Enemy>().Type;
-                    Color deathParticleColor = other.gameObject.GetComponent<Enemy>().getColor(enemyType);
+                    if (other.IsTouching(col))
+                    {
 
-                    //making enemy particles and setting the color of the enemy death particles
-                    particleController.AddParticles(Instantiate(enemy_death_particles, other.gameObject.transform.position, Quaternion.identity));
-                    ParticleSystem.MainModule settings = particleController.Particles[particleController.Particles.Count - 1].main;
-                    settings.startColor = deathParticleColor;
+                        //particle effect
+                        int enemyType = other.gameObject.GetComponent<Enemy>().Type;
+                        Color deathParticleColor = other.gameObject.GetComponent<Enemy>().getColor(enemyType);
 
-                    //updating stats
-                    score += pointsPerKill;
-                    dashPower -= 2;
+                        //making enemy particles and setting the color of the enemy death particles
+                        particleController.AddParticles(Instantiate(enemy_death_particles, other.gameObject.transform.position, Quaternion.identity));
+                        ParticleSystem.MainModule settings = particleController.Particles[particleController.Particles.Count - 1].main;
+                        settings.startColor = deathParticleColor;
 
-                    //destroying enemy object
-                    Destroy(other.gameObject);
+                        //updating stats
+                        score += pointsPerKill;
 
-                    enemy_controller.clearEnemy(i); //clear out the dead enemy from the list
-                    i--;
+                        enemy_controller.clearEnemy(i); //clear out the dead enemy from the list
+                        i--;
+                    }
                 }
             }
         }
     }
-
-    /*
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        //if the player is dashing into an enemy, destroy that enemy
-        if(other.gameObject.CompareTag("Enemy"))
-        {
-            
-        }
-    }
-    */
 }
