@@ -8,6 +8,8 @@ TagManager:
   - Enemy
   - Ground
   - Bullet
+  - Lava
+  - JumpPad
   layers:
   - Default
   - TransparentFX

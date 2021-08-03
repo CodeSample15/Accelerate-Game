@@ -114,18 +114,6 @@ public class EnemyController : MonoBehaviour
     {
         Destroy(Enemies[number].gameObject);
         Enemies.RemoveAt(number);
-
-        /*
-        //looping through the enemies array to see if any of them are dead, and removing the ones that are
-        for (int i = 0; i < Enemies.Count - 1; i++)
-        {
-            if (Enemies[i].gameObject == null)
-            {
-                Enemies.RemoveAt(i);
-                i--;
-            }
-        }
-        */
     }
 
     //private methods
