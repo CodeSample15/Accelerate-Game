@@ -45,6 +45,8 @@ public class Player : MonoBehaviour
     private Vector2 movement; //for walking / dashing movement
     private Vector2 lastDashDir; //for dashing
 
+    private float feetDistance; //for casting rays from the player's feet rather than the center of the sprite
+
     private Vector3 velocity = Vector3.zero;
     #endregion
 
@@ -99,6 +101,8 @@ public class Player : MonoBehaviour
         dashing = false; 
         score = 0;
         pointsPerKill = 15;
+
+        feetDistance = 0.01f;
 
         lastDashDir = new Vector2(0, 1);
     }
@@ -206,6 +210,9 @@ public class Player : MonoBehaviour
 
         scoreText.text = score.ToString();
         //--------------------------------------------
+
+        Debug.DrawRay(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), Color.red, 0.1f);
+        Debug.DrawRay(transform.position, transform.TransformDirection(Vector2.down), Color.green, 1f);
     }
 
     private void FixedUpdate()
@@ -259,9 +266,19 @@ public class Player : MonoBehaviour
     public void jump()
     {
         if (!dashing) {
+            //check if the player is on a slope for a different jump animation (flipping)
+            RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.1f);
+            RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.1f);
+
             if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f))
             {
                 character_animations.SetTrigger("Jump");
+                rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            }
+            else if (right.collider.CompareTag("Ground") || left.collider.CompareTag("Ground"))
+            {
+                //player is on a slope, do a different animation
+
                 rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             }
         }
