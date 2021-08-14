@@ -29,7 +29,7 @@ public class PlayerFollow : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         float xDistance;
         float yDistance;

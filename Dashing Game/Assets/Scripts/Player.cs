@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class Player : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class Player : MonoBehaviour
     public GameObject         particle_holder;
     public ParticleSystem     enemy_death_particles;
     public ParticleController particleController;
+    public ParticleSystem     death_effect;
+    public Light2D            dash_light;
     #endregion
 
     #region Private Variables
@@ -200,7 +203,9 @@ public class Player : MonoBehaviour
         else
         {
             //If the player is dead:
-            transform.position = Vector2.zero;
+            death_effect.gameObject.transform.position = new Vector2(transform.position.x, transform.position.y);
+            death_effect.Play();
+            gameObject.SetActive(false); //"kill" the player
             enemy_controller.Spawning = false;
         }
 
@@ -211,8 +216,8 @@ public class Player : MonoBehaviour
         scoreText.text = score.ToString();
         //--------------------------------------------
 
-        Debug.DrawRay(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), Color.red, 0.1f);
-        Debug.DrawRay(transform.position, transform.TransformDirection(Vector2.down), Color.green, 1f);
+        //Debug.DrawRay(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), Color.red, 0.1f);
+        //Debug.DrawRay(transform.position, transform.TransformDirection(Vector2.down), Color.green, 1f);
     }
 
     private void FixedUpdate()
@@ -231,6 +236,9 @@ public class Player : MonoBehaviour
 
             //hiding the particles
             dash_particles.Stop();
+
+            //turning off the dash lights
+            dash_light.enabled = false;
         }
         else
         {
@@ -257,8 +265,12 @@ public class Player : MonoBehaviour
             if (!dash_particles.isPlaying)
                 dash_particles.Play();
 
+            //aligning the particles to face the direction the player is moving
             particle_holder.transform.rotation = Quaternion.FromToRotation(Vector3.right, (Vector2)targetVelocity.normalized);
             particle_holder.transform.Rotate(0, 0, -90);
+
+            //turning on the dash light
+            dash_light.enabled = true;
         }
     }
 
@@ -270,17 +282,31 @@ public class Player : MonoBehaviour
             RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.1f);
             RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.1f);
 
-            if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f))
+            bool rightCol = false;
+            bool leftCol = false;
+
+            if (right.collider != null)
+                if (right.collider.CompareTag("Ground"))
+                    rightCol = true;
+            if (left.collider != null)
+                if (left.collider.CompareTag("Ground"))
+                    leftCol = true;
+
+            if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f) || rightCol || leftCol)
             {
                 character_animations.SetTrigger("Jump");
                 rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             }
-            else if (right.collider.CompareTag("Ground") || left.collider.CompareTag("Ground"))
+            /* // Other animation code for side jumps:
+            else if (right.collider != null || left.collider != null)
             {
+                if(right.collider.CompareTag("Ground") || left.collider.CompareTag("Ground"))
                 //player is on a slope, do a different animation
+                character_animations.SetTrigger("Flip");
 
                 rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             }
+            */
         }
     }
 
@@ -338,5 +364,8 @@ public class Player : MonoBehaviour
                 rb.AddForce(transform.up * jumpBoost, ForceMode2D.Impulse);
             }
         }
+
+        if (col.gameObject.CompareTag("Lava"))
+            health = 0; //kill the player
     }
 }
