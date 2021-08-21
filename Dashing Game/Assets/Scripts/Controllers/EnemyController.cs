@@ -109,7 +109,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    //public methods
+    //public method
     public void clearEnemy(int number)
     {
         Destroy(Enemies[number].gameObject);

@@ -6,9 +6,10 @@ using UnityEngine;
 public class ZoomFillBox : MonoBehaviour
 {
     [SerializeField] public Player player;
-    [SerializeField] public ParticleSystem particleSystem;
     [SerializeField] public float refillTime;
     [SerializeField] public int refillAmount;
+
+    private ParticleSystem particleSystem;
 
     private bool refilled;
     private float timeSinceLastRefill;
@@ -20,6 +21,8 @@ public class ZoomFillBox : MonoBehaviour
 
     void Awake()
     {
+        particleSystem = GetComponentInChildren<ParticleSystem>();
+
         refilled = false;
         timeSinceLastRefill = 0f;
     }
@@ -42,7 +45,7 @@ public class ZoomFillBox : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            if (refilled)
+            if (refilled && player.GetComponent<Player>().DashPower != 100)
             {
                 timeSinceLastRefill = 0f;
 

@@ -6,12 +6,13 @@ using TMPro;
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class ZoomFillBoxRefillCounter : MonoBehaviour
 {
-    [SerializeField] public ZoomFillBox fillbox;
-
+    //[SerializeField] public ZoomFillBox fillbox;
+    private ZoomFillBox fillbox;
     private TextMeshProUGUI text;
 
     void Start()
     {
+        fillbox = GetComponentInParent<ZoomFillBox>();
         text = GetComponent<TextMeshProUGUI>();
     }
 

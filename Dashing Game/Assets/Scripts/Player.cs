@@ -23,6 +23,8 @@ public class Player : MonoBehaviour
     public ParticleController particleController;
     public ParticleSystem     death_effect;
     public Light2D            dash_light;
+    public Animator           menu_animations;
+    public GameObject         score_gameobject;
     #endregion
 
     #region Private Variables
@@ -32,11 +34,15 @@ public class Player : MonoBehaviour
     private float movementSpeed; // how fast the player travels at maximum speed
     private float walkingSpeed; // where the animation will switch from walking to running
     private float dashSpeed; // how fast the player travels when dashing
-    private float jumpForce;
-    private int minDashPower;
-    private float dashRechargeRate;
-    private float dashDischargeRate;
-    private int enemyDamage;
+    private float jumpForce; // how much force is applied to the character when it jumps
+    private int minDashPower; // the minimum amount of dash power in the dash bar allowed for the user to dash
+    private float dashRechargeRate; // how fast the dash bar refills
+    private float dashDischargeRate; // how fast the dash bar empties when the player dashes
+    private float scoreAnimationSpeed;
+    private float scoreNormalSize;
+    private float scoreGrowSize;
+    private float scoreShrinkSpeed;
+    private float scoreGrowSpeed;
 
     private float health;
     private float dashPower;
@@ -96,7 +102,12 @@ public class Player : MonoBehaviour
         minDashPower = 20;
         dashRechargeRate = 3.2f;
         dashDischargeRate = 35f;
-        enemyDamage = 5;
+
+        scoreAnimationSpeed = 0.04f;
+        scoreNormalSize = score_gameobject.transform.localScale.x;
+        scoreGrowSize = 0.55f;
+        scoreShrinkSpeed = 0.009f;
+        scoreGrowSpeed = 0.06f;
 
         //fixed variables for things like health and the amount of dash ability left
         health = 100f;
@@ -167,6 +178,9 @@ public class Player : MonoBehaviour
             //set the speed of the running animation
             character_animations.SetFloat("RunSpeed", movement.x);
 
+            //Tell the character to go into dashing animation
+            character_animations.SetBool("Dashing", dashing);
+
             if (Mathf.Abs(movement.x) > 0)
                 character_animations.SetBool("Running", !character_animations.GetBool("Falling"));
             else
@@ -182,7 +196,7 @@ public class Player : MonoBehaviour
             {
                 character_animations.SetBool("Walking", false);
             }
-
+            
             if(movement.x < 0)
             {
                 //character is running to the left
@@ -205,19 +219,21 @@ public class Player : MonoBehaviour
             //If the player is dead:
             death_effect.gameObject.transform.position = new Vector2(transform.position.x, transform.position.y);
             death_effect.Play();
-            gameObject.SetActive(false); //"kill" the player
             enemy_controller.Spawning = false;
+
+            //fade in a black screen
+            menu_animations.SetTrigger("FadeIn");
+
+            gameObject.SetActive(false); //"kill" the player
         }
 
         //update UI-----------------------------------
         health_bar.value = health / 100;
         dash_meter.value = dashPower / 100;
 
-        scoreText.text = score.ToString();
+        UpdateScoreSize();
+        scoreText.text = "Score: " + score.ToString();
         //--------------------------------------------
-
-        //Debug.DrawRay(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), Color.red, 0.1f);
-        //Debug.DrawRay(transform.position, transform.TransformDirection(Vector2.down), Color.green, 1f);
     }
 
     private void FixedUpdate()
@@ -341,13 +357,52 @@ public class Player : MonoBehaviour
                         settings.startColor = deathParticleColor;
 
                         //updating stats
-                        score += pointsPerKill;
+                        StartCoroutine(animateScore(score + pointsPerKill));
 
                         enemy_controller.clearEnemy(i); //clear out the dead enemy from the list
                         i--;
                     }
                 }
             }
+        }
+    }
+
+    IEnumerator animateScore(int newScore)
+    {
+        if(newScore > score)
+        {
+            //animate
+            while(score < newScore)
+            {
+                score += 1;
+
+                if(score_gameobject.transform.localScale.x < scoreGrowSize + scoreNormalSize)
+                {
+                    float newScoreSize = score_gameobject.transform.localScale.x + scoreGrowSpeed;
+
+                    score_gameobject.transform.localScale = new Vector2(newScoreSize, newScoreSize);
+                }
+
+                yield return new WaitForSeconds(scoreAnimationSpeed);
+            }
+        }
+
+        yield return new WaitForSeconds(0);
+    }
+
+    /*
+     * Method to update score size
+     * This is used for animating the score display whenever the user gets additional points
+    */
+    private void UpdateScoreSize()
+    {
+        if(score_gameobject.transform.localScale.x > scoreNormalSize)
+        {
+            score_gameobject.transform.localScale = new Vector2(score_gameobject.transform.localScale.x - scoreShrinkSpeed, score_gameobject.transform.localScale.y - scoreShrinkSpeed);
+        }
+        else
+        {
+            score_gameobject.transform.localScale = new Vector2(scoreNormalSize, scoreNormalSize);
         }
     }
 
