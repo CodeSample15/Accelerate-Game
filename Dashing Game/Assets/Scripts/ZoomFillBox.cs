@@ -7,7 +7,6 @@ public class ZoomFillBox : MonoBehaviour
 {
     [SerializeField] public Player player;
     [SerializeField] public float refillTime;
-    [SerializeField] public int refillAmount;
 
     private ParticleSystem particleSystem;
 
