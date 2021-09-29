@@ -25,8 +25,9 @@ public class Player : MonoBehaviour
     public Light2D            dash_light;
     public Animator           menu_animations;
     public GameObject         score_gameobject;
+    public Animator           score_animation;
     #endregion
-
+    
     #region Private Variables
     private Rigidbody2D rb;
     private Collider2D col;
@@ -208,7 +209,7 @@ public class Player : MonoBehaviour
                 transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
             }
             
-            character_animations.SetBool("Falling", rb.velocity.y < -0.1 && !dashing);
+            character_animations.SetBool("Falling", rb.velocity.y < -0.8f && !dashing);
             //-------------------------------------------------------------------------------------- (Animations)
 
             //detect collisions with enemies
@@ -223,6 +224,7 @@ public class Player : MonoBehaviour
 
             //fade in a black screen
             menu_animations.SetTrigger("FadeIn");
+            score_animation.SetTrigger("Move");
 
             gameObject.SetActive(false); //"kill" the player
         }
@@ -295,8 +297,8 @@ public class Player : MonoBehaviour
     {
         if (!dashing) {
             //check if the player is on a slope for a different jump animation (flipping)
-            RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.1f);
-            RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.1f);
+            RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.15f);
+            RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.15f);
 
             bool rightCol = false;
             bool leftCol = false;

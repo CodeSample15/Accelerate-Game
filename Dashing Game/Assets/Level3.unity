@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -31069,7 +31069,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-51024
+  m_Name: pb_Mesh-99596
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -31363,6 +31363,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -63.962997
       objectReference: {fileID: 0}
+    - target: {fileID: 8099932483754514856, guid: 1179389a9652efc489c745ae80ae9854,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 1296887084}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1179389a9652efc489c745ae80ae9854, type: 3}
 --- !u!1 &889364546 stripped
@@ -31431,6 +31436,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45977bbae16431c46a013576a1aea384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &889364553 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9167064809143688167, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 889364545}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1016797140
 GameObject:
   m_ObjectHideFlags: 0
@@ -36589,7 +36600,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1114150339}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 17.53, z: -25.11}
+  m_LocalPosition: {x: -122.4, y: 95.3, z: -25.11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -36998,6 +37009,7 @@ MonoBehaviour:
   dash_light: {fileID: 149811345}
   menu_animations: {fileID: 889364547}
   score_gameobject: {fileID: 889364546}
+  score_animation: {fileID: 889364553}
 --- !u!4 &1296887086
 Transform:
   m_ObjectHideFlags: 0
@@ -37300,8 +37312,13 @@ PrefabInstance:
       objectReference: {fileID: 825123163}
     - target: {fileID: 7123194734940503886, guid: d30b12e44ec4e8b49b27a8e8d8b9b856,
         type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 121.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7123194734940503886, guid: d30b12e44ec4e8b49b27a8e8d8b9b856,
+        type: 3}
       propertyPath: m_LocalPosition.y
-      value: -23.5
+      value: -25.55
       objectReference: {fileID: 0}
     - target: {fileID: 7123194735391447152, guid: d30b12e44ec4e8b49b27a8e8d8b9b856,
         type: 3}
