@@ -22,15 +22,22 @@ public class MenuLogic : MonoBehaviour
     /// </summary>
     public void Play()
     {
-        int nextLevel = Random.Range(0, NumberOfStages-1);
+        int nextLevel = Random.Range(1, NumberOfStages-1);
 
         StartCoroutine(loadScene(nextLevel));
+    }
+
+    public void Play(int levelNum)
+    {
+        StartCoroutine(loadScene(levelNum));
     }
 
     private IEnumerator loadScene(int sceneNum)
     {
         //move the player off the level and load the next level
-        player.transform.position = PlayerMovePosition;
+        if(player != null)
+            player.transform.position = PlayerMovePosition;
+
         FadeAnimation.SetTrigger("Fade"); //start the black fade animation
 
         yield return new WaitForSeconds(AnimationDelay);
