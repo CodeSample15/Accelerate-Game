@@ -672,7 +672,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -45.1, y: -243.72}
+  m_AnchoredPosition: {x: -61, y: -243.72}
   m_SizeDelta: {x: 32.750896, y: 34.543346}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &705004722
@@ -977,7 +977,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 48.78, y: -244.37}
+  m_AnchoredPosition: {x: 65, y: -244.37}
   m_SizeDelta: {x: 32.739037, y: 33.23419}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &873111923
@@ -1480,8 +1480,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 104, y: 0}
-  m_SizeDelta: {x: 202.9036, y: 0}
+  m_AnchoredPosition: {x: 126.3, y: 0}
+  m_SizeDelta: {x: 247.60037, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1914953737
 MonoBehaviour:
@@ -1668,6 +1668,6 @@ MonoBehaviour:
   m_ShapeLightFalloffOffset: {x: 0, y: 0}
   m_ShapePath:
   - {x: -10.85618, y: -1.3339331, z: 0}
-  - {x: 11.295002, y: -1.1583678, z: 0}
-  - {x: 11.514412, y: 1.3339322, z: 0}
+  - {x: 10.818123, y: -1.1583678, z: 0}
+  - {x: 11.09096, y: 1.4730904, z: 0}
   - {x: -9.9785385, y: 1.597279, z: 0}
