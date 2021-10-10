@@ -522,10 +522,10 @@ RectTransform:
   m_Father: {fileID: 1305118288}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -415, y: -220}
-  m_SizeDelta: {x: 113.562, y: 113.562}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 89, y: 80}
+  m_SizeDelta: {x: 113.56201, y: 113.562}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &548429633
 MonoBehaviour:
@@ -560,11 +560,11 @@ MonoBehaviour:
     m_SelectedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: 
+    m_NormalTrigger: Empty
+    m_HighlightedTrigger: Empty
     m_PressedTrigger: Pressed
-    m_SelectedTrigger: 
-    m_DisabledTrigger: 
+    m_SelectedTrigger: Empty
+    m_DisabledTrigger: Empty
   m_Interactable: 1
   m_TargetGraphic: {fileID: 548429634}
   m_OnClick:
@@ -939,7 +939,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -35, y: 309}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &873111921
