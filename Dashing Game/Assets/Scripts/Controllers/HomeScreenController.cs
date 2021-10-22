@@ -34,7 +34,7 @@ public class HomeScreenController : MonoBehaviour
     void Update()
     {
         float menuPosition = Menu.transform.position.x;
-        Debug.Log(menuPosition);
+        //Debug.Log(menuPosition);
         if (MenuShowing)
         {
             if (menuPosition > 6.27f)

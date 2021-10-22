@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
 {
     #region Public Variables
     public Animator           character_animations;
-    public EnemyController    enemy_controller;
+    public WaveController     enemy_controller;
     public Joystick           joystick;
     public Slider             health_bar;
     public Slider             dash_meter;

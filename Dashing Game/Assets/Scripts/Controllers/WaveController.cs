@@ -24,6 +24,7 @@ public class WaveController : MonoBehaviour
     [Header("Enemy spawning")]
     public int GreenEnemyWave = 5; //five waves for the green enemies to start spawning
     public int BlueEnemyWave = 10; //ten waves for the blue enemies to start spawning
+    public int GhostEnemyWave = 15; //fifteeen waves for the ghost enemies to start spawning
 
     public bool spawning; //for other scripts to stop or start the spawning process
 
@@ -39,20 +40,37 @@ public class WaveController : MonoBehaviour
 
     //how many enemies are left to spawn in
     private int enemiesToSpawn;
+    private int enemiesSpawned; //how many enemies are in the wave
 
     private int wave; //current wave
 
+    public List<GameObject> ActiveEnemies
+    {
+        get { return Enemies; }
+    }
+
+    public bool Spawning
+    {
+        get { return spawning; }
+        set { spawning = value; }
+    }
+
     void Awake()
     {
+        Enemies = new List<GameObject>();
+        spawning = true;
+
         startEnemyCount = 3;
-        enemyIncreasePerWave = 3;
+        enemyIncreasePerWave = 2;
+        enemiesSpawned = 0;
         timeSinceLastEnemySpawn = 0f;
         wave = 1;
 
         enemiesToSpawn = startEnemyCount;
 
-        GreenEnemyWave = 5;
-        BlueEnemyWave = 10;
+        GreenEnemyWave = 3;
+        BlueEnemyWave = 5;
+        GhostEnemyWave = 10;
     }
 
     void Start()
@@ -64,42 +82,62 @@ public class WaveController : MonoBehaviour
 
     void Update()
     {
-        //detecting if it's time to spawn yet or not
-        if(timeSinceLastEnemySpawn >= timePerEnemySpawn)
+        if (player.GetComponent<Player>().isAlive)
         {
-            if (enemiesToSpawn > 0) //making sure the wave is not over
+            //looping through the enemies array to see if any of them are dead, and removing the ones that are
+            for (int i = 0; i < Enemies.Count; i++)
             {
-                timeSinceLastEnemySpawn = 0;
-                StartCoroutine(spawnNewEnemy());
+                if (Enemies[i].gameObject == null)
+                {
+                    Enemies.RemoveAt(i);
+                    i--;
+                }
+            }
+
+            //detecting if it's time to spawn yet or not
+            if (timeSinceLastEnemySpawn >= timePerEnemySpawn)
+            {
+                if (enemiesSpawned < enemiesToSpawn) //making sure the wave is not over
+                {
+                    timeSinceLastEnemySpawn = 0;
+                    StartCoroutine(spawnNewEnemy());
+                }
+                else
+                {
+                    //wait until the player has killed all of the enemies in the wave
+                    if (Enemies.Count == 0)
+                    {
+                        //start a new wave
+                        enemiesSpawned = 0;
+                        timeSinceLastEnemySpawn = 0; //just some more wait time when a new wave starts
+                        wave++;
+                        enemiesToSpawn += enemyIncreasePerWave;
+
+                        //play animations and stuff
+                        waveText.SetText("Next wave: " + wave.ToString());
+                        StartCoroutine(animateWaveText());
+                    }
+                }
             }
             else
             {
-                //start a new wave
-                timeSinceLastEnemySpawn = 0; //just some more wait time
-                wave++;
-                enemiesToSpawn += enemyIncreasePerWave;
-
-                //play animations and stuff
-                waveText.SetText("Wave Completed!\nWave: " + wave.ToString());
-                StartCoroutine(animateWaveText());
+                timeSinceLastEnemySpawn += Time.deltaTime;
             }
         }
         else
         {
-            timeSinceLastEnemySpawn += Time.deltaTime;
+            waveText.SetText(""); //clear the text
         }
     }
 
     IEnumerator spawnNewEnemy()
     {
         //spawning a new enemy in a random position----------------------------------------------------------
-        float x;
-        float y;
-        do
-        {
-            x = Random.Range(player.transform.position.x + SpawnRadius, player.transform.position.x - SpawnRadius);
-            y = Random.Range(player.transform.position.y + SpawnRadius, player.transform.position.y - SpawnRadius);
-        } while (x < PointOne.x || x > PointTwo.x || y > PointOne.y || y < PointTwo.y); //making sure the enemy spawns in level and the player can actually kill it
+        Vector2 topLeftBound = new Vector2(player.transform.position.x - SpawnRadius, player.transform.position.y + SpawnRadius);
+        Vector2 bottomRightBound = new Vector2(player.transform.position.x + SpawnRadius, player.transform.position.y - SpawnRadius);
+
+        float x = Random.Range(Mathf.Max(PointOne.x, topLeftBound.x), Mathf.Min(PointTwo.x, bottomRightBound.x));
+        float y = Random.Range(Mathf.Min(PointOne.y, topLeftBound.y), Mathf.Max(PointTwo.y, bottomRightBound.y));
 
         Vector2 spawnPosition = new Vector2(x, y);
 
@@ -108,6 +146,8 @@ public class WaveController : MonoBehaviour
         if (wave >= GreenEnemyWave)
             maxEnemy++;
         if (wave >= BlueEnemyWave)
+            maxEnemy++;
+        if (wave >= GhostEnemyWave)
             maxEnemy++;
 
         int t = Random.Range(0, maxEnemy); //getting a random enemy type to spawn
@@ -128,7 +168,7 @@ public class WaveController : MonoBehaviour
             Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = t;
             Enemies[Enemies.Count - 1].GetComponent<Enemy>().Colorize();
 
-            enemiesToSpawn--; //update the wave status
+            enemiesSpawned++; //update the wave status
         }
     }
 
@@ -137,12 +177,20 @@ public class WaveController : MonoBehaviour
         //start the animation
         waveTextAnimation.SetTrigger("Show");
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
 
         //hide the text
         waveTextAnimation.SetTrigger("Hide");
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.5f);
         waveText.SetText("");
+    }
+
+
+    //public method for killing an enemy
+    public void clearEnemy(int number)
+    {
+        Destroy(Enemies[number].gameObject);
+        Enemies.RemoveAt(number);
     }
 }

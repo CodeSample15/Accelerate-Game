@@ -25610,7 +25610,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 575643492}
-  - component: {fileID: 575643491}
+  - component: {fileID: 575643493}
   m_Layer: 0
   m_Name: Enemy Controller
   m_TagString: Untagged
@@ -25618,23 +25618,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &575643491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 575643490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bb0856f604716848b2aea54b7e04485, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PointOne: {x: -102, y: 72}
-  PointTwo: {x: 101, y: -22}
-  enemy: {fileID: 1784521450}
-  spawnParticles: {fileID: 247955910}
-  particleController: {fileID: 487436370}
 --- !u!4 &575643492
 Transform:
   m_ObjectHideFlags: 0
@@ -25649,6 +25632,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &575643493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 575643490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece650651c4609b4188637ec6289ba5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1296887084}
+  PointOne: {x: -102, y: 72}
+  PointTwo: {x: 101, y: -22}
+  SpawnRadius: 50
+  enemy: {fileID: 1784521450}
+  spawnParticles: {fileID: 247955910}
+  particleController: {fileID: 487436370}
+  waveText: {fileID: 889364555}
+  waveTextAnimation: {fileID: 889364554}
+  GreenEnemyWave: 5
+  BlueEnemyWave: 10
+  spawning: 0
 --- !u!1 &592778743
 GameObject:
   m_ObjectHideFlags: 0
@@ -31452,6 +31459,24 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 889364545}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &889364554 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6574996411139581137, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 889364545}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &889364555 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6389231509697340874, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 889364545}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1016797140
 GameObject:
   m_ObjectHideFlags: 0
@@ -37004,7 +37029,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character_animations: {fileID: 1296887087}
-  enemy_controller: {fileID: 575643491}
+  enemy_controller: {fileID: 575643493}
   joystick: {fileID: 889364552}
   health_bar: {fileID: 889364551}
   dash_meter: {fileID: 889364550}
@@ -38210,7 +38235,7 @@ PrefabInstance:
         type: 3}
       propertyPath: enemyController
       value: 
-      objectReference: {fileID: 575643491}
+      objectReference: {fileID: 575643493}
     - target: {fileID: 3723053849466432770, guid: 298dcc7c61ee5ca49a02d9fccef77bab,
         type: 3}
       propertyPath: explosionEffect

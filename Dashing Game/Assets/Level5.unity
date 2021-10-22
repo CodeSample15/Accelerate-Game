@@ -7130,7 +7130,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character_animations: {fileID: 732419005}
-  enemy_controller: {fileID: 1273682040}
+  enemy_controller: {fileID: 1273682042}
   joystick: {fileID: 1887494366}
   health_bar: {fileID: 1887494365}
   dash_meter: {fileID: 1887494364}
@@ -18339,6 +18339,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1273682041}
   - component: {fileID: 1273682040}
+  - component: {fileID: 1273682042}
   m_Layer: 0
   m_Name: Enemy Controller
   m_TagString: Untagged
@@ -18377,6 +18378,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1273682042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1273682039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece650651c4609b4188637ec6289ba5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 732419002}
+  PointOne: {x: -100, y: 69}
+  PointTwo: {x: 103, y: -21}
+  SpawnRadius: 50
+  enemy: {fileID: 1705163993}
+  spawnParticles: {fileID: 1294793782}
+  particleController: {fileID: 1297847682}
+  waveText: {fileID: 1887494369}
+  waveTextAnimation: {fileID: 1887494368}
+  GreenEnemyWave: 5
+  BlueEnemyWave: 10
+  spawning: 0
 --- !u!1 &1291358755
 GameObject:
   m_ObjectHideFlags: 0
@@ -29361,7 +29386,7 @@ PrefabInstance:
         type: 3}
       propertyPath: enemyController
       value: 
-      objectReference: {fileID: 1273682040}
+      objectReference: {fileID: 1273682042}
     - target: {fileID: 3723053849466432770, guid: 298dcc7c61ee5ca49a02d9fccef77bab,
         type: 3}
       propertyPath: explosionEffect
@@ -29989,6 +30014,24 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 1887494359}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &1887494368 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6574996411139581137, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 1887494359}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1887494369 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6389231509697340874, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 1887494359}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1931359646
 PrefabInstance:
   m_ObjectHideFlags: 0

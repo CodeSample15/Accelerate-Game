@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] public GameObject playerGameObject;
     [SerializeField] public Animator PlayerDamageAnimation;
 
-    public EnemyController enemyController;
+    public WaveController enemyController;
     public ParticleController particleController;
 
     public List<Color32> Colors;
@@ -22,7 +22,6 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     private AIPath path;
     private SpriteRenderer sprite;
-
 
     #region Enemy Data
     //Melee
@@ -55,7 +54,7 @@ public class Enemy : MonoBehaviour
 
     //Ghost
     private float GhostDamage;
-    private float GhostAttackSpeed;
+    private float GhostPossessionRange;
     #endregion
 
     private float AttackSpeed;
@@ -102,8 +101,8 @@ public class Enemy : MonoBehaviour
         timePassed = 0;
 
         //Ghost:
-        GhostDamage = 1;
-        GhostAttackSpeed = 0.1f;
+        GhostDamage = 5;
+        GhostPossessionRange = 0.2f;
 
         InRange = false;
         #endregion
@@ -130,18 +129,24 @@ public class Enemy : MonoBehaviour
 
             case 1:
                 //Shooter
-                AttackSpeed = ShooterAttackSpeed;
-                projectileSpeed = 5f;
+                {
+                    AttackSpeed = ShooterAttackSpeed;
+                    projectileSpeed = 5f;
 
-                if(distanceTo(playerGameObject) < ShooterRange)
-                {
-                    path.maxSpeed = 0;
-                    InRange = true;
-                }
-                else
-                {
-                    path.maxSpeed = speed;
-                    InRange = false;
+                    //calculate if the player is in the enemy's line of sight
+                    Vector3 dir = (transform.position - player.transform.position).normalized * -1;
+                    RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, distanceTo(playerGameObject) - 1f);
+
+                    if (distanceTo(playerGameObject) < ShooterRange && hit.collider == null)
+                    {
+                        path.maxSpeed = 0;
+                        InRange = true;
+                    }
+                    else
+                    {
+                        path.maxSpeed = speed;
+                        InRange = false;
+                    }
                 }
                 break;
 
@@ -174,10 +179,20 @@ public class Enemy : MonoBehaviour
                 }
 
                 break;
+
+            case 3:
+                //ghost
+                {
+                    path.maxSpeed = 0;
+
+                    Vector3 dir = (player.transform.position - transform.position).normalized;
+                    transform.Translate(dir * speed * Time.deltaTime);
+                }
+                break;
         }
 
         //Attacking-----------------------------------------------------------------------------------------------------
-        if(timeSinceLastAttack >= AttackSpeed)
+        if(timeSinceLastAttack >= AttackSpeed || Type == 3) //will always attack if the enemy is a ghost
         {
             //Attack
             switch (Type)
@@ -193,6 +208,10 @@ public class Enemy : MonoBehaviour
                         playerGameObject.GetComponent<Player>().Health -= MeleeDamage;
 
                         timeSinceLastAttack = 0f; //attacked, so the cooldown restarts
+                    }
+                    else
+                    {
+                        timeSinceLastAttack = AttackSpeed - 0.5f;
                     }
 
                     break;
@@ -213,7 +232,7 @@ public class Enemy : MonoBehaviour
                     }
                     break;
 
-                //Bomber type
+                //bomber type
                 case 2:
                     if(distanceTo(playerGameObject) <= Radius && !Detonating)
                     {
@@ -246,6 +265,17 @@ public class Enemy : MonoBehaviour
                         {
                             timePassed += Time.deltaTime;
                         }
+                    }
+                    break;
+
+                //ghost type
+                case 3:
+                    if(distanceTo(playerGameObject) < GhostPossessionRange && !player.isDashing)
+                    {
+                        PlayerDamageAnimation.SetTrigger("Damage");
+                        playerGameObject.GetComponent<Player>().Health -= GhostDamage;
+
+                        Destroy(gameObject);
                     }
                     break;
             }
@@ -304,5 +334,14 @@ public class Enemy : MonoBehaviour
     {
         Collider2D col = gameObject.GetComponent<Collider2D>();
         return col.IsTouching(target);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        //if the enemy type is a ghost, ignore collisions from walls
+        if(Type == 3)
+        {
+            Physics2D.IgnoreCollision(other.collider, GetComponent<Collider2D>());
+        }
     }
 }

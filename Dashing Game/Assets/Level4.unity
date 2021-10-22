@@ -5676,6 +5676,24 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 211961070}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &211961079 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6574996411139581137, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 211961070}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &211961080 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6389231509697340874, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 211961070}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &229460737
 GameObject:
   m_ObjectHideFlags: 0
@@ -11162,7 +11180,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-9542
+  m_Name: pb_Mesh-27122
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11425,7 +11443,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-9540
+  m_Name: pb_Mesh-27120
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -21784,7 +21802,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-9538
+  m_Name: pb_Mesh-27118
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -22034,7 +22052,7 @@ PrefabInstance:
         type: 3}
       propertyPath: enemyController
       value: 
-      objectReference: {fileID: 1142976480}
+      objectReference: {fileID: 1142976482}
     - target: {fileID: 3723053849466432770, guid: 298dcc7c61ee5ca49a02d9fccef77bab,
         type: 3}
       propertyPath: explosionEffect
@@ -22602,7 +22620,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   character_animations: {fileID: 977481362}
-  enemy_controller: {fileID: 1142976480}
+  enemy_controller: {fileID: 1142976482}
   joystick: {fileID: 211961077}
   health_bar: {fileID: 211961076}
   dash_meter: {fileID: 211961075}
@@ -22952,7 +22970,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1142976481}
-  - component: {fileID: 1142976480}
+  - component: {fileID: 1142976482}
   m_Layer: 0
   m_Name: Enemy Controller
   m_TagString: Untagged
@@ -22960,23 +22978,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1142976480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1142976479}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bb0856f604716848b2aea54b7e04485, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PointOne: {x: -97, y: 73}
-  PointTwo: {x: 100, y: -22}
-  enemy: {fileID: 789810315}
-  spawnParticles: {fileID: 1671871019}
-  particleController: {fileID: 479024865}
 --- !u!4 &1142976481
 Transform:
   m_ObjectHideFlags: 0
@@ -22991,6 +22992,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1142976482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142976479}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece650651c4609b4188637ec6289ba5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 977481359}
+  PointOne: {x: -97, y: 73}
+  PointTwo: {x: 100, y: -22}
+  SpawnRadius: 50
+  enemy: {fileID: 789810315}
+  spawnParticles: {fileID: 1671871019}
+  particleController: {fileID: 479024865}
+  waveText: {fileID: 211961080}
+  waveTextAnimation: {fileID: 211961079}
+  GreenEnemyWave: 5
+  BlueEnemyWave: 10
+  spawning: 0
 --- !u!1 &1198045384
 GameObject:
   m_ObjectHideFlags: 0
@@ -28863,7 +28888,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-9544
+  m_Name: pb_Mesh-27124
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
