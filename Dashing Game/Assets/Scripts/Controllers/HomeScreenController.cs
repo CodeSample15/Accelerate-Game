@@ -28,22 +28,26 @@ public class HomeScreenController : MonoBehaviour
         MusicVolume = true; //same with this one
 
         MenuShowing = false;
-        MenuSpeed = 5.5f;
+        MenuSpeed = 4.1f;
     }
 
     void Update()
     {
-        float menuPosition = Menu.transform.position.x;
-        //Debug.Log(menuPosition);
+        Vector2 menuPosition = Menu.GetComponent<RectTransform>().anchoredPosition;
+
         if (MenuShowing)
         {
-            if (menuPosition > 6.27f)
-                Menu.transform.Translate(Vector2.left * MenuSpeed * Time.deltaTime);
+            if (menuPosition.x > -123.8f)
+            {
+                Menu.GetComponent<RectTransform>().anchoredPosition = new Vector2((menuPosition.x - MenuSpeed), menuPosition.y);
+            }
         }
         else
         {
-            if (menuPosition < 10.39667f)
-                Menu.transform.Translate(Vector2.right * MenuSpeed * Time.deltaTime);
+            if (menuPosition.x < 126.3f)
+            {
+                Menu.GetComponent<RectTransform>().anchoredPosition = new Vector2((menuPosition.x + MenuSpeed), menuPosition.y);
+            }
         }
     }
 

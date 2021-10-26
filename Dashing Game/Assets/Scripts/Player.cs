@@ -131,10 +131,27 @@ public class Player : MonoBehaviour
             movement.x = joystick.Horizontal;
             movement.y = joystick.Vertical;
 
+            /*
+             * MOVEMENT CODE FOR ADMIN ONLY (FOR NOW)
+            */
+            if (Input.GetKey(KeyCode.RightArrow))
+                movement.x = 1;
+            if (Input.GetKey(KeyCode.LeftArrow))
+                movement.x = -1;
+            if (Input.GetKey(KeyCode.UpArrow))
+                movement.y = 1;
+            if (Input.GetKey(KeyCode.DownArrow))
+                movement.y = -1;
+            if (Input.GetKeyDown(KeyCode.Space))
+                jump();
+            /*
+             * MOVEMENT CODE FOR ADMIN ONLY (FOR NOW)
+             */
+
             //only dashes if the dash meter is above a certain point
             if (dashPower >= minDashPower)
             {
-                dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1); //checking if the dash button is pressed or not
+                dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift); //checking if the dash button is pressed or not
 
                 //resetting the dash animation
                 bar_animation.SetTrigger("Stop");
@@ -148,7 +165,7 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1);
+                    dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift);
                 }
             }
             else
@@ -348,7 +365,6 @@ public class Player : MonoBehaviour
 
                     if (other.IsTouching(col))
                     {
-
                         //particle effect
                         int enemyType = other.gameObject.GetComponent<Enemy>().Type;
                         Color deathParticleColor = other.gameObject.GetComponent<Enemy>().getColor(enemyType);

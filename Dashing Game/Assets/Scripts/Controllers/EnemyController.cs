@@ -99,7 +99,7 @@ public class EnemyController : MonoBehaviour
     void Update()
     {
         //looping through the enemies array to see if any of them are dead, and removing the ones that are
-        for (int i = 0; i < Enemies.Count - 1; i++)
+        for (int i = 0; i < Enemies.Count; i++)
         {
             if (Enemies[i].gameObject == null)
             {

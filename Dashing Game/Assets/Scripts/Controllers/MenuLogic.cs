@@ -22,7 +22,7 @@ public class MenuLogic : MonoBehaviour
     /// </summary>
     public void Play()
     {
-        int nextLevel = Random.Range(1, NumberOfStages-1);
+        int nextLevel = Random.Range(1, NumberOfStages+1);
 
         StartCoroutine(loadScene(nextLevel));
     }

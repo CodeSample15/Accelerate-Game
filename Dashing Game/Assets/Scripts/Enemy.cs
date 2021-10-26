@@ -327,7 +327,7 @@ public class Enemy : MonoBehaviour
         Colors.Add(new Color32(255, 0, 0, 255));     //Red                (Melee Enemy)
         Colors.Add(new Color32(0, 255, 0, 255));     //Green              (Shooter Enemy)
         Colors.Add(new Color32(22, 174, 250, 255));  //Blue               (Bomber Enemy)
-        Colors.Add(new Color32(255, 255, 255, 150)); //Transparent White  (Ghost Enemy)
+        Colors.Add(new Color32(200, 200, 200, 150)); //Transparent White  (Ghost Enemy)
     }
 
     private bool isTouching(Collider2D target)

@@ -16326,7 +16326,7 @@ MonoBehaviour:
   player: {fileID: 1001503054}
   PointOne: {x: -101, y: 71}
   PointTwo: {x: 100, y: -21}
-  SpawnRadius: 50
+  SpawnRadius: 30
   enemy: {fileID: 1762905917}
   spawnParticles: {fileID: 2013407248}
   particleController: {fileID: 1958673393}
@@ -16334,6 +16334,7 @@ MonoBehaviour:
   waveTextAnimation: {fileID: 1366007778}
   GreenEnemyWave: 5
   BlueEnemyWave: 10
+  GhostEnemyWave: 15
   spawning: 0
 --- !u!1 &904404444
 GameObject:
