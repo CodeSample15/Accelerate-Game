@@ -33,6 +33,7 @@ public class Enemy : MonoBehaviour
     private float ShooterAttackSpeed;
 
     private float ShooterRange;
+    private float ShooterBulletSpeed;
 
     //Bomber
     private float BomberDamage;
@@ -49,6 +50,7 @@ public class Enemy : MonoBehaviour
     public ParticleSystem explosionEffect; // belongs in the public variables but it's put here for better organization
     public CameraShake cameraShake;
 
+    private float bomberSpeedChange;
     private float detonationTime;
     private float timePassed;
 
@@ -60,7 +62,6 @@ public class Enemy : MonoBehaviour
     private float AttackSpeed;
 
     private bool InRange;
-    private float projectileSpeed;
 
     //Time Data
     public float timeSinceLastAttack;
@@ -81,8 +82,9 @@ public class Enemy : MonoBehaviour
 
         //Shooter:
         ShooterDamage = 5;
-        ShooterAttackSpeed = 1f;
+        ShooterAttackSpeed = 0.8f;
         ShooterRange = 8f;
+        ShooterBulletSpeed = 8f;
 
         //Bomber:
         BomberDamage = 25; //Damage at the center of the explosion (damage decreases with distance)
@@ -99,6 +101,7 @@ public class Enemy : MonoBehaviour
 
         detonationTime = 2; //How much time it takes for the enemy to explode
         timePassed = 0;
+        bomberSpeedChange = 1.3f;
 
         //Ghost:
         GhostDamage = 5;
@@ -131,7 +134,6 @@ public class Enemy : MonoBehaviour
                 //Shooter
                 {
                     AttackSpeed = ShooterAttackSpeed;
-                    projectileSpeed = 5f;
 
                     //calculate if the player is in the enemy's line of sight
                     Vector3 dir = (transform.position - player.transform.position).normalized * -1;
@@ -154,7 +156,7 @@ public class Enemy : MonoBehaviour
                 //Bomber
                 if (Detonating)
                 {
-                    path.maxSpeed = speed / 1.6f;
+                    path.maxSpeed = speed / bomberSpeedChange;
 
                     if(currentFrame < framesPerColorChange)
                     {
@@ -226,7 +228,7 @@ public class Enemy : MonoBehaviour
                         shootDir = shootDir.normalized;
 
                         //Using the Bullet Controller script to instantiate a new bullet
-                        bulletController.shoot(transform.position, shootDir, playerGameObject.transform.position, ShooterDamage, projectileSpeed, ShooterRange + 10, 1);
+                        bulletController.shoot(transform.position, shootDir, playerGameObject.transform.position, ShooterDamage, ShooterBulletSpeed, ShooterRange + 10, 1);
 
                         timeSinceLastAttack = 0f; //restart cooldown
                     }

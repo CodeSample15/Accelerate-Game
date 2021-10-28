@@ -68,9 +68,9 @@ public class WaveController : MonoBehaviour
 
         enemiesToSpawn = startEnemyCount;
 
-        GreenEnemyWave = 3;
-        BlueEnemyWave = 5;
-        GhostEnemyWave = 10;
+        GreenEnemyWave = 2;
+        BlueEnemyWave = 4;
+        GhostEnemyWave = 7;
     }
 
     void Start()
