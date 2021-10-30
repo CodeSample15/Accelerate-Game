@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -25653,6 +25653,7 @@ MonoBehaviour:
   particleController: {fileID: 487436370}
   waveText: {fileID: 889364555}
   waveTextAnimation: {fileID: 889364554}
+  pauseButton: {fileID: 1394076866}
   GreenEnemyWave: 5
   BlueEnemyWave: 10
   GhostEnemyWave: 15
@@ -31381,6 +31382,16 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -63.962997
       objectReference: {fileID: 0}
+    - target: {fileID: 2952638569546850693, guid: 1179389a9652efc489c745ae80ae9854,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 37.820984
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952638569546850693, guid: 1179389a9652efc489c745ae80ae9854,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -16.919006
+      objectReference: {fileID: 0}
     - target: {fileID: 8099932483754514856, guid: 1179389a9652efc489c745ae80ae9854,
         type: 3}
       propertyPath: player
@@ -31526,12 +31537,12 @@ PrefabInstance:
     - target: {fileID: 8115546960756809708, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 74.2
+      value: 92.3
       objectReference: {fileID: 0}
     - target: {fileID: 8115546960756809708, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -11.6
+      value: 86.2
       objectReference: {fileID: 0}
     - target: {fileID: 8115546960756809708, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}
@@ -36687,7 +36698,7 @@ PrefabInstance:
     - target: {fileID: 8115546960756809708, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -95.87
+      value: -107.4
       objectReference: {fileID: 0}
     - target: {fileID: 8115546960756809708, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}
@@ -37046,6 +37057,7 @@ MonoBehaviour:
   menu_animations: {fileID: 889364547}
   score_gameobject: {fileID: 889364546}
   score_animation: {fileID: 889364553}
+  pauseButton: {fileID: 1394076866}
 --- !u!4 &1296887086
 Transform:
   m_ObjectHideFlags: 0
@@ -37208,12 +37220,12 @@ PrefabInstance:
     - target: {fileID: 211917146106596050, guid: 5f8ad17e8f4a2704988d6403cec606ee,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 84.9968
+      value: 103.09681
       objectReference: {fileID: 0}
     - target: {fileID: 211917146106596050, guid: 5f8ad17e8f4a2704988d6403cec606ee,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -9.809999
+      value: 87.99
       objectReference: {fileID: 0}
     - target: {fileID: 211917146106596050, guid: 5f8ad17e8f4a2704988d6403cec606ee,
         type: 3}
@@ -37263,6 +37275,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1315762795}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1394076866 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5499912069906806636, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 889364545}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df090ce36e0b1c94a94fa375278dc8de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1396384567
 GameObject:
   m_ObjectHideFlags: 0
@@ -37659,7 +37683,7 @@ PrefabInstance:
     - target: {fileID: 211917146106596050, guid: 5f8ad17e8f4a2704988d6403cec606ee,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -84.9968
+      value: -96.526794
       objectReference: {fileID: 0}
     - target: {fileID: 211917146106596050, guid: 5f8ad17e8f4a2704988d6403cec606ee,
         type: 3}
@@ -38412,6 +38436,11 @@ PrefabInstance:
       propertyPath: cameraShake
       value: 
       objectReference: {fileID: 1114150341}
+    - target: {fileID: 3723053849466432770, guid: 298dcc7c61ee5ca49a02d9fccef77bab,
+        type: 3}
+      propertyPath: pauseButton
+      value: 
+      objectReference: {fileID: 1394076866}
     - target: {fileID: 3723053849466432770, guid: 298dcc7c61ee5ca49a02d9fccef77bab,
         type: 3}
       propertyPath: enemyController

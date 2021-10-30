@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -5436,7 +5436,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-7976
+  m_Name: pb_Mesh-4432
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -16018,7 +16018,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-7970
+  m_Name: pb_Mesh-4426
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -16332,6 +16332,7 @@ MonoBehaviour:
   particleController: {fileID: 1958673393}
   waveText: {fileID: 1366007779}
   waveTextAnimation: {fileID: 1366007778}
+  pauseButton: {fileID: 1366007780}
   GreenEnemyWave: 5
   BlueEnemyWave: 10
   GhostEnemyWave: 15
@@ -16480,6 +16481,7 @@ MonoBehaviour:
   menu_animations: {fileID: 1388866566}
   score_gameobject: {fileID: 24037201}
   score_animation: {fileID: 1366007777}
+  pauseButton: {fileID: 1366007780}
 --- !u!4 &1001503056
 Transform:
   m_ObjectHideFlags: 0
@@ -27056,6 +27058,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -63.962997
       objectReference: {fileID: 0}
+    - target: {fileID: 2952638569546850693, guid: 1179389a9652efc489c745ae80ae9854,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 16.556847
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952638569546850693, guid: 1179389a9652efc489c745ae80ae9854,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 37.821
+      objectReference: {fileID: 0}
+    - target: {fileID: 2952638569546850693, guid: 1179389a9652efc489c745ae80ae9854,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -15.722
+      objectReference: {fileID: 0}
     - target: {fileID: 8099932483754514856, guid: 1179389a9652efc489c745ae80ae9854,
         type: 3}
       propertyPath: player
@@ -27085,6 +27102,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1366007780 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5499912069906806636, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 1366007776}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df090ce36e0b1c94a94fa375278dc8de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1370841986
@@ -27441,7 +27470,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-7972
+  m_Name: pb_Mesh-4428
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -27944,7 +27973,7 @@ PrefabInstance:
     - target: {fileID: 211917146106596050, guid: 5f8ad17e8f4a2704988d6403cec606ee,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 25.710375
+      value: 64.36833
       objectReference: {fileID: 0}
     - target: {fileID: 211917146106596050, guid: 5f8ad17e8f4a2704988d6403cec606ee,
         type: 3}
@@ -28655,6 +28684,11 @@ PrefabInstance:
       objectReference: {fileID: 1370841988}
     - target: {fileID: 3723053849466432770, guid: 298dcc7c61ee5ca49a02d9fccef77bab,
         type: 3}
+      propertyPath: pauseButton
+      value: 
+      objectReference: {fileID: 1366007780}
+    - target: {fileID: 3723053849466432770, guid: 298dcc7c61ee5ca49a02d9fccef77bab,
+        type: 3}
       propertyPath: enemyController
       value: 
       objectReference: {fileID: 893445515}
@@ -28837,7 +28871,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-7974
+  m_Name: pb_Mesh-4430
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

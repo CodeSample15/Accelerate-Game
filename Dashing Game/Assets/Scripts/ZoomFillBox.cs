@@ -8,7 +8,7 @@ public class ZoomFillBox : MonoBehaviour
     [SerializeField] public Player player;
     [SerializeField] public float refillTime;
 
-    private ParticleSystem particleSystem;
+    private ParticleSystem particles;
 
     private bool refilled;
     private float timeSinceLastRefill;
@@ -20,10 +20,11 @@ public class ZoomFillBox : MonoBehaviour
 
     void Awake()
     {
-        particleSystem = GetComponentInChildren<ParticleSystem>();
+        particles = GetComponentInChildren<ParticleSystem>();
 
-        refilled = false;
-        timeSinceLastRefill = 0f;
+        //start out with the boxes being filled
+        refilled = true;
+        timeSinceLastRefill = refillTime;
     }
 
     void Update()
@@ -31,12 +32,12 @@ public class ZoomFillBox : MonoBehaviour
         if(timeSinceLastRefill >= refillTime)
         {
             refilled = true;
-            particleSystem.Play();
+            particles.Play();
         }
         else
         {
             timeSinceLastRefill += Time.deltaTime;
-            particleSystem.Stop();
+            particles.Stop();
         }
     }
 

@@ -11,6 +11,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] public GameObject playerGameObject;
     [SerializeField] public Animator PlayerDamageAnimation;
 
+    public PauseButton pauseButton;
+    
     public WaveController enemyController;
     public ParticleController particleController;
 
@@ -57,6 +59,7 @@ public class Enemy : MonoBehaviour
     //Ghost
     private float GhostDamage;
     private float GhostPossessionRange;
+    private float GhostSpeed;
     #endregion
 
     private float AttackSpeed;
@@ -104,8 +107,9 @@ public class Enemy : MonoBehaviour
         bomberSpeedChange = 1.3f;
 
         //Ghost:
-        GhostDamage = 5;
+        GhostDamage = 3;
         GhostPossessionRange = 0.2f;
+        GhostSpeed = 6.4f;
 
         InRange = false;
         #endregion
@@ -123,78 +127,85 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
 
         //Controlling the stats and movement of the enemy depending on what type it is---------------------------------------------------------------------------------
-        switch(Type)
+        if (!pauseButton.IsPaused) //will only move if the game is unpaused
         {
-            case 0:
-                //Melee
-                AttackSpeed = MeleeAttackSpeed;
-                break;
+            switch (Type)
+            {
+                case 0:
+                    //Melee
+                    AttackSpeed = MeleeAttackSpeed;
+                    break;
 
-            case 1:
-                //Shooter
-                {
-                    AttackSpeed = ShooterAttackSpeed;
-
-                    //calculate if the player is in the enemy's line of sight
-                    Vector3 dir = (transform.position - player.transform.position).normalized * -1;
-                    RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, distanceTo(playerGameObject) - 1f);
-
-                    if (distanceTo(playerGameObject) < ShooterRange && hit.collider == null)
+                case 1:
+                    //Shooter
                     {
-                        path.maxSpeed = 0;
-                        InRange = true;
+                        AttackSpeed = ShooterAttackSpeed;
+
+                        //calculate if the player is in the enemy's line of sight
+                        Vector3 dir = (transform.position - player.transform.position).normalized * -1;
+                        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, distanceTo(playerGameObject) - 1f);
+
+                        if (distanceTo(playerGameObject) < ShooterRange && hit.collider == null)
+                        {
+                            path.maxSpeed = 0;
+                            InRange = true;
+                        }
+                        else
+                        {
+                            path.maxSpeed = speed;
+                            InRange = false;
+                        }
+                    }
+                    break;
+
+                case 2:
+                    //Bomber
+                    if (Detonating)
+                    {
+                        path.maxSpeed = speed / bomberSpeedChange;
+
+                        if (currentFrame < framesPerColorChange)
+                        {
+                            currentFrame++;
+                        }
+                        else
+                        {
+                            //swap colors
+                            if (!normalColor)
+                                sprite.color = Colors[Type];
+                            else
+                                sprite.color = detonatingColor;
+
+                            normalColor = !normalColor;
+
+                            currentFrame = 0;
+                        }
                     }
                     else
                     {
                         path.maxSpeed = speed;
-                        InRange = false;
                     }
-                }
-                break;
 
-            case 2:
-                //Bomber
-                if (Detonating)
-                {
-                    path.maxSpeed = speed / bomberSpeedChange;
+                    break;
 
-                    if(currentFrame < framesPerColorChange)
+                case 3:
+                    //ghost
                     {
-                        currentFrame++;
+                        path.maxSpeed = 0;
+
+                        Vector3 dir = (player.transform.position - transform.position).normalized;
+                        transform.Translate(dir * GhostSpeed * Time.deltaTime);
                     }
-                    else
-                    {
-                        //swap colors
-                        if (!normalColor)
-                            sprite.color = Colors[Type];
-                        else
-                            sprite.color = detonatingColor;
-
-                        normalColor = !normalColor;
-
-                        currentFrame = 0;
-                    }
-                }
-                else
-                {
-                    path.maxSpeed = speed;
-                }
-
-                break;
-
-            case 3:
-                //ghost
-                {
-                    path.maxSpeed = 0;
-
-                    Vector3 dir = (player.transform.position - transform.position).normalized;
-                    transform.Translate(dir * speed * Time.deltaTime);
-                }
-                break;
+                    break;
+            }
+        }
+        else
+        {
+            path.maxSpeed = 0;
         }
 
         //Attacking-----------------------------------------------------------------------------------------------------
-        if(timeSinceLastAttack >= AttackSpeed || Type == 3) //will always attack if the enemy is a ghost
+        if((timeSinceLastAttack >= AttackSpeed || Type == 3) && !pauseButton.IsPaused) //will always attack if the enemy is a ghost and won't attack if the game is paused
         {
             //Attack
             switch (Type)
@@ -285,7 +296,8 @@ public class Enemy : MonoBehaviour
         else
         {
             //Refill attack cooldown
-            timeSinceLastAttack += Time.deltaTime;
+            if(!pauseButton.IsPaused)
+                timeSinceLastAttack += Time.deltaTime;
         }
     }
 
@@ -341,7 +353,7 @@ public class Enemy : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other)
     {
         //if the enemy type is a ghost, ignore collisions from walls
-        if(Type == 3)
+        if(Type == 3 && (other.gameObject.CompareTag("Ground") || (other.gameObject.CompareTag("Player") && !player.isDashing))) //will only ignore collisions if gameobject it's touching is either a wall, or the player while they're not dashing
         {
             Physics2D.IgnoreCollision(other.collider, GetComponent<Collider2D>());
         }

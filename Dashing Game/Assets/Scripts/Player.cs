@@ -26,6 +26,7 @@ public class Player : MonoBehaviour
     public Animator           menu_animations;
     public GameObject         score_gameobject;
     public Animator           score_animation;
+    public PauseButton        pauseButton;
     #endregion
     
     #region Private Variables
@@ -127,110 +128,121 @@ public class Player : MonoBehaviour
     {
         if (isAlive)
         {
-            //get user controll input
-            movement.x = joystick.Horizontal;
-            movement.y = joystick.Vertical;
-
-            /*
-             * MOVEMENT CODE FOR ADMIN ONLY (FOR NOW)
-            */
-            if (Input.GetKey(KeyCode.RightArrow))
-                movement.x = 1;
-            if (Input.GetKey(KeyCode.LeftArrow))
-                movement.x = -1;
-            if (Input.GetKey(KeyCode.UpArrow))
-                movement.y = 1;
-            if (Input.GetKey(KeyCode.DownArrow))
-                movement.y = -1;
-            if (Input.GetKeyDown(KeyCode.Space))
-                jump();
-            /*
-             * MOVEMENT CODE FOR ADMIN ONLY (FOR NOW)
-             */
-
-            //only dashes if the dash meter is above a certain point
-            if (dashPower >= minDashPower)
+            //only run the main code if the game isn't paused
+            if (!pauseButton.IsPaused)
             {
-                dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift); //checking if the dash button is pressed or not
+                rb.simulated = true;
 
-                //resetting the dash animation
-                bar_animation.SetTrigger("Stop");
-            }
-            else if (dashing && dashPower > 0)
-            {
-                if (dashPower <= 0)
+                //get user controll input
+                movement.x = joystick.Horizontal;
+                movement.y = joystick.Vertical;
+
+                /*
+                 * MOVEMENT CODE FOR ADMIN ONLY (FOR NOW)
+                */
+                if (Input.GetKey(KeyCode.RightArrow))
+                    movement.x = 1;
+                if (Input.GetKey(KeyCode.LeftArrow))
+                    movement.x = -1;
+                if (Input.GetKey(KeyCode.UpArrow))
+                    movement.y = 1;
+                if (Input.GetKey(KeyCode.DownArrow))
+                    movement.y = -1;
+                if (Input.GetKeyDown(KeyCode.Space))
+                    jump();
+                /*
+                 * MOVEMENT CODE FOR ADMIN ONLY (FOR NOW)
+                 */
+
+                //only dashes if the dash meter is above a certain point
+                if (dashPower >= minDashPower)
                 {
-                    dashing = false;
-                    dashPower = 0;
+                    dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift); //checking if the dash button is pressed or not
+
+                    //resetting the dash animation
+                    bar_animation.SetTrigger("Stop");
+                }
+                else if (dashing && dashPower > 0)
+                {
+                    if (dashPower <= 0)
+                    {
+                        dashing = false;
+                        dashPower = 0;
+                    }
+                    else
+                    {
+                        dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift);
+                    }
                 }
                 else
                 {
-                    dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift);
+                    bar_animation.SetTrigger("Recharge");
+                    dashing = false;
                 }
+
+
+                //refilling the dash meter--------------------------------------
+                if (!dashing && dashPower < 100)
+                {
+                    //if the player doesn't have enough dash ability and isn't dashing, recharge
+                    dashPower += Time.deltaTime * dashRechargeRate;
+                }
+                else if (dashPower > 100)
+                {
+                    //if the player has more dash ability than the max, reset it to the max
+                    dashPower = 100;
+                }
+                else if (dashing)
+                {
+                    //if dashing, subtract the proper amount of dash ability
+                    dashPower -= dashDischargeRate * Time.deltaTime;
+                }
+
+                //handle animations--------------------------------------------------------------------- (Animations)
+                //set the speed of the running animation
+                character_animations.SetFloat("RunSpeed", movement.x);
+
+                //Tell the character to go into dashing animation
+                character_animations.SetBool("Dashing", dashing);
+
+                if (Mathf.Abs(movement.x) > 0)
+                    character_animations.SetBool("Running", !character_animations.GetBool("Falling"));
+                else
+                    character_animations.SetBool("Running", false);
+
+                //detecting if the player is traveling slow enough to be walking
+                if (Mathf.Abs(movement.x) <= walkingSpeed && movement.x != 0)
+                {
+                    character_animations.SetBool("Walking", true);
+                    character_animations.SetBool("Running", false);
+                }
+                else
+                {
+                    character_animations.SetBool("Walking", false);
+                }
+
+                if (movement.x < 0)
+                {
+                    //character is running to the left
+                    transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+                }
+                else if (movement.x > 0)
+                {
+                    //character is running to the right
+                    transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                }
+
+                character_animations.SetBool("Falling", rb.velocity.y < -0.8f && !dashing);
+                //-------------------------------------------------------------------------------------- (Animations)
+
+                //detect collisions with enemies
+                DetectEnemies();
             }
             else
             {
-                bar_animation.SetTrigger("Recharge");
-                dashing = false;
+                //game is paused
+                rb.simulated = false;
             }
-
-
-            //refilling the dash meter--------------------------------------
-            if (!dashing && dashPower < 100)
-            {
-                //if the player doesn't have enough dash ability and isn't dashing, recharge
-                dashPower += Time.deltaTime * dashRechargeRate;
-            }
-            else if (dashPower > 100)
-            {
-                //if the player has more dash ability than the max, reset it to the max
-                dashPower = 100;
-            }
-            else if (dashing)
-            {
-                //if dashing, subtract the proper amount of dash ability
-                dashPower -= dashDischargeRate * Time.deltaTime;
-            }
-
-            //handle animations--------------------------------------------------------------------- (Animations)
-            //set the speed of the running animation
-            character_animations.SetFloat("RunSpeed", movement.x);
-
-            //Tell the character to go into dashing animation
-            character_animations.SetBool("Dashing", dashing);
-
-            if (Mathf.Abs(movement.x) > 0)
-                character_animations.SetBool("Running", !character_animations.GetBool("Falling"));
-            else
-                character_animations.SetBool("Running", false);
-
-            //detecting if the player is traveling slow enough to be walking
-            if(Mathf.Abs(movement.x) <= walkingSpeed && movement.x != 0)
-            {
-                character_animations.SetBool("Walking", true);
-                character_animations.SetBool("Running", false);
-            }
-            else
-            {
-                character_animations.SetBool("Walking", false);
-            }
-            
-            if(movement.x < 0)
-            {
-                //character is running to the left
-                transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
-            }
-            else if(movement.x > 0)
-            {
-                //character is running to the right
-                transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-            }
-            
-            character_animations.SetBool("Falling", rb.velocity.y < -0.8f && !dashing);
-            //-------------------------------------------------------------------------------------- (Animations)
-
-            //detect collisions with enemies
-            DetectEnemies();
         }
         else
         {

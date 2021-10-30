@@ -20,6 +20,7 @@ public class WaveController : MonoBehaviour
     public ParticleController particleController;
     public TextMeshProUGUI waveText; //to tell the player what wave they're currently on
     public Animator waveTextAnimation;
+    public PauseButton pauseButton;
 
     [Header("Enemy spawning")]
     public int GreenEnemyWave = 5; //five waves for the green enemies to start spawning
@@ -95,7 +96,7 @@ public class WaveController : MonoBehaviour
             }
 
             //detecting if it's time to spawn yet or not
-            if (timeSinceLastEnemySpawn >= timePerEnemySpawn)
+            if (timeSinceLastEnemySpawn >= timePerEnemySpawn && !pauseButton.IsPaused)
             {
                 if (enemiesSpawned < enemiesToSpawn) //making sure the wave is not over
                 {
@@ -153,7 +154,7 @@ public class WaveController : MonoBehaviour
         int t = Random.Range(0, maxEnemy); //getting a random enemy type to spawn
 
         Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity)); //create the enemy object
-        particleController.AddParticles(Instantiate(spawnParticles, spawnPosition, Quaternion.identity));
+        particleController.AddParticles(Instantiate(spawnParticles, Enemies[Enemies.Count - 1].transform.position, Quaternion.identity));
 
         //converting the color32 of the enemy color to regular color
         Color enemyColor = Enemies[Enemies.Count - 1].GetComponent<Enemy>().getColor(t);
@@ -161,6 +162,11 @@ public class WaveController : MonoBehaviour
         settings.startColor = enemyColor;
 
         yield return new WaitForSeconds(0.3f); //letting the particles play before spawning the enemy
+
+        while (pauseButton.IsPaused)
+        {
+            yield return new WaitForSeconds(0.01f);
+        }
 
         if (spawning)
         {
