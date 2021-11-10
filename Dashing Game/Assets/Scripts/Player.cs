@@ -58,6 +58,8 @@ public class Player : MonoBehaviour
 
     private float feetDistance; //for casting rays from the player's feet rather than the center of the sprite
 
+    bool doubleJumped; //test if the player has already double jumped
+
     private Vector3 velocity = Vector3.zero;
     #endregion
 
@@ -117,6 +119,8 @@ public class Player : MonoBehaviour
         dashing = false; 
         score = 0;
         pointsPerKill = 15;
+
+        doubleJumped = false;
 
         feetDistance = 0.01f;
 
@@ -341,9 +345,17 @@ public class Player : MonoBehaviour
 
             if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f) || rightCol || leftCol)
             {
+                doubleJumped = false;
                 character_animations.SetTrigger("Jump");
                 rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             }
+            else if(!doubleJumped)
+            {
+                doubleJumped = true;
+                character_animations.SetTrigger("Jump");
+                rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            }
+
             /* // Other animation code for side jumps:
             else if (right.collider != null || left.collider != null)
             {
