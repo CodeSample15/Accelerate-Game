@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     public GameObject         score_gameobject;
     public Animator           score_animation;
     public PauseButton        pauseButton;
+    public ParticleSystem     jump_particles;
     #endregion
     
     #region Private Variables
@@ -290,6 +291,25 @@ public class Player : MonoBehaviour
 
             //turning off the dash lights
             dash_light.enabled = false;
+
+            //checking to see if the player is touching the ground
+            RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.15f);
+            RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.15f);
+
+            bool rightCol = false;
+            bool leftCol = false;
+
+            if (right.collider != null)
+                if (right.collider.CompareTag("Ground"))
+                    rightCol = true;
+            if (left.collider != null)
+                if (left.collider.CompareTag("Ground"))
+                    leftCol = true;
+
+            if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f) || rightCol || leftCol)
+            {
+                doubleJumped = false;
+            }
         }
         else
         {
@@ -345,15 +365,16 @@ public class Player : MonoBehaviour
 
             if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f) || rightCol || leftCol)
             {
-                doubleJumped = false;
                 character_animations.SetTrigger("Jump");
-                rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                jump_particles.Play();
             }
             else if(!doubleJumped)
             {
                 doubleJumped = true;
                 character_animations.SetTrigger("Jump");
-                rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                jump_particles.Play();
             }
 
             /* // Other animation code for side jumps:
