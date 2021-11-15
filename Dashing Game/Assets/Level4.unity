@@ -5600,7 +5600,7 @@ PrefabInstance:
     - target: {fileID: 2952638569546850693, guid: 1179389a9652efc489c745ae80ae9854,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -16.919998
+      value: -16.919983
       objectReference: {fileID: 0}
     - target: {fileID: 8099932483754514856, guid: 1179389a9652efc489c745ae80ae9854,
         type: 3}
@@ -22659,6 +22659,7 @@ MonoBehaviour:
   score_gameobject: {fileID: 211961071}
   score_animation: {fileID: 211961078}
   pauseButton: {fileID: 211961081}
+  jump_particles: {fileID: 1144873083}
 --- !u!4 &977481361
 Transform:
   m_ObjectHideFlags: 0
@@ -23041,6 +23042,87 @@ MonoBehaviour:
   BlueEnemyWave: 10
   GhostEnemyWave: 15
   spawning: 0
+--- !u!1001 &1144873082
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1508917124}
+    m_Modifications:
+    - target: {fileID: 273326589228619710, guid: cbcfd37041504a04db00a4535aacc80e,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 273326589228619710, guid: cbcfd37041504a04db00a4535aacc80e,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273326589228619710, guid: cbcfd37041504a04db00a4535aacc80e,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273326589228619710, guid: cbcfd37041504a04db00a4535aacc80e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 79.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 273326589228619710, guid: cbcfd37041504a04db00a4535aacc80e,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 273326589228619710, guid: cbcfd37041504a04db00a4535aacc80e,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273326589228619710, guid: cbcfd37041504a04db00a4535aacc80e,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273326589228619710, guid: cbcfd37041504a04db00a4535aacc80e,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273326589228619710, guid: cbcfd37041504a04db00a4535aacc80e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273326589228619710, guid: cbcfd37041504a04db00a4535aacc80e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273326589228619710, guid: cbcfd37041504a04db00a4535aacc80e,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 273326589228619711, guid: cbcfd37041504a04db00a4535aacc80e,
+        type: 3}
+      propertyPath: m_Name
+      value: Jump Particles
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cbcfd37041504a04db00a4535aacc80e, type: 3}
+--- !u!198 &1144873083 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 273326589228618816, guid: cbcfd37041504a04db00a4535aacc80e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1144873082}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1144873084 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 273326589228619710, guid: cbcfd37041504a04db00a4535aacc80e,
+    type: 3}
+  m_PrefabInstance: {fileID: 1144873082}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1198045384
 GameObject:
   m_ObjectHideFlags: 0
@@ -28554,6 +28636,7 @@ Transform:
   - {fileID: 1671871017}
   - {fileID: 357708400}
   - {fileID: 63678211}
+  - {fileID: 1144873084}
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

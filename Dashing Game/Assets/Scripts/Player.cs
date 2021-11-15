@@ -367,14 +367,14 @@ public class Player : MonoBehaviour
             {
                 character_animations.SetTrigger("Jump");
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-                jump_particles.Play();
+                particleController.AddParticles(Instantiate(jump_particles, new Vector3(transform.position.x, transform.position.y - feetDistance, 100f), Quaternion.identity));
             }
             else if(!doubleJumped)
             {
                 doubleJumped = true;
                 character_animations.SetTrigger("Jump");
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-                jump_particles.Play();
+                particleController.AddParticles(Instantiate(jump_particles, new Vector3(transform.position.x, transform.position.y - feetDistance, 100f), Quaternion.identity));
             }
 
             /* // Other animation code for side jumps:
