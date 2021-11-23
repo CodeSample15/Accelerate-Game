@@ -38,6 +38,7 @@ public class Player : MonoBehaviour
     private float walkingSpeed; // where the animation will switch from walking to running
     private float dashSpeed; // how fast the player travels when dashing
     private float jumpForce; // how much force is applied to the character when it jumps
+    private float sideJumpForce; // how much sideways force is applied to the character when it jumps off of a wall
     private int minDashPower; // the minimum amount of dash power in the dash bar allowed for the user to dash
     private float dashRechargeRate; // how fast the dash bar refills
     private float dashDischargeRate; // how fast the dash bar empties when the player dashes
@@ -59,7 +60,7 @@ public class Player : MonoBehaviour
 
     private float feetDistance; //for casting rays from the player's feet rather than the center of the sprite
 
-    bool doubleJumped; //test if the player has already double jumped
+    private bool doubleJumped; //test if the player has already double jumped
 
     private Vector3 velocity = Vector3.zero;
     #endregion
@@ -104,6 +105,7 @@ public class Player : MonoBehaviour
         walkingSpeed = 0.3f;
         dashSpeed = 15f;
         jumpForce = 16f;
+        sideJumpForce = 20f;
         minDashPower = 20;
         dashRechargeRate = 3.2f;
         dashDischargeRate = 35f;
@@ -276,11 +278,12 @@ public class Player : MonoBehaviour
     {
         if(!dashing)
         {
-            //walking code (from Brackey's 2D character movement script)---------------------------------------------------
+            //walking code
             rb.gravityScale = 2;
 
             // Move the character by finding the target velocity
             Vector3 targetVelocity = new Vector2(movement.x * movementSpeed, rb.velocity.y);
+
             // And then smoothing it out and applying it to the character
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .05f);
 
@@ -292,21 +295,7 @@ public class Player : MonoBehaviour
             //turning off the dash lights
             dash_light.enabled = false;
 
-            //checking to see if the player is touching the ground
-            RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.15f);
-            RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.15f);
-
-            bool rightCol = false;
-            bool leftCol = false;
-
-            if (right.collider != null)
-                if (right.collider.CompareTag("Ground"))
-                    rightCol = true;
-            if (left.collider != null)
-                if (left.collider.CompareTag("Ground"))
-                    leftCol = true;
-
-            if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f) || rightCol || leftCol)
+            if (onGround())
             {
                 doubleJumped = false;
             }
@@ -349,24 +338,21 @@ public class Player : MonoBehaviour
     public void jump()
     {
         if (!dashing) {
-            //check if the player is on a slope for a different jump animation (flipping)
-            RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.15f);
-            RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.15f);
+            bool rightWall = false;
+            bool leftWall = false;
 
-            bool rightCol = false;
-            bool leftCol = false;
-
-            if (right.collider != null)
-                if (right.collider.CompareTag("Ground"))
-                    rightCol = true;
-            if (left.collider != null)
-                if (left.collider.CompareTag("Ground"))
-                    leftCol = true;
-
-            if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f) || rightCol || leftCol)
+            if (onGround(ref leftWall, ref rightWall))
             {
+                //determining if the player is jumping off of a wall
+                if (leftWall)
+                    rb.velocity = new Vector2(sideJumpForce, jumpForce);
+                else if (rightWall)
+                    rb.velocity = new Vector2(-sideJumpForce, jumpForce);
+                else
+                    rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+
+                //setting animations and particles
                 character_animations.SetTrigger("Jump");
-                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
                 particleController.AddParticles(Instantiate(jump_particles, new Vector3(transform.position.x, transform.position.y - feetDistance, 100f), Quaternion.identity));
             }
             else if(!doubleJumped)
@@ -388,6 +374,52 @@ public class Player : MonoBehaviour
             }
             */
         }
+    }
+    
+
+    /// <summary>
+    /// Helper method for determining if the player is on the ground and not falling or dashing
+    /// </summary>
+    private bool onGround()
+    {
+        RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.5f);
+        RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.5f);
+
+        bool rightCol = false;
+        bool leftCol = false;
+
+        if (right.collider != null)
+            if (right.collider.CompareTag("Ground"))
+                rightCol = true;
+        if (left.collider != null)
+            if (left.collider.CompareTag("Ground"))
+                leftCol = true;
+
+        return Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f) || rightCol || leftCol;
+    }
+
+    /// <summary>
+    /// Overloaded method of onGround that also uses a referenced value of whether or not the user is wall jumping (left or right side of player)
+    /// </summary>
+    /// <param name="leftCol"></param>
+    /// <param name="rightCol"></param>
+    /// <returns></returns>
+    private bool onGround(ref bool leftCol, ref bool rightCol)
+    {
+        RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.5f);
+        RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.5f);
+
+        rightCol = false;
+        leftCol = false;
+
+        if (right.collider != null)
+            if (right.collider.CompareTag("Ground"))
+                rightCol = true;
+        if (left.collider != null)
+            if (left.collider.CompareTag("Ground"))
+                leftCol = true;
+
+        return Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f) || rightCol || leftCol;
     }
 
     /// <summary>
