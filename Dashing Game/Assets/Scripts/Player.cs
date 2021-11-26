@@ -39,6 +39,8 @@ public class Player : MonoBehaviour
     private float dashSpeed; // how fast the player travels when dashing
     private float jumpForce; // how much force is applied to the character when it jumps
     private float sideJumpForce; // how much sideways force is applied to the character when it jumps off of a wall
+    private float sideJumpVelocity; // so that the side jumping doesn't interfere with the main movement code, the player will have a seperate variable to control how much it's moving sideways for a side jump
+    private float sideJumpSlowRate; // the rate in which the player slows down from a side jump
     private int minDashPower; // the minimum amount of dash power in the dash bar allowed for the user to dash
     private float dashRechargeRate; // how fast the dash bar refills
     private float dashDischargeRate; // how fast the dash bar empties when the player dashes
@@ -105,7 +107,9 @@ public class Player : MonoBehaviour
         walkingSpeed = 0.3f;
         dashSpeed = 15f;
         jumpForce = 16f;
-        sideJumpForce = 20f;
+        sideJumpForce = 1000;
+        sideJumpVelocity = 0f;
+        sideJumpSlowRate = 0.9f;
         minDashPower = 20;
         dashRechargeRate = 3.2f;
         dashDischargeRate = 35f;
@@ -147,16 +151,24 @@ public class Player : MonoBehaviour
                 /*
                  * MOVEMENT CODE FOR ADMIN ONLY (FOR NOW)
                 */
+                float KeyboardX = 0;
+                float KeyboardY = 0;
+                float ControllerX = Input.GetAxis("Horizontal");
+                float ControllerY = Input.GetAxis("Vertical");
+
                 if (Input.GetKey(KeyCode.RightArrow))
-                    movement.x = 1;
+                    KeyboardX = 1f;
                 if (Input.GetKey(KeyCode.LeftArrow))
-                    movement.x = -1;
+                    KeyboardX = -1f;
                 if (Input.GetKey(KeyCode.UpArrow))
-                    movement.y = 1;
+                    KeyboardY = 1f;
                 if (Input.GetKey(KeyCode.DownArrow))
-                    movement.y = -1;
-                if (Input.GetKeyDown(KeyCode.Space))
+                    KeyboardY = -1f;
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetButton("joystick button 0"))
                     jump();
+
+                movement.x = KeyboardX + ControllerX;
+                movement.y = KeyboardY + ControllerY;
                 /*
                  * MOVEMENT CODE FOR ADMIN ONLY (FOR NOW)
                  */
@@ -279,13 +291,15 @@ public class Player : MonoBehaviour
         if(!dashing)
         {
             //walking code
+            sideJumpVelocity *= sideJumpSlowRate;
             rb.gravityScale = 2;
 
             // Move the character by finding the target velocity
-            Vector3 targetVelocity = new Vector2(movement.x * movementSpeed, rb.velocity.y);
+            Vector3 targetVelocity = new Vector2((movement.x * movementSpeed), rb.velocity.y);
 
             // And then smoothing it out and applying it to the character
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .05f);
+            rb.AddForce(transform.right * sideJumpVelocity);
 
             lastDashDir = new Vector2(0, 1); //when the player starts to dash, they will always start by going up first
 
@@ -304,6 +318,7 @@ public class Player : MonoBehaviour
         {
             //dashing code
             rb.gravityScale = 0;
+            sideJumpVelocity = 0;
 
             Vector3 targetVelocity;
 
@@ -344,12 +359,16 @@ public class Player : MonoBehaviour
             if (onGround(ref leftWall, ref rightWall))
             {
                 //determining if the player is jumping off of a wall
-                if (leftWall)
-                    rb.velocity = new Vector2(sideJumpForce, jumpForce);
-                else if (rightWall)
-                    rb.velocity = new Vector2(-sideJumpForce, jumpForce);
-                else
-                    rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                if (!(leftWall && rightWall))
+                {
+                    if (leftWall)
+                        sideJumpVelocity = sideJumpForce;
+                    else if (rightWall)
+                        sideJumpVelocity = -sideJumpForce;
+                }
+
+                //applying upwards force
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
 
                 //setting animations and particles
                 character_animations.SetTrigger("Jump");
