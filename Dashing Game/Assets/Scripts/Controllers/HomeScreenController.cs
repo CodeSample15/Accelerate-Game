@@ -19,8 +19,13 @@ public class HomeScreenController : MonoBehaviour
     //for showing and hiding the menu
     [Header("Menu")]
     public GameObject Menu;
+    public Animator MenuAnimation; //for controller input (when touch screen or mouse isn't available) 
     public float MenuSpeed;
     private bool MenuShowing;
+
+    //for pressing the button
+    public Animator PlayButtonAnimation;
+    public MenuLogic transition;
 
     void Awake()
     {
@@ -41,6 +46,12 @@ public class HomeScreenController : MonoBehaviour
             {
                 Menu.GetComponent<RectTransform>().anchoredPosition = new Vector2((menuPosition.x - MenuSpeed), menuPosition.y);
             }
+
+            if(Mathf.Abs(Input.GetAxisRaw("Horizontal")) > 0)
+            {
+                //user is using controller or arrow keys to select settings
+
+            }
         }
         else
         {
@@ -48,6 +59,20 @@ public class HomeScreenController : MonoBehaviour
             {
                 Menu.GetComponent<RectTransform>().anchoredPosition = new Vector2((menuPosition.x + MenuSpeed), menuPosition.y);
             }
+        }
+
+        //A button on controller to start
+        if(Input.GetButtonDown("joystick button 0"))
+        {
+            PlayButtonAnimation.SetTrigger("Clicked");
+            transition.Play();
+        }
+
+        //menu button on controller to open menu
+        if(Input.GetButtonDown("joystick button 7"))
+        {
+            SettingsClick();
+            MenuAnimation.SetTrigger("Pressed");
         }
     }
 

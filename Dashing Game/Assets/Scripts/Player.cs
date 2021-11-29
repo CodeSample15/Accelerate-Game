@@ -144,31 +144,18 @@ public class Player : MonoBehaviour
             {
                 rb.simulated = true;
 
-                //get user controll input
+                //get user controll input (touch screen)
                 movement.x = joystick.Horizontal;
                 movement.y = joystick.Vertical;
 
                 /*
                  * MOVEMENT CODE FOR ADMIN ONLY (FOR NOW)
                 */
-                float KeyboardX = 0;
-                float KeyboardY = 0;
-                float ControllerX = Input.GetAxis("Horizontal");
-                float ControllerY = Input.GetAxis("Vertical");
+                movement.x = Input.GetAxisRaw("Horizontal");
+                movement.y = Input.GetAxisRaw("Vertical");
 
-                if (Input.GetKey(KeyCode.RightArrow))
-                    KeyboardX = 1f;
-                if (Input.GetKey(KeyCode.LeftArrow))
-                    KeyboardX = -1f;
-                if (Input.GetKey(KeyCode.UpArrow))
-                    KeyboardY = 1f;
-                if (Input.GetKey(KeyCode.DownArrow))
-                    KeyboardY = -1f;
-                if (Input.GetKeyDown(KeyCode.Space) || Input.GetButton("joystick button 0"))
+                if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("joystick button 0"))
                     jump();
-
-                movement.x = KeyboardX + ControllerX;
-                movement.y = KeyboardY + ControllerY;
                 /*
                  * MOVEMENT CODE FOR ADMIN ONLY (FOR NOW)
                  */
@@ -176,7 +163,7 @@ public class Player : MonoBehaviour
                 //only dashes if the dash meter is above a certain point
                 if (dashPower >= minDashPower)
                 {
-                    dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift); //checking if the dash button is pressed or not
+                    dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift) || Input.GetButton("joystick button 1"); //checking if the dash button is pressed or not
 
                     //resetting the dash animation
                     bar_animation.SetTrigger("Stop");
@@ -190,7 +177,7 @@ public class Player : MonoBehaviour
                     }
                     else
                     {
-                        dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift);
+                        dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift) || Input.GetButton("joystick button 1");
                     }
                 }
                 else
