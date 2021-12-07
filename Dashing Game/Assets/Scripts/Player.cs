@@ -44,6 +44,7 @@ public class Player : MonoBehaviour
     private int minDashPower; // the minimum amount of dash power in the dash bar allowed for the user to dash
     private float dashRechargeRate; // how fast the dash bar refills
     private float dashDischargeRate; // how fast the dash bar empties when the player dashes
+    private float sideDetectionLength; // how far the raycast for the side detection is shot out. Can be used to adjust how steep of an angle the player can run up
     private float scoreAnimationSpeed;
     private float scoreNormalSize;
     private float scoreGrowSize;
@@ -113,6 +114,7 @@ public class Player : MonoBehaviour
         minDashPower = 20;
         dashRechargeRate = 3.2f;
         dashDischargeRate = 35f;
+        sideDetectionLength = 0.4f;
 
         scoreAnimationSpeed = 0.04f;
         scoreNormalSize = score_gameobject.transform.localScale.x;
@@ -241,7 +243,7 @@ public class Player : MonoBehaviour
                 character_animations.SetBool("Falling", rb.velocity.y < -0.8f && !dashing);
                 //-------------------------------------------------------------------------------------- (Animations)
 
-                //detect collisions with enemies
+                //detect collisions with enemies (laggy, might need a fix in the future)
                 DetectEnemies();
             }
             else
@@ -285,7 +287,8 @@ public class Player : MonoBehaviour
             Vector3 targetVelocity = new Vector2((movement.x * movementSpeed), rb.velocity.y);
 
             // And then smoothing it out and applying it to the character
-            rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .05f);
+            if(!Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1f), transform.right, sideDetectionLength)) //detecting if the player is on a wall or not
+                rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .05f);
             rb.AddForce(transform.right * sideJumpVelocity);
 
             lastDashDir = new Vector2(0, 1); //when the player starts to dash, they will always start by going up first
