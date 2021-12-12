@@ -26,7 +26,6 @@ public class Player : MonoBehaviour
     public Animator           menu_animations;
     public GameObject         score_gameobject;
     public Animator           score_animation;
-    public PauseButton        pauseButton;
     public ParticleSystem     jump_particles;
     #endregion
     
@@ -142,7 +141,7 @@ public class Player : MonoBehaviour
         if (isAlive)
         {
             //only run the main code if the game isn't paused
-            if (!pauseButton.IsPaused)
+            if (!PauseButton.IsPaused)
             {
                 rb.simulated = true;
 
@@ -262,6 +261,9 @@ public class Player : MonoBehaviour
             //fade in a black screen
             menu_animations.SetTrigger("FadeIn");
             score_animation.SetTrigger("Move");
+
+            //enable the menu buttons
+            MenuLogic.buttonsActive = true;
 
             gameObject.SetActive(false); //"kill" the player
         }

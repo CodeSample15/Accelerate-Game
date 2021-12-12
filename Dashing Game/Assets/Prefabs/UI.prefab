@@ -2419,7 +2419,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: f2ff6700623c1544cac33282f8ac5b6e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -2788,7 +2788,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8749162434939060722
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2858,7 +2858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
@@ -3268,6 +3268,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed1057b76d655054dae0834ab9575854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HomeButton: {fileID: 1253614026684895659}
+  RestartButton: {fileID: 1253614026956521110}
   player: {fileID: 0}
   FadeAnimation: {fileID: 1235849335344301659}
   PlayerMovePosition: {x: -129, y: 100}

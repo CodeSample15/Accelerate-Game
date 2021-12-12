@@ -5,6 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class MenuLogic : MonoBehaviour
 {
+    [SerializeField] private GameObject HomeButton;
+    [SerializeField] private GameObject RestartButton;
+
     [SerializeField] private GameObject player;
     [SerializeField] private Animator FadeAnimation;
     [Tooltip("Where the player will be moved as an animation for the next level to be loaded.")]
@@ -12,9 +15,31 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] public float AnimationDelay;
     [SerializeField] private int NumberOfStages;
 
+    public static bool buttonsActive;
+
     public int StageCount
     {
         get { return NumberOfStages; }
+    }
+
+    void Awake()
+    {
+        //making sure the player can't accidentally press these buttons when they're hidden
+        if (HomeButton != null && RestartButton != null)
+        {
+            HomeButton.SetActive(false);
+            RestartButton.SetActive(false);
+            buttonsActive = false;
+        }
+    }
+
+    void Update()
+    {
+        if (HomeButton != null && RestartButton != null)
+        {
+            HomeButton.SetActive(buttonsActive);
+            RestartButton.SetActive(buttonsActive);
+        }
     }
 
     /// <summary>

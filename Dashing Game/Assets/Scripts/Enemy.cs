@@ -10,8 +10,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] public BulletController bulletController;
     [SerializeField] public GameObject playerGameObject;
     [SerializeField] public Animator PlayerDamageAnimation;
-
-    public PauseButton pauseButton;
     
     public WaveController enemyController;
     public ParticleController particleController;
@@ -127,8 +125,11 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
 
         //Controlling the stats and movement of the enemy depending on what type it is---------------------------------------------------------------------------------
-        if (!pauseButton.IsPaused) //will only move if the game is unpaused
+        if (!PauseButton.IsPaused) //will only move if the game is unpaused
         {
+            //setting the speed of the enemy back to normal (if it was paused)
+            path.maxSpeed = speed;
+
             switch (Type)
             {
                 case 0:
@@ -205,7 +206,7 @@ public class Enemy : MonoBehaviour
         }
 
         //Attacking-----------------------------------------------------------------------------------------------------
-        if((timeSinceLastAttack >= AttackSpeed || Type == 3) && !pauseButton.IsPaused) //will always attack if the enemy is a ghost and won't attack if the game is paused
+        if((timeSinceLastAttack >= AttackSpeed || Type == 3) && !PauseButton.IsPaused) //will always attack if the enemy is a ghost and won't attack if the game is paused
         {
             //Attack
             switch (Type)
@@ -296,7 +297,7 @@ public class Enemy : MonoBehaviour
         else
         {
             //Refill attack cooldown
-            if(!pauseButton.IsPaused)
+            if(!PauseButton.IsPaused)
                 timeSinceLastAttack += Time.deltaTime;
         }
     }

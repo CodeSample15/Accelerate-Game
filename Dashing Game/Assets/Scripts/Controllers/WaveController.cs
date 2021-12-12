@@ -96,7 +96,7 @@ public class WaveController : MonoBehaviour
             }
 
             //detecting if it's time to spawn yet or not
-            if (timeSinceLastEnemySpawn >= timePerEnemySpawn && !pauseButton.IsPaused)
+            if (timeSinceLastEnemySpawn >= timePerEnemySpawn && !PauseButton.IsPaused)
             {
                 if (enemiesSpawned < enemiesToSpawn) //making sure the wave is not over
                 {
@@ -163,7 +163,7 @@ public class WaveController : MonoBehaviour
 
         yield return new WaitForSeconds(0.3f); //letting the particles play before spawning the enemy
 
-        while (pauseButton.IsPaused)
+        while (PauseButton.IsPaused)
         {
             yield return new WaitForSeconds(0.01f);
         }

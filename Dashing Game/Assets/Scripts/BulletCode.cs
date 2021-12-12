@@ -29,18 +29,21 @@ public class BulletCode : MonoBehaviour
 
     void Update()
     {
-        #region Movement Code
-        //Movement --------------------------------------------------------------------------
-        transform.rotation = Quaternion.identity;
-
-        if (type == Types.lazer)
+        if (!PauseButton.IsPaused)
         {
-            transform.Translate(direction * speed * Time.deltaTime);
-            distanceTraveled += speed * Time.deltaTime;
-        }
+            #region Movement Code
+            //Movement --------------------------------------------------------------------------
+            transform.rotation = Quaternion.identity;
 
-        transform.rotation = rotation;
-        #endregion
+            if (type == Types.lazer)
+            {
+                transform.Translate(direction * speed * Time.deltaTime);
+                distanceTraveled += speed * Time.deltaTime;
+            }
+
+            transform.rotation = rotation;
+            #endregion
+        }
 
         if (distanceTraveled > range)
         {

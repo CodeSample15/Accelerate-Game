@@ -8,9 +8,9 @@ using TMPro;
 public class PauseButton : MonoBehaviour
 {
     [SerializeField] public Animator PauseAnimations;
-    [SerializeField] private bool paused;
+    [SerializeField] private static bool paused;
 
-    public bool IsPaused
+    public static bool IsPaused
     {
         get { return paused; }
     }
@@ -21,6 +21,16 @@ public class PauseButton : MonoBehaviour
         paused = false;
     }
 
+    void Update()
+    {
+        //pause if escape key is pressed
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            paused = !paused;
+        }
+    }
+
+    //for use with external buttons (graphical pause button)
     public void Pause()
     {
         paused = !paused;
