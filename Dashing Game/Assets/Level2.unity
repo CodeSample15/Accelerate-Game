@@ -16561,9 +16561,10 @@ MonoBehaviour:
   death_effect: {fileID: 1338930337}
   dash_light: {fileID: 675166329}
   menu_animations: {fileID: 1388866566}
+  menu_gameobject: {fileID: 1366007781}
+  paused_text: {fileID: 1366007782}
   score_gameobject: {fileID: 24037201}
   score_animation: {fileID: 1366007777}
-  pauseButton: {fileID: 1366007780}
   jump_particles: {fileID: 13196280}
 --- !u!4 &1001503056
 Transform:
@@ -27156,6 +27157,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -15.721985
       objectReference: {fileID: 0}
+    - target: {fileID: 6978213093926272674, guid: 1179389a9652efc489c745ae80ae9854,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -68.100006
+      objectReference: {fileID: 0}
     - target: {fileID: 8099932483754514856, guid: 1179389a9652efc489c745ae80ae9854,
         type: 3}
       propertyPath: player
@@ -27197,6 +27203,24 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df090ce36e0b1c94a94fa375278dc8de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &1366007781 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1253614027445701592, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 1366007776}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1366007782 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2400093118907694108, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 1366007776}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1370841986

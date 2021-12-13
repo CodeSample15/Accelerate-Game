@@ -24,6 +24,8 @@ public class Player : MonoBehaviour
     public ParticleSystem     death_effect;
     public Light2D            dash_light;
     public Animator           menu_animations;
+    public GameObject         menu_gameobject;
+    public TextMeshProUGUI    paused_text;
     public GameObject         score_gameobject;
     public Animator           score_animation;
     public ParticleSystem     jump_particles;
@@ -144,6 +146,8 @@ public class Player : MonoBehaviour
             if (!PauseButton.IsPaused)
             {
                 rb.simulated = true;
+                menu_gameobject.GetComponent<CanvasGroup>().alpha = 0; //rehiding the menu
+                paused_text.SetText(""); //the paused text object is literally just the sign that says "Paused"
 
                 //get user controll input (touch screen)
                 movement.x = joystick.Horizontal;
@@ -249,6 +253,10 @@ public class Player : MonoBehaviour
             {
                 //game is paused
                 rb.simulated = false;
+
+                //bring up pause menu (just regular end of game menu at the moment)
+                menu_gameobject.GetComponent<CanvasGroup>().alpha = 1;
+                paused_text.SetText("Paused");
             }
         }
         else

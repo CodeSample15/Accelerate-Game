@@ -29,15 +29,18 @@ public class ZoomFillBox : MonoBehaviour
 
     void Update()
     {
-        if(timeSinceLastRefill >= refillTime)
+        if (!PauseButton.IsPaused)
         {
-            refilled = true;
-            particles.Play();
-        }
-        else
-        {
-            timeSinceLastRefill += Time.deltaTime;
-            particles.Stop();
+            if (timeSinceLastRefill >= refillTime)
+            {
+                refilled = true;
+                particles.Play();
+            }
+            else
+            {
+                timeSinceLastRefill += Time.deltaTime;
+                particles.Stop();
+            }
         }
     }
 
