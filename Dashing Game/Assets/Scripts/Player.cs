@@ -146,7 +146,8 @@ public class Player : MonoBehaviour
             if (!PauseButton.IsPaused)
             {
                 rb.simulated = true;
-                menu_gameobject.GetComponent<CanvasGroup>().alpha = 0; //rehiding the menu
+                menu_animations.SetBool("Showing", false);
+                MenuLogic.buttonsActive = false; //turning off the buttons
                 paused_text.SetText(""); //the paused text object is literally just the sign that says "Paused"
 
                 //get user controll input (touch screen)
@@ -255,8 +256,12 @@ public class Player : MonoBehaviour
                 rb.simulated = false;
 
                 //bring up pause menu (just regular end of game menu at the moment)
-                menu_gameobject.GetComponent<CanvasGroup>().alpha = 1;
+                menu_animations.SetBool("Showing", true);
+                MenuLogic.buttonsActive = true; //turning on and showing the buttons
                 paused_text.SetText("Paused");
+
+                //hiding UI that shouldn't be shown
+                scoreText.SetText("");
             }
         }
         else
@@ -281,7 +286,9 @@ public class Player : MonoBehaviour
         dash_meter.value = dashPower / 100;
 
         UpdateScoreSize();
-        scoreText.text = "Score: " + score.ToString();
+
+        if(!PauseButton.IsPaused)
+            scoreText.text = "Score: " + score.ToString();
         //--------------------------------------------
     }
 
