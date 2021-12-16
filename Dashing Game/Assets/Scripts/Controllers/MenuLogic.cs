@@ -7,6 +7,7 @@ public class MenuLogic : MonoBehaviour
 {
     [SerializeField] private GameObject HomeButton;
     [SerializeField] private GameObject RestartButton;
+    [SerializeField] private GameObject ExitButton;
 
     [SerializeField] private GameObject player;
     [SerializeField] private Animator FadeAnimation;
@@ -29,6 +30,7 @@ public class MenuLogic : MonoBehaviour
         {
             HomeButton.SetActive(false);
             RestartButton.SetActive(false);
+            ExitButton.SetActive(false);
             buttonsActive = false;
         }
     }
@@ -39,6 +41,7 @@ public class MenuLogic : MonoBehaviour
         {
             HomeButton.SetActive(buttonsActive);
             RestartButton.SetActive(buttonsActive);
+            ExitButton.SetActive(buttonsActive);
         }
     }
 
@@ -55,6 +58,12 @@ public class MenuLogic : MonoBehaviour
     public void Play(int levelNum)
     {
         StartCoroutine(loadScene(levelNum));
+    }
+
+    //quit the game application
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 
     private IEnumerator loadScene(int sceneNum)

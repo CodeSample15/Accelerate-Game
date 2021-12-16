@@ -288,7 +288,7 @@ public class Player : MonoBehaviour
         UpdateScoreSize();
 
         if(!PauseButton.IsPaused)
-            scoreText.text = "Score: " + score.ToString();
+            scoreText.text = "Score: " + score.ToString() + "\nWave: " + enemy_controller.getWave;
         //--------------------------------------------
     }
 

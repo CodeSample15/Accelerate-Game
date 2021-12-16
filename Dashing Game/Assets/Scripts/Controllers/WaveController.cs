@@ -50,6 +50,11 @@ public class WaveController : MonoBehaviour
         get { return Enemies; }
     }
 
+    public int getWave
+    {
+        get { return wave; }
+    }
+
     public bool Spawning
     {
         get { return spawning; }
