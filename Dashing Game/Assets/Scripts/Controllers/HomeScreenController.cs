@@ -30,6 +30,11 @@ public class HomeScreenController : MonoBehaviour
     private float textSize; //how big the text is (for moving the currency sprite)
     private int money; //how much money the user has (loaded from save file)
 
+    [Header("HighScore")]
+    public TextMeshProUGUI HighScoreText;
+    private int highScore;
+
+    [Header("Play button animation and scene transition")]
     //for pressing the button
     public Animator PlayButtonAnimation;
     public MenuLogic transition;
@@ -46,14 +51,7 @@ public class HomeScreenController : MonoBehaviour
 
         //fetch player data and create file if there isn't any
         Debug.Log("Fetching player data...");
-        if (Saver.loadData() != null)
-        {
-            //load data
-            PlayerData data = Saver.loadData();
-
-            money = data.Money;
-        }
-        else
+        if (Saver.loadData() == null)
         {
             //new player, create new player data file
             PlayerData newPlayerData = new PlayerData(true, 0, 0);
@@ -61,6 +59,14 @@ public class HomeScreenController : MonoBehaviour
             Debug.Log("New player, creating player data file");
             Saver.SavePlayer(newPlayerData);
         }
+
+        //load data
+        PlayerData data = Saver.loadData();
+
+        money = data.Money;
+        highScore = data.HighScore;
+
+        Debug.Log("Player data loaded!");
     }
 
     void Update()
@@ -104,6 +110,7 @@ public class HomeScreenController : MonoBehaviour
         int moneyLength = money.ToString().Length; //used to determing how many spaces the icon should move back from the center
         CurrencySprite.GetComponent<RectTransform>().anchoredPosition = new Vector2(moneyLength * -textSize, CurrencySprite.GetComponent<RectTransform>().anchoredPosition.y);
 
+        HighScoreText.SetText("Highscore: " + highScore.ToString());
     }
 
     public void VolumeClick()

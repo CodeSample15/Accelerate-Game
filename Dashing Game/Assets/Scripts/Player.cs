@@ -271,6 +271,20 @@ public class Player : MonoBehaviour
             death_effect.Play();
             enemy_controller.Spawning = false;
 
+            //save data-----------------------------------------
+            PlayerData data = Saver.loadData();
+
+            if(data.HighScore < score)
+            {
+                //new high score
+                data.HighScore = score;
+            }
+
+            data.isNewPlayer = false; //no longer a new player now that the player has finished a game (CHANGE TO AFTER TUTORIAL IS PLAYED)
+
+            Saver.SavePlayer(data); //save changes to player files
+            //--------------------------------------------------
+
             //fade in a black screen
             menu_animations.SetTrigger("FadeIn");
             score_animation.SetTrigger("Move");
