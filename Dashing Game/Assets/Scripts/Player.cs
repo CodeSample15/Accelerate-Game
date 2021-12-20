@@ -9,28 +9,28 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Player : MonoBehaviour
 {
     #region Public Variables
-    public Animator           character_animations;
-    public WaveController     enemy_controller;
-    public Joystick           joystick;
-    public Slider             health_bar;
-    public Slider             dash_meter;
-    public TextMeshProUGUI    scoreText;
-    public Animator           bar_animation;
-    public Animator           damage_animation;
-    public ParticleSystem     dash_particles;
-    public GameObject         particle_holder;
-    public ParticleSystem     enemy_death_particles;
+    public Animator character_animations;
+    public WaveController enemy_controller;
+    public Joystick joystick;
+    public Slider health_bar;
+    public Slider dash_meter;
+    public TextMeshProUGUI scoreText;
+    public Animator bar_animation;
+    public Animator damage_animation;
+    public ParticleSystem dash_particles;
+    public GameObject particle_holder;
+    public ParticleSystem enemy_death_particles;
     public ParticleController particleController;
-    public ParticleSystem     death_effect;
-    public Light2D            dash_light;
-    public Animator           menu_animations;
-    public GameObject         menu_gameobject;
-    public TextMeshProUGUI    paused_text;
-    public GameObject         score_gameobject;
-    public Animator           score_animation;
-    public ParticleSystem     jump_particles;
+    public ParticleSystem death_effect;
+    public Light2D dash_light;
+    public Animator menu_animations;
+    public GameObject menu_gameobject;
+    public TextMeshProUGUI paused_text;
+    public GameObject score_gameobject;
+    public Animator score_animation;
+    public ParticleSystem jump_particles;
     #endregion
-    
+
     #region Private Variables
     private Rigidbody2D rb;
     private Collider2D col;
@@ -126,7 +126,7 @@ public class Player : MonoBehaviour
         //fixed variables for things like health and the amount of dash ability left
         health = 100f;
         dashPower = 100f;
-        dashing = false; 
+        dashing = false;
         score = 0;
         pointsPerKill = 15;
 
@@ -274,7 +274,7 @@ public class Player : MonoBehaviour
             //save data-----------------------------------------
             PlayerData data = Saver.loadData();
 
-            if(data.HighScore < score)
+            if (data.HighScore < score)
             {
                 //new high score
                 data.HighScore = score;
@@ -301,14 +301,14 @@ public class Player : MonoBehaviour
 
         UpdateScoreSize();
 
-        if(!PauseButton.IsPaused)
+        if (!PauseButton.IsPaused)
             scoreText.text = "Score: " + score.ToString() + "\nWave: " + enemy_controller.getWave;
         //--------------------------------------------
     }
 
     private void FixedUpdate()
     {
-        if(!dashing)
+        if (!dashing)
         {
             //walking code
             sideJumpVelocity *= sideJumpSlowRate;
@@ -318,7 +318,7 @@ public class Player : MonoBehaviour
             Vector3 targetVelocity = new Vector2((movement.x * movementSpeed), rb.velocity.y);
 
             // And then smoothing it out and applying it to the character
-            if(!Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1f), transform.right, sideDetectionLength)) //detecting if the player is on a wall or not
+            if (!Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1f), transform.right, sideDetectionLength)) //detecting if the player is on a wall or not
                 rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .05f);
             rb.AddForce(transform.right * sideJumpVelocity);
 
@@ -330,7 +330,7 @@ public class Player : MonoBehaviour
             //turning off the dash lights
             dash_light.enabled = false;
 
-            if (onGround())
+            if (onGround(false))
             {
                 doubleJumped = false;
             }
@@ -373,7 +373,8 @@ public class Player : MonoBehaviour
     //public methods
     public void jump()
     {
-        if (!dashing) {
+        if (!dashing)
+        {
             bool rightWall = false;
             bool leftWall = false;
 
@@ -395,7 +396,7 @@ public class Player : MonoBehaviour
                 character_animations.SetTrigger("Jump");
                 particleController.AddParticles(Instantiate(jump_particles, new Vector3(transform.position.x, transform.position.y - feetDistance, 100f), Quaternion.identity));
             }
-            else if(!doubleJumped)
+            else if (!doubleJumped)
             {
                 doubleJumped = true;
                 character_animations.SetTrigger("Jump");
@@ -415,12 +416,12 @@ public class Player : MonoBehaviour
             */
         }
     }
-    
+
 
     /// <summary>
     /// Helper method for determining if the player is on the ground and not falling or dashing
     /// </summary>
-    private bool onGround()
+    private bool onGround(bool checkWall)
     {
         RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.5f);
         RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.5f);
@@ -435,7 +436,10 @@ public class Player : MonoBehaviour
             if (left.collider.CompareTag("Ground"))
                 leftCol = true;
 
-        return Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f) || rightCol || leftCol;
+        if (checkWall)
+            return Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f) || rightCol || leftCol;
+        else
+            return Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f);
     }
 
     /// <summary>
@@ -504,14 +508,14 @@ public class Player : MonoBehaviour
 
     IEnumerator animateScore(int newScore)
     {
-        if(newScore > score)
+        if (newScore > score)
         {
             //animate
-            while(score < newScore)
+            while (score < newScore)
             {
                 score += 1;
 
-                if(score_gameobject.transform.localScale.x < scoreGrowSize + scoreNormalSize)
+                if (score_gameobject.transform.localScale.x < scoreGrowSize + scoreNormalSize)
                 {
                     float newScoreSize = score_gameobject.transform.localScale.x + scoreGrowSpeed;
 
@@ -531,7 +535,7 @@ public class Player : MonoBehaviour
     */
     private void UpdateScoreSize()
     {
-        if(score_gameobject.transform.localScale.x > scoreNormalSize)
+        if (score_gameobject.transform.localScale.x > scoreNormalSize)
         {
             score_gameobject.transform.localScale = new Vector2(score_gameobject.transform.localScale.x - scoreShrinkSpeed, score_gameobject.transform.localScale.y - scoreShrinkSpeed);
         }
@@ -541,11 +545,17 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D col)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if (col.gameObject.CompareTag("JumpPad"))
+        if (other.gameObject.CompareTag("Lava"))
+            health = 0; //kill the player
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.CompareTag("JumpPad"))
         {
-            float jumpBoost = col.gameObject.GetComponent<JumpPadLogic>().Boost;
+            float jumpBoost = other.gameObject.GetComponent<JumpPadLogic>().Boost;
 
             //Boosting the player upwards if they are not dashing
             if (!dashing)
@@ -554,8 +564,6 @@ public class Player : MonoBehaviour
                 rb.AddForce(transform.up * jumpBoost, ForceMode2D.Impulse);
             }
         }
-
-        if (col.gameObject.CompareTag("Lava"))
-            health = 0; //kill the player
     }
+
 }
