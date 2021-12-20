@@ -8,6 +8,7 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private GameObject HomeButton;
     [SerializeField] private GameObject RestartButton;
     [SerializeField] private GameObject ExitButton;
+    [SerializeField] private Animator   PressedButtonAnimation;
 
     [SerializeField] private GameObject player;
     [SerializeField] private Animator FadeAnimation;
@@ -51,6 +52,10 @@ public class MenuLogic : MonoBehaviour
     public void Play()
     {
         int nextLevel = Random.Range(1, NumberOfStages+1);
+
+        //playing button animation if there is one
+        if (PressedButtonAnimation != null)
+            PressedButtonAnimation.SetTrigger("Clicked");
 
         StartCoroutine(loadScene(nextLevel));
     }
