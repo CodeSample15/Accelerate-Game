@@ -827,10 +827,10 @@ RectTransform:
   m_Father: {fileID: 1914953736}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -61, y: -243.72}
-  m_SizeDelta: {x: 32.750896, y: 34.543346}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 71, y: 62}
+  m_SizeDelta: {x: 32.7509, y: 34.543335}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &705004722
 MonoBehaviour:
@@ -905,7 +905,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 31d856b16c8ae214a8a24234e4b67383, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 20a519f62cd1d5b4a97ed8d70b7f67a0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1169,10 +1169,10 @@ RectTransform:
   m_Father: {fileID: 1914953736}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 65, y: -244.37}
-  m_SizeDelta: {x: 32.739037, y: 33.23419}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -62, y: 61.345}
+  m_SizeDelta: {x: 32.739044, y: 33.23419}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &873111923
 MonoBehaviour:
@@ -1645,10 +1645,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   VolumeButton: {fileID: 705004720}
   VolumeSprites:
-  - {fileID: 21300000, guid: 31d856b16c8ae214a8a24234e4b67383, type: 3}
-  - {fileID: 21300000, guid: 64bc38a69e45b1a44a4fb40f4d5a49f2, type: 3}
-  - {fileID: 21300000, guid: b535a1df1bf0ec445a3f524aa28ad794, type: 3}
-  - {fileID: 21300000, guid: 1247f4acdf336e341a0d73b795f40408, type: 3}
+  - {fileID: 21300000, guid: 20a519f62cd1d5b4a97ed8d70b7f67a0, type: 3}
+  - {fileID: 21300000, guid: 9cb314546c561bc4faaa57f199e5b0c9, type: 3}
+  - {fileID: 21300000, guid: 76800ba697b68ea49a8663b78086e50e, type: 3}
+  - {fileID: 21300000, guid: f6506a0905888b74c87dd734997c8ef7, type: 3}
   MusicVolumeButton: {fileID: 873111921}
   MusicVolumeSprites:
   - {fileID: 21300000, guid: b31d8c19b456b604886de4ed8ab8b6ff, type: 3}
