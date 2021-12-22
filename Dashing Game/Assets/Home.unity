@@ -1908,7 +1908,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b31d8c19b456b604886de4ed8ab8b6ff, type: 3}
   - {fileID: 21300000, guid: 7312fef4fe4b94141854c41f9ddb7384, type: 3}
   Menu: {fileID: 1914953735}
-  MenuAnimation: {fileID: 0}
+  MenuAnimation: {fileID: 548429636}
   MenuSpeed: 0
   CurrencySprite: {fileID: 1362474876}
   MoneyDisplay: {fileID: 9790684}

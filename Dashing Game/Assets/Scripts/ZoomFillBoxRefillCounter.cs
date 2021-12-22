@@ -19,7 +19,7 @@ public class ZoomFillBoxRefillCounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(fillbox.TimeSinceLastRefill == fillbox.refillTime)
+        if(fillbox.TimeSinceLastRefill == fillbox.refillTime || !ZoomFillBox.ActivatedBoxes[fillbox.ID])
         {
             text.SetText("");
         }

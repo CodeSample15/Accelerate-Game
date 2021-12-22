@@ -28,6 +28,11 @@ public class PauseButton : MonoBehaviour
         {
             paused = !paused;
         }
+
+        if (Input.GetButtonDown("joystick button 7"))
+        {
+            paused = !paused;
+        }
     }
 
     //for use with external buttons (graphical pause button)
