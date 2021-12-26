@@ -39,6 +39,9 @@ public class HomeScreenController : MonoBehaviour
     public Animator PlayButtonAnimation;
     public MenuLogic transition;
 
+    private bool movingJoyStick; //for detecting if the player is moving the joystick on the controller to select items on the menu
+    private bool selectingWithJoyStick; //for selecting with joystick
+
     void Awake()
     {
         CurrentSprite = 0; //change this to information loaded from player file
@@ -48,6 +51,9 @@ public class HomeScreenController : MonoBehaviour
         MenuSpeed = 6f;
 
         textSize = 10f;
+
+        movingJoyStick = false;
+        selectingWithJoyStick = false;
 
         //fetch player data and create file if there isn't any
         Debug.Log("Fetching player data...");
@@ -81,6 +87,16 @@ public class HomeScreenController : MonoBehaviour
                 targetPosition = new Vector2(-123.8f, Menu.GetComponent<RectTransform>().anchoredPosition.y);
                 Menu.GetComponent<RectTransform>().anchoredPosition = transform.localPosition = Vector2.Lerp(transform.localPosition, targetPosition, Time.deltaTime * MenuSpeed);
             }
+
+            //code for when menu is showing
+            if(Mathf.Abs(Input.GetAxis("Horizontal")) > 0 && !movingJoyStick)
+            {
+                movingJoyStick = true;
+                selectingWithJoyStick = true;
+            }
+
+            
+            //VolumeButton.GetComponent<Button>().Select();
         }
         else
         {
@@ -89,6 +105,8 @@ public class HomeScreenController : MonoBehaviour
                 targetPosition = new Vector2(126.3f, Menu.GetComponent<RectTransform>().anchoredPosition.y);
                 Menu.GetComponent<RectTransform>().anchoredPosition = transform.localPosition = Vector2.Lerp(transform.localPosition, targetPosition, Time.deltaTime * MenuSpeed);
             }
+
+            selectingWithJoyStick = false;
         }
 
         //A button on controller to start
@@ -105,11 +123,12 @@ public class HomeScreenController : MonoBehaviour
             MenuAnimation.SetTrigger("Pressed");
         }
 
-        //update high scores and money amount
+        //update money amount display
         MoneyDisplay.SetText(money.ToString());
         int moneyLength = money.ToString().Length; //used to determing how many spaces the icon should move back from the center
         CurrencySprite.GetComponent<RectTransform>().anchoredPosition = new Vector2(moneyLength * -textSize, CurrencySprite.GetComponent<RectTransform>().anchoredPosition.y);
 
+        //update high score display
         HighScoreText.SetText("Highscore: " + highScore.ToString());
     }
 
