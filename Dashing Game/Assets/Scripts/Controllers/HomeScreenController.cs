@@ -39,8 +39,12 @@ public class HomeScreenController : MonoBehaviour
     public Animator PlayButtonAnimation;
     public MenuLogic transition;
 
-    private bool movingJoyStick; //for detecting if the player is moving the joystick on the controller to select items on the menu
-    private bool selectingWithJoyStick; //for selecting with joystick
+    private bool alreadySelectedButtons;
+
+    public bool MenuIsShowing
+    {
+        get { return MenuShowing; }
+    }
 
     void Awake()
     {
@@ -52,8 +56,7 @@ public class HomeScreenController : MonoBehaviour
 
         textSize = 10f;
 
-        movingJoyStick = false;
-        selectingWithJoyStick = false;
+        alreadySelectedButtons = false;
 
         //fetch player data and create file if there isn't any
         Debug.Log("Fetching player data...");
@@ -82,6 +85,10 @@ public class HomeScreenController : MonoBehaviour
 
         if (MenuShowing)
         {
+            //enable buttons
+            VolumeButton.SetActive(true);
+            MusicVolumeButton.SetActive(true);
+
             if (menuPosition.x > -123.8f)
             {
                 targetPosition = new Vector2(-123.8f, Menu.GetComponent<RectTransform>().anchoredPosition.y);
@@ -89,14 +96,12 @@ public class HomeScreenController : MonoBehaviour
             }
 
             //code for when menu is showing
-            if(Mathf.Abs(Input.GetAxis("Horizontal")) > 0 && !movingJoyStick)
+            if(Mathf.Abs(Input.GetAxis("Horizontal")) > 0 && !alreadySelectedButtons)
             {
-                movingJoyStick = true;
-                selectingWithJoyStick = true;
-            }
+                alreadySelectedButtons = true;
 
-            
-            //VolumeButton.GetComponent<Button>().Select();
+                VolumeButton.GetComponent<Button>().Select();
+            }
         }
         else
         {
@@ -106,11 +111,13 @@ public class HomeScreenController : MonoBehaviour
                 Menu.GetComponent<RectTransform>().anchoredPosition = transform.localPosition = Vector2.Lerp(transform.localPosition, targetPosition, Time.deltaTime * MenuSpeed);
             }
 
-            selectingWithJoyStick = false;
+            //disable buttons
+            VolumeButton.SetActive(false);
+            MusicVolumeButton.SetActive(false);
         }
 
         //A button on controller to start
-        if(Input.GetButtonDown("joystick button 0"))
+        if(Input.GetButtonDown("joystick button 0") && !MenuShowing)
         {
             PlayButtonAnimation.SetTrigger("Clicked");
             transition.Play();

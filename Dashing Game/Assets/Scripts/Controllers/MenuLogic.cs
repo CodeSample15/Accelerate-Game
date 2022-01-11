@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuLogic : MonoBehaviour
 {
+    [SerializeField] HomeScreenController HomeScreenController;
     [SerializeField] private GameObject HomeButton;
     [SerializeField] private GameObject RestartButton;
     [SerializeField] private GameObject ExitButton;
@@ -55,7 +56,8 @@ public class MenuLogic : MonoBehaviour
 
         //playing button animation if there is one
         if (PressedButtonAnimation != null)
-            PressedButtonAnimation.SetTrigger("Clicked");
+            if(!HomeScreenController.MenuIsShowing)
+                PressedButtonAnimation.SetTrigger("Clicked");
 
         StartCoroutine(loadScene(nextLevel));
     }
