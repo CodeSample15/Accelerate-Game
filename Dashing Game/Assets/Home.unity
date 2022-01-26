@@ -284,6 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed1057b76d655054dae0834ab9575854, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HomeScreenController: {fileID: 1105439284}
   HomeButton: {fileID: 0}
   RestartButton: {fileID: 0}
   ExitButton: {fileID: 0}
