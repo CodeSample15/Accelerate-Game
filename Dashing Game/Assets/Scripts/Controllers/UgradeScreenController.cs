@@ -7,13 +7,22 @@ public class UgradeScreenController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI MoneyDisplay;
 
+    [Header("Different upgrade bars")]
+    [SerializeField] private UpgradeBar SpeedUpgradeBar;
+    [SerializeField] private UpgradeBar MaxHealthUpgradeBar;
+    [SerializeField] private UpgradeBar MaxDashUpgradeBar;
+    [SerializeField] private UpgradeBar DashRechargeUpgradeBar;
+    [SerializeField] private UpgradeBar JumpHeightUpgradeBar;
+
     //private fields
+    private PlayerData data;
+
     private int money;
 
     void Awake()
     {
         //load player data from file
-        PlayerData data = Saver.loadData();
+        data = Saver.loadData();
 
         money = data.Money;
     }
@@ -21,5 +30,12 @@ public class UgradeScreenController : MonoBehaviour
     void Update()
     {
         MoneyDisplay.SetText(money.ToString());
+
+        //update all of the bars
+        SpeedUpgradeBar.UpdateDisplay(data);
+        MaxHealthUpgradeBar.UpdateDisplay(data);
+        MaxDashUpgradeBar.UpdateDisplay(data);
+        DashRechargeUpgradeBar.UpdateDisplay(data);
+        JumpHeightUpgradeBar.UpdateDisplay(data);
     }
 }

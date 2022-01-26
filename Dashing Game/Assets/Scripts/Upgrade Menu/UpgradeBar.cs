@@ -14,7 +14,7 @@ public class UpgradeBar : MonoBehaviour
 
 
     private List<GameObject> bars;
-    private PlayerData data;
+    private PlayerData loaded_data;
 
     //adjustable variables
     private float barDistance;
@@ -22,20 +22,20 @@ public class UpgradeBar : MonoBehaviour
     void Awake()
     {
         //load data from save file
-        data = Saver.loadData();
+        loaded_data = Saver.loadData();
         bars = new List<GameObject>();
 
         barDistance = 11f;
 
-        UpdateDisplay();
+        UpdateDisplay(loaded_data);
     }
 
     //get the amount of upgrades that the player has put on a stat
-    private int getAmountOfBars()
+    private int getAmountOfBars(PlayerData data)
     {
         int output = 0;
 
-        switch(statType) 
+        switch (statType) 
         {
             case StatTypes.Speed:
                 output = data.SpeedUpgrade;
@@ -61,7 +61,7 @@ public class UpgradeBar : MonoBehaviour
         return output;
     }
 
-    public void UpdateDisplay()
+    public void UpdateDisplay(PlayerData data)
     {
         //clear preexisting bars
         foreach(GameObject bar in bars)
@@ -73,12 +73,12 @@ public class UpgradeBar : MonoBehaviour
         //start position for the progress bar
         float x = transform.position.x;
 
-        for (int i = 0; i < getAmountOfBars(); i++) {
+        for (int i = 0; i < getAmountOfBars(data); i++) {
             bars.Add(Instantiate(FullBar, new Vector2(x, transform.position.y), Quaternion.identity));
             bars[bars.Count-1].transform.parent = gameObject.transform;
             x += barDistance;
         }
-        for(int i=0; i<5-getAmountOfBars(); i++)
+        for(int i=0; i<5-getAmountOfBars(data); i++)
         {
             bars.Add(Instantiate(EmptyBar, new Vector2(x, transform.position.y), Quaternion.identity));
             bars[bars.Count - 1].transform.parent = gameObject.transform;
