@@ -25,7 +25,7 @@ public class UpgradeBar : MonoBehaviour
         loaded_data = Saver.loadData();
         bars = new List<GameObject>();
 
-        barDistance = 11f;
+        barDistance = 0.65f;
 
         UpdateDisplay(loaded_data);
     }
@@ -74,13 +74,13 @@ public class UpgradeBar : MonoBehaviour
         float x = transform.position.x;
 
         for (int i = 0; i < getAmountOfBars(data); i++) {
-            bars.Add(Instantiate(FullBar, new Vector2(x, transform.position.y), Quaternion.identity));
+            bars.Add(Instantiate(FullBar, new Vector3(x, transform.position.y, -1), Quaternion.identity));
             bars[bars.Count-1].transform.parent = gameObject.transform;
             x += barDistance;
         }
         for(int i=0; i<5-getAmountOfBars(data); i++)
         {
-            bars.Add(Instantiate(EmptyBar, new Vector2(x, transform.position.y), Quaternion.identity));
+            bars.Add(Instantiate(EmptyBar, new Vector3(x, transform.position.y, -1), Quaternion.identity));
             bars[bars.Count - 1].transform.parent = gameObject.transform;
             x += barDistance;
         }
