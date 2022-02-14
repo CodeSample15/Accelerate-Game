@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
     public GameObject score_gameobject;
     public Animator score_animation;
     public ParticleSystem jump_particles;
+    public ScoreAnimation money_add_animation;
     #endregion
 
     #region Private Variables
@@ -46,6 +47,7 @@ public class Player : MonoBehaviour
     private float dashRechargeRate; // how fast the dash bar refills
     private float dashDischargeRate; // how fast the dash bar empties when the player dashes
     private float sideDetectionLength; // how far the raycast for the side detection is shot out. Can be used to adjust how steep of an angle the player can run up
+
     private float scoreAnimationSpeed;
     private float scoreNormalSize;
     private float scoreGrowSize;
@@ -67,9 +69,21 @@ public class Player : MonoBehaviour
     private bool doubleJumped; //test if the player has already double jumped
 
     private Vector3 velocity = Vector3.zero;
+
+    //player data
+    private PlayerData data;
+
+    private int moneyAdded; //will keep track of the amount of currency the player will earn at the end of the game
+
+    //upgrade variables (will store the actual additions made to the stats, not how many upgrades the player has made to a category)
+    private float speedUpgrade;
+    private float maxHealthUpgrade;
+    private float maxDashUpgrade;
+    private float dashRechargeUpgrade;
+    private float jumpHeightUpgrade;
     #endregion
 
-    #region public versions of private variables
+    #region Public versions of private variables
     public float DashPower
     {
         get { return dashPower; }
@@ -96,7 +110,33 @@ public class Player : MonoBehaviour
     {
         get { return health > 0; }
     }
+
+    public float MaxDash
+    {
+        get { return maxDashUpgrade + 100; }
+    }
     #endregion
+
+    #region Applying upgrades to the player
+    /*
+     *  Any line of code with the comment "UPGRADE" next to it uses one of the following upgrade variables to upgrade a stat
+    */
+
+    private void applyUpgrades()
+    {
+        //setting all of the appropriate values to the amount of upgrades on a given stat times a modifier
+        speedUpgrade = (data.SpeedUpgrade * 0.2f) + 1;
+        maxHealthUpgrade = data.MaxHealthUpgrade * 10;
+        maxDashUpgrade = data.MaxDashUpgrade * 10;
+        dashRechargeUpgrade = data.DashRechargeUpgrade * 0.5f;
+        jumpHeightUpgrade = data.JumpHeightUpgrade * 0.3f;
+
+        //update ui
+        health_bar.maxValue = 100 + maxHealthUpgrade; // UPGRADE
+        dash_meter.maxValue = 100 + maxDashUpgrade; // UPGRADE
+    }
+    #endregion
+
 
     // Start is called before the first frame update
     void Awake()
@@ -123,9 +163,9 @@ public class Player : MonoBehaviour
         scoreShrinkSpeed = 0.009f;
         scoreGrowSpeed = 0.06f;
 
-        //fixed variables for things like health and the amount of dash ability left
-        health = 100f;
-        dashPower = 100f;
+        //fixed starting value variables for things like health and the amount of dash ability left
+        health = 100f + maxHealthUpgrade;
+        dashPower = 100f + maxDashUpgrade;
         dashing = false;
         score = 0;
         pointsPerKill = 15;
@@ -135,6 +175,17 @@ public class Player : MonoBehaviour
         feetDistance = 0.01f;
 
         lastDashDir = new Vector2(0, 1);
+
+        //load player data and apply upgrades
+        data = Saver.loadData();
+
+        //new players get 15 "dollars" to start with
+        if (data.isNewPlayer)
+            moneyAdded = 15;
+        else
+            moneyAdded = 0;
+
+        applyUpgrades();
     }
 
     // Update is called once per frame
@@ -155,7 +206,7 @@ public class Player : MonoBehaviour
                 movement.y = joystick.Vertical;
 
                 /*
-                 * MOVEMENT CODE FOR ADMIN ONLY (FOR NOW)
+                 * MOVEMENT CODE FOR PC ONLY (FOR NOW)
                 */
                 movement.x = Input.GetAxisRaw("Horizontal");
                 movement.y = Input.GetAxisRaw("Vertical");
@@ -163,7 +214,7 @@ public class Player : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("joystick button 0"))
                     jump();
                 /*
-                 * MOVEMENT CODE FOR ADMIN ONLY (FOR NOW)
+                 * MOVEMENT CODE FOR PC ONLY (FOR NOW)
                  */
 
                 //only dashes if the dash meter is above a certain point
@@ -194,12 +245,12 @@ public class Player : MonoBehaviour
 
 
                 //refilling the dash meter--------------------------------------
-                if (!dashing && dashPower < 100)
+                if (!dashing && dashPower < 100 + maxDashUpgrade) //UPGRADE
                 {
                     //if the player doesn't have enough dash ability and isn't dashing, recharge
-                    dashPower += Time.deltaTime * dashRechargeRate;
+                    dashPower += Time.deltaTime * (dashRechargeRate + dashRechargeUpgrade); // UPGRADE
                 }
-                else if (dashPower > 100)
+                else if (dashPower > 100 + maxDashUpgrade) //UPGRADE
                 {
                     //if the player has more dash ability than the max, reset it to the max
                     dashPower = 100;
@@ -272,8 +323,6 @@ public class Player : MonoBehaviour
             enemy_controller.Spawning = false;
 
             //save data-----------------------------------------
-            PlayerData data = Saver.loadData();
-
             if (data.HighScore < score)
             {
                 //new high score
@@ -281,6 +330,9 @@ public class Player : MonoBehaviour
             }
 
             data.isNewPlayer = false; //no longer a new player now that the player has finished a game (CHANGE TO AFTER TUTORIAL IS PLAYED)
+
+            //calculate the amount of money the player should get
+            data.Money += moneyAdded;
 
             Saver.SavePlayer(data); //save changes to player files
             //--------------------------------------------------
@@ -292,12 +344,15 @@ public class Player : MonoBehaviour
             //enable the menu buttons
             MenuLogic.buttonsActive = true;
 
+            //start the animation for the amount of money being added the player's balance
+            money_add_animation.runAnimation(0.7f, 0, moneyAdded);
+
             gameObject.SetActive(false); //"kill" the player
         }
 
         //update UI-----------------------------------
-        health_bar.value = health / 100;
-        dash_meter.value = dashPower / 100;
+        health_bar.value = health;
+        dash_meter.value = dashPower;
 
         UpdateScoreSize();
 
@@ -315,7 +370,7 @@ public class Player : MonoBehaviour
             rb.gravityScale = 2;
 
             // Move the character by finding the target velocity
-            Vector3 targetVelocity = new Vector2((movement.x * movementSpeed), rb.velocity.y);
+            Vector3 targetVelocity = new Vector2((movement.x * movementSpeed) * speedUpgrade, rb.velocity.y); //UPGRADE
 
             // And then smoothing it out and applying it to the character
             if (!Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1f), transform.right, sideDetectionLength)) //detecting if the player is on a wall or not
@@ -354,7 +409,7 @@ public class Player : MonoBehaviour
             }
 
             targetVelocity = targetVelocity.normalized;
-            targetVelocity *= dashSpeed;
+            targetVelocity *= dashSpeed * speedUpgrade; //UPGRADE
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .02f);
 
             //putting in the particles
@@ -390,7 +445,7 @@ public class Player : MonoBehaviour
                 }
 
                 //applying upwards force
-                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce + jumpHeightUpgrade); //UPGRADE
 
                 //setting animations and particles
                 character_animations.SetTrigger("Jump");
@@ -400,7 +455,7 @@ public class Player : MonoBehaviour
             {
                 doubleJumped = true;
                 character_animations.SetTrigger("Jump");
-                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce + jumpHeightUpgrade); //UPGRADE
                 particleController.AddParticles(Instantiate(jump_particles, new Vector3(transform.position.x, transform.position.y - feetDistance, 100f), Quaternion.identity));
             }
 
@@ -417,6 +472,30 @@ public class Player : MonoBehaviour
         }
     }
 
+    //for adding earned currency for the player to get at the end of the game
+    public void earnMoney(int amount)
+    {
+        moneyAdded += amount;
+    }
+
+    /// <summary>
+    /// Controlls how much money the player will get for each enemy kill (depending on the type)
+    /// All currency gain amounts are here (they are not stored in external variables)
+    /// </summary>
+    private void givePlayerMoneyForKill(int type)
+    {
+        if (type == 0)          //Normal
+            moneyAdded += 1;
+
+        else if (type == 1)     //Shooter
+            moneyAdded += 1;
+
+        else if (type == 2)     //Bomber
+            moneyAdded += 2;    //slightly more since they have the chance to explode before you kill them
+
+        else if (type == 3)     //Ghost
+            moneyAdded += 2;
+    }
 
     /// <summary>
     /// Helper method for determining if the player is on the ground and not falling or dashing
@@ -497,6 +576,9 @@ public class Player : MonoBehaviour
 
                         //updating stats
                         StartCoroutine(animateScore(score + pointsPerKill));
+
+                        //giving the player some money
+                        givePlayerMoneyForKill(enemyType);
 
                         enemy_controller.clearEnemy(i); //clear out the dead enemy from the list
                         i--;

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -7240,6 +7240,7 @@ MonoBehaviour:
   score_gameobject: {fileID: 1887494360}
   score_animation: {fileID: 1887494367}
   jump_particles: {fileID: 950497199}
+  money_add_animation: {fileID: 1887494373}
 --- !u!4 &732419004
 Transform:
   m_ObjectHideFlags: 0
@@ -11786,6 +11787,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1887494359}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1887494373 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5864364168864626918, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 1887494359}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f50711e34286ca42a09dcfb323fe905, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1931359646
 PrefabInstance:
   m_ObjectHideFlags: 0

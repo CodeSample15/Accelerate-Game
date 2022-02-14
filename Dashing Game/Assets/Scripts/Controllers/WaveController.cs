@@ -128,7 +128,7 @@ public class WaveController : MonoBehaviour
                         {
                             //start a new wave
                             enemiesSpawned = 0;
-                            timeSinceLastEnemySpawn = 0; //just some more wait time when a new wave starts
+                            timeSinceLastEnemySpawn = 0; //adding some more wait time when a new wave starts
                             wave++;
                             enemiesToSpawn += enemyIncreasePerWave;
 
@@ -141,6 +141,9 @@ public class WaveController : MonoBehaviour
 
                             minTimePerEnemySpawn = Mathf.Max(0, minTimePerEnemySpawn);
                             nextEnemyWait = Random.Range(minTimePerEnemySpawn, maxTimePerEnemySpawn);
+
+                            //give the player more money for completing a round
+                            player.GetComponent<Player>().earnMoney(5 * (wave-1));
 
                             //play animations and stuff
                             waveText.SetText("Next wave: " + wave.ToString());

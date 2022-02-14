@@ -3,6 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 
+/*
+ * Types of enemies:
+ * 0: Melee (red)
+ * 1: Shooter (green)
+ * 2: Bomber (blue)
+ * 3: Ghost (clear)
+ */
+
 public class Enemy : MonoBehaviour
 {
     //Public
@@ -121,7 +129,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if (!player.isAlive)
+        if (!player.isAlive || player == null)
             Destroy(gameObject);
 
         //Controlling the stats and movement of the enemy depending on what type it is---------------------------------------------------------------------------------
@@ -190,7 +198,7 @@ public class Enemy : MonoBehaviour
                     break;
 
                 case 3:
-                    //ghost
+                    //Ghost
                     {
                         path.maxSpeed = 0;
 

@@ -108,7 +108,7 @@ public class ZoomFillBox : MonoBehaviour
                 {
                     timeSinceLastRefill = 0f;
 
-                    player.DashPower = 100;
+                    player.DashPower = player.GetComponent<Player>().MaxDash;
                     refilled = false;
 
                     if (activatedFillBoxes.Count > 1)

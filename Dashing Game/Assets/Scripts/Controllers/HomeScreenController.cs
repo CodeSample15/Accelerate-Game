@@ -39,6 +39,9 @@ public class HomeScreenController : MonoBehaviour
     public Animator PlayButtonAnimation;
     public MenuLogic transition;
 
+    [Header("Store button animation")]
+    public Animator StoreAnimation;
+
     private bool alreadySelectedButtons;
 
     public bool MenuIsShowing
@@ -60,10 +63,11 @@ public class HomeScreenController : MonoBehaviour
 
         //fetch player data and create file if there isn't any
         Debug.Log("Fetching player data...");
-        if (Saver.loadData() == null)
+        if (Saver.loadData() == null || false)
         {
             //new player, create new player data file
-            PlayerData newPlayerData = new PlayerData(true, 0, 0, 0, 0, 0, 0, 0);
+            PlayerData newPlayerData = new PlayerData(true, 100000, 0, 
+                                                     0, 0, 0, 0, 0);
 
             Debug.Log("New player, creating player data file");
             Saver.SavePlayer(newPlayerData);
@@ -156,6 +160,12 @@ public class HomeScreenController : MonoBehaviour
             MusicVolumeButton.GetComponent<Image>().sprite = MusicVolumeSprites[0];
         else
             MusicVolumeButton.GetComponent<Image>().sprite = MusicVolumeSprites[1];
+    }
+
+    public void AnimateStoreButton()
+    {
+        //animate the score button using the same animation that the play button uses
+        StoreAnimation.SetTrigger("Clicked");
     }
 
     public void SettingsClick()
