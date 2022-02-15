@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
+using UnityEngine.Experimental.Rendering.Universal;
 
 /*
  * Types of enemies:
@@ -325,6 +326,7 @@ public class Enemy : MonoBehaviour
     {
         //Changing the color of the sprite and light of the enemy
         sprite.color = Colors[Type];
+        GetComponentInChildren<Light2D>().color = Colors[Type];
     }
 
     private float distanceTo(GameObject other)

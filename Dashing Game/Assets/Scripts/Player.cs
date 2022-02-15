@@ -125,10 +125,10 @@ public class Player : MonoBehaviour
     private void applyUpgrades()
     {
         //setting all of the appropriate values to the amount of upgrades on a given stat times a modifier
-        speedUpgrade = (data.SpeedUpgrade * 0.2f) + 1;
-        maxHealthUpgrade = data.MaxHealthUpgrade * 10;
-        maxDashUpgrade = data.MaxDashUpgrade * 10;
-        dashRechargeUpgrade = data.DashRechargeUpgrade * 0.5f;
+        speedUpgrade = (data.SpeedUpgrade * 0.15f) + 1;
+        maxHealthUpgrade = data.MaxHealthUpgrade * 11f;
+        maxDashUpgrade = data.MaxDashUpgrade * 11f;
+        dashRechargeUpgrade = data.DashRechargeUpgrade * 0.7f;
         jumpHeightUpgrade = data.JumpHeightUpgrade * 0.3f;
 
         //update ui
