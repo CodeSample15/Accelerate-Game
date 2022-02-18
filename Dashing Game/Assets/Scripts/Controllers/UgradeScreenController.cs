@@ -47,7 +47,7 @@ public class UgradeScreenController : MonoBehaviour
         DashRechargeStartPrice = 60;
         JumpHeightStartPrice = 30;
 
-        increaseRate = 0.5f;
+        increaseRate = 1.2f;
     }
 
     //private methods
@@ -59,11 +59,11 @@ public class UgradeScreenController : MonoBehaviour
         int DashRechargeAddition = (int)(DashRechargeStartPrice * data.DashRechargeUpgrade * increaseRate);
         int JumpHeightAddition = (int)(JumpHeightStartPrice * data.JumpHeightUpgrade * increaseRate);
 
-        SpeedPrice.SetText("$" + (SpeedStartPrice + SpeedAddition).ToString());
-        MaxHealthPrice.SetText("$" + (MaxHealthStartPrice + MaxHealthAddition).ToString());
-        MaxDashPrice.SetText("$" + (MaxDashStartPrice + MaxDashAddition).ToString());
-        DashRechargePrice.SetText("$" + (DashRechargeStartPrice + DashRechargeAddition).ToString());
-        JumpHeightPrice.SetText("$" + (JumpHeightStartPrice + JumpHeightAddition).ToString());
+        SpeedPrice.SetText(data.SpeedUpgrade == 5 ? "Max" : "$" + (SpeedStartPrice + SpeedAddition).ToString());
+        MaxHealthPrice.SetText(data.MaxHealthUpgrade == 5 ? "Max" : "$" + (MaxHealthStartPrice + MaxHealthAddition).ToString());
+        MaxDashPrice.SetText(data.MaxDashUpgrade == 5 ? "Max" : "$" + (MaxDashStartPrice + MaxDashAddition).ToString());
+        DashRechargePrice.SetText(data.DashRechargeUpgrade == 5 ? "Max" : "$" + (DashRechargeStartPrice + DashRechargeAddition).ToString());
+        JumpHeightPrice.SetText(data.JumpHeightUpgrade == 5 ? "Max" : "$" + (JumpHeightStartPrice + JumpHeightAddition).ToString());
     }
 
 

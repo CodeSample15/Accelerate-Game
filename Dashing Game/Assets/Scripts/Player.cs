@@ -126,8 +126,8 @@ public class Player : MonoBehaviour
     {
         //setting all of the appropriate values to the amount of upgrades on a given stat times a modifier
         speedUpgrade = (data.SpeedUpgrade * 0.15f) + 1;
-        maxHealthUpgrade = data.MaxHealthUpgrade * 11f;
-        maxDashUpgrade = data.MaxDashUpgrade * 11f;
+        maxHealthUpgrade = data.MaxHealthUpgrade * 15f;
+        maxDashUpgrade = data.MaxDashUpgrade * 15f;
         dashRechargeUpgrade = data.DashRechargeUpgrade * 0.7f;
         jumpHeightUpgrade = data.JumpHeightUpgrade * 0.3f;
 
@@ -164,8 +164,6 @@ public class Player : MonoBehaviour
         scoreGrowSpeed = 0.06f;
 
         //fixed starting value variables for things like health and the amount of dash ability left
-        health = 100f + maxHealthUpgrade;
-        dashPower = 100f + maxDashUpgrade;
         dashing = false;
         score = 0;
         pointsPerKill = 15;
@@ -186,6 +184,9 @@ public class Player : MonoBehaviour
             moneyAdded = 0;
 
         applyUpgrades();
+
+        health = 100f + maxHealthUpgrade;
+        dashPower = 100f + maxDashUpgrade;
     }
 
     // Update is called once per frame
@@ -253,7 +254,7 @@ public class Player : MonoBehaviour
                 else if (dashPower > 100 + maxDashUpgrade) //UPGRADE
                 {
                     //if the player has more dash ability than the max, reset it to the max
-                    dashPower = 100;
+                    dashPower = 100 + maxDashUpgrade; // UPGRADE
                 }
                 else if (dashing)
                 {
@@ -298,7 +299,7 @@ public class Player : MonoBehaviour
                 character_animations.SetBool("Falling", rb.velocity.y < -0.8f && !dashing);
                 //-------------------------------------------------------------------------------------- (Animations)
 
-                //detect collisions with enemies (laggy, might need a fix in the future)
+                //detect collisions with enemies (inefficient, might need a fix in the future)
                 DetectEnemies();
             }
             else
@@ -345,7 +346,7 @@ public class Player : MonoBehaviour
             MenuLogic.buttonsActive = true;
 
             //start the animation for the amount of money being added the player's balance
-            money_add_animation.runAnimation(0.7f, 0, moneyAdded);
+            money_add_animation.runAnimation(0.7f, (int)(moneyAdded * 0.65f), moneyAdded);
 
             gameObject.SetActive(false); //"kill" the player
         }

@@ -76,7 +76,7 @@ public class WaveController : MonoBehaviour
         enemyIncreasePerWave = 2;
         enemiesSpawned = 0;
         timeSinceLastEnemySpawn = 0f;
-        wave = 1;
+        wave = 9; //CHANGE BACK TO 1
 
         enemiesToSpawn = startEnemyCount;
 
