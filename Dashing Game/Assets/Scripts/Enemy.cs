@@ -81,7 +81,6 @@ public class Enemy : MonoBehaviour
 
     void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
         path = GetComponent<AIPath>();
         sprite = GetComponentInChildren<SpriteRenderer>();
 
@@ -126,6 +125,11 @@ public class Enemy : MonoBehaviour
         initColors();
 
         timeSinceLastAttack = 0f; //Starts off being able to attack right away
+    }
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -366,9 +370,13 @@ public class Enemy : MonoBehaviour
         //if the enemy type is a ghost, ignore collisions from walls
         if(Type == 3)
         {
+            Debug.Log("R");
             //will only ignore collisions if gameobject it's touching is either a wall, or the player while they're not dashing
             if (other.gameObject.CompareTag("Ground") || (other.gameObject.CompareTag("Player") && !player.isDashing))
+            {
                 Physics2D.IgnoreCollision(other.collider, GetComponent<Collider2D>());
+                Debug.Log("E");
+            }
         }
     }
 }
