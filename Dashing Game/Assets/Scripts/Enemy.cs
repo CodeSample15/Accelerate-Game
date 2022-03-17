@@ -52,8 +52,8 @@ public class Enemy : MonoBehaviour
 
     private bool Detonating;
 
-    private int framesPerColorChange;
-    private int currentFrame;
+    private float timePerColorChange;
+    private float currentTime;
     private bool normalColor;
 
     private Color32 detonatingColor;
@@ -100,8 +100,8 @@ public class Enemy : MonoBehaviour
 
         Detonating = false; //Telling the enemy how to move when detonating
 
-        framesPerColorChange = 10; //Changing the colors of the enemy rapidly to tell the player that the enemy will explode
-        currentFrame = 0;
+        timePerColorChange = 0.1f; //Changing the colors of the enemy rapidly to tell the player that the enemy will explode
+        currentTime = 0;
         normalColor = true;
 
         detonatingColor = new Color32(0, 0, 255, 255);
@@ -172,9 +172,9 @@ public class Enemy : MonoBehaviour
                     {
                         path.maxSpeed = speed / bomberSpeedChange;
 
-                        if (currentFrame < framesPerColorChange)
+                        if (currentTime < timePerColorChange)
                         {
-                            currentFrame++;
+                            currentTime+=Time.deltaTime;
                         }
                         else
                         {
@@ -186,7 +186,7 @@ public class Enemy : MonoBehaviour
 
                             normalColor = !normalColor;
 
-                            currentFrame = 0;
+                            currentTime = 0;
                         }
                     }
                     else
