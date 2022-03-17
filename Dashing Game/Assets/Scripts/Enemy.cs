@@ -9,7 +9,8 @@ using UnityEngine.Experimental.Rendering.Universal;
  * 0: Melee (red)
  * 1: Shooter (green)
  * 2: Bomber (blue)
- * 3: Ghost (clear)
+ * 3: Lobber (yellow) shoots explosive charges, no idea why I named it lobber lmao
+ * 3: Ghost (clear) <-- I want to delete this one it sucks beyond compare lol
  */
 
 public class Enemy : MonoBehaviour
@@ -63,10 +64,7 @@ public class Enemy : MonoBehaviour
     private float detonationTime;
     private float timePassed;
 
-    //Ghost
-    private float GhostDamage;
-    private float GhostPossessionRange;
-    private float GhostSpeed;
+    //Lobber
     #endregion
 
     private float AttackSpeed;
@@ -97,7 +95,7 @@ public class Enemy : MonoBehaviour
 
         //Bomber:
         BomberDamage = 25; //Damage at the center of the explosion (damage decreases with distance)
-        Radius = 4.3f; //Blast radius
+        Radius = 4.7f; //Blast radius
         BomberDamageDampener = 6; //Controlling how limited the bomber's damage is to the distance of the player
 
         Detonating = false; //Telling the enemy how to move when detonating
@@ -112,12 +110,8 @@ public class Enemy : MonoBehaviour
         timePassed = 0;
         bomberSpeedChange = 1.3f;
 
-        //Ghost:
-        GhostDamage = 3;
-        GhostPossessionRange = 0.20f;
-        GhostSpeed = 6.4f;
+        //Lobber:
 
-        InRange = false;
         #endregion
 
         speed = 9;
@@ -203,13 +197,6 @@ public class Enemy : MonoBehaviour
                     break;
 
                 case 3:
-                    //Ghost
-                    {
-                        path.maxSpeed = 0;
-
-                        Vector3 dir = (player.transform.position - transform.position).normalized;
-                        transform.Translate(dir * GhostSpeed * Time.deltaTime);
-                    }
                     break;
             }
         }
@@ -219,7 +206,7 @@ public class Enemy : MonoBehaviour
         }
 
         //Attacking-----------------------------------------------------------------------------------------------------
-        if((timeSinceLastAttack >= AttackSpeed || Type == 3) && !PauseButton.IsPaused) //will always attack if the enemy is a ghost and won't attack if the game is paused
+        if((timeSinceLastAttack >= AttackSpeed) && !PauseButton.IsPaused) //will always attack if the enemy is a ghost and won't attack if the game is paused
         {
             //Attack
             switch (Type)
@@ -295,15 +282,8 @@ public class Enemy : MonoBehaviour
                     }
                     break;
 
-                //ghost type
+                //lobber type
                 case 3:
-                    if(distanceTo(playerGameObject) < GhostPossessionRange && !player.isDashing)
-                    {
-                        PlayerDamageAnimation.SetTrigger("Damage");
-                        playerGameObject.GetComponent<Player>().Health -= GhostDamage;
-
-                        Destroy(gameObject);
-                    }
                     break;
             }
         }
@@ -356,6 +336,7 @@ public class Enemy : MonoBehaviour
         Colors.Add(new Color32(255, 0, 0, 255));     //Red                (Melee Enemy)
         Colors.Add(new Color32(0, 255, 0, 255));     //Green              (Shooter Enemy)
         Colors.Add(new Color32(22, 174, 250, 255));  //Blue               (Bomber Enemy)
+        Colors.Add(new Color32(255, 255, 0, 255));   //yellow             (Lobber Enemy)
         Colors.Add(new Color32(200, 200, 200, 150)); //Transparent White  (Ghost Enemy)
     }
 
@@ -363,18 +344,5 @@ public class Enemy : MonoBehaviour
     {
         Collider2D col = gameObject.GetComponent<Collider2D>();
         return col.IsTouching(target);
-    }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        //if the enemy type is a ghost, ignore collisions from walls
-        if(Type == 3)
-        {
-            //will only ignore collisions if gameobject it's touching is either a wall, or the player while they're not dashing
-            if (other.gameObject.CompareTag("Ground") || (other.gameObject.CompareTag("Player") && !player.isDashing))
-            {
-                Physics2D.IgnoreCollision(other.collider, GetComponent<Collider2D>());
-            }
-        }
     }
 }
