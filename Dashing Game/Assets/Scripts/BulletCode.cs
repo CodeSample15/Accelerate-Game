@@ -5,7 +5,7 @@ using UnityEngine;
 public class BulletCode : MonoBehaviour
 {
     [SerializeField] Player player;
-    public enum Types { inactive, lazer };
+    public enum Types { inactive, spike };
     public Types type;
 
     //public
@@ -19,10 +19,16 @@ public class BulletCode : MonoBehaviour
     //private
     private float distanceTraveled;
 
+    //spike bullet
+    private float rotationSpeed;
+
     // Start is called before the first frame update
     void Awake()
     {
         distanceTraveled = 0;
+
+        //spike bullet
+        rotationSpeed = 1f;
 
         type = Types.inactive;
     }
@@ -35,9 +41,10 @@ public class BulletCode : MonoBehaviour
             //Movement --------------------------------------------------------------------------
             transform.rotation = Quaternion.identity;
 
-            if (type == Types.lazer)
+            if (type == Types.spike)
             {
                 transform.Translate(direction * speed * Time.deltaTime);
+                transform.Rotate(Vector2.right * rotationSpeed * Time.deltaTime);
                 distanceTraveled += speed * Time.deltaTime;
             }
 
@@ -59,7 +66,7 @@ public class BulletCode : MonoBehaviour
         }
         else if(bulletType == 1)
         {
-            type = Types.lazer;
+            type = Types.spike;
         }
     }
 

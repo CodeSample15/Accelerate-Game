@@ -563,11 +563,8 @@ public class Player : MonoBehaviour
                 if (enemy_controller.ActiveEnemies[i].gameObject != null)
                 {
                     other = enemy_controller.ActiveEnemies[i].GetComponent<Collider2D>();
-                    Debug.Log("r");
                     if (other.IsTouching(col))
                     {
-                        Debug.Log("ee");
-
                         //particle effect
                         int enemyType = other.gameObject.GetComponent<Enemy>().Type;
                         Color deathParticleColor = other.gameObject.GetComponent<Enemy>().getColor(enemyType);
