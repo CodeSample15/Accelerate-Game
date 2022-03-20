@@ -16548,6 +16548,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bullet
       objectReference: {fileID: 0}
+    - target: {fileID: 9195165405870481969, guid: a058576402b269d4792189ca8915928e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9195165405870481970, guid: a058576402b269d4792189ca8915928e,
         type: 3}
       propertyPath: player
