@@ -9,7 +9,7 @@ using UnityEngine.Experimental.Rendering.Universal;
  * 0: Melee (red)
  * 1: Shooter (green)
  * 2: Bomber (blue)
- * 3: Lobber (yellow) shoots explosive charges, no idea why I named it lobber lmao
+ * 3: Laser (yellow)
  * 3: Ghost (clear) <-- I want to delete this one it sucks beyond compare lol
  */
 
@@ -64,7 +64,7 @@ public class Enemy : MonoBehaviour
     private float detonationTime;
     private float timePassed;
 
-    //Lobber
+    //Laser
     #endregion
 
     private float AttackSpeed;
@@ -110,7 +110,7 @@ public class Enemy : MonoBehaviour
         timePassed = 0;
         bomberSpeedChange = 1.3f;
 
-        //Lobber:
+        //Laser:
 
         #endregion
 
@@ -282,7 +282,7 @@ public class Enemy : MonoBehaviour
                     }
                     break;
 
-                //lobber type
+                //Laser type
                 case 3:
                     break;
             }
@@ -336,7 +336,7 @@ public class Enemy : MonoBehaviour
         Colors.Add(new Color32(255, 0, 0, 255));     //Red                (Melee Enemy)
         Colors.Add(new Color32(0, 255, 0, 255));     //Green              (Shooter Enemy)
         Colors.Add(new Color32(22, 174, 250, 255));  //Blue               (Bomber Enemy)
-        Colors.Add(new Color32(255, 255, 0, 255));   //yellow             (Lobber Enemy)
+        Colors.Add(new Color32(255, 255, 0, 255));   //yellow             (Laser Enemy)
         Colors.Add(new Color32(200, 200, 200, 150)); //Transparent White  (Ghost Enemy)
     }
 
