@@ -8104,7 +8104,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Camera
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1486993121}
     - target: {fileID: 1253614026670293166, guid: 1179389a9652efc489c745ae80ae9854,
         type: 3}
       propertyPath: m_Name
@@ -8650,6 +8650,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6ea50c019e5c1d4585a8abc355a84b7, type: 3}
+--- !u!20 &1486993121 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 5653624545555996640, guid: a6ea50c019e5c1d4585a8abc355a84b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1486993120}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1486993122 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5653624545555996445, guid: a6ea50c019e5c1d4585a8abc355a84b7,
+    type: 3}
+  m_PrefabInstance: {fileID: 1486993120}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aa50938ee4bb8a49bdb3e2e5ebbbc80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1521683626
 GameObject:
   m_ObjectHideFlags: 0
@@ -9704,7 +9722,7 @@ PrefabInstance:
         type: 3}
       propertyPath: cameraShake
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1486993122}
     - target: {fileID: 3723053849466432770, guid: 298dcc7c61ee5ca49a02d9fccef77bab,
         type: 3}
       propertyPath: pauseButton
