@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29fa0085f50d5e54f8144f766051a691, type: 3}
   m_Name: FilmGrain
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   type:
     m_OverrideState: 1
@@ -46,11 +46,11 @@ MonoBehaviour:
   m_AdvancedMode: 0
   threshold:
     m_OverrideState: 1
-    m_Value: 2.61
+    m_Value: 1.9
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 3.09
+    m_Value: 0.2
     min: 0
   scatter:
     m_OverrideState: 1
@@ -59,7 +59,7 @@ MonoBehaviour:
     max: 1
   clamp:
     m_OverrideState: 1
-    m_Value: 559.94
+    m_Value: 17.5
     min: 0
   tint:
     m_OverrideState: 0
@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
   m_Name: Vignette
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   color:
     m_OverrideState: 1
