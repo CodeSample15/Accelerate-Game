@@ -65,7 +65,6 @@ public class Enemy : MonoBehaviour
 
     //Laser
     private bool ShootingLaser;
-    private bool LaserShot;
     private float LaserRange; //how far the laser enemy has to be from the player until it fires
     private float LaserChargeTime; //how long it takes the laser chare particles to charge
     private float LaserChargeTimeElapsed;
@@ -73,8 +72,8 @@ public class Enemy : MonoBehaviour
     private float LaserDuration;
     private float LaserDurationElapsed; 
 
-    private float LaserRechargeTime;
-    private float LaserRechargeTimeElapsed;
+    private float LaserCooldownTime;
+    private float LaserCooldownElapsed;
     public LineRenderer LaserLine;
     private LineRenderer LaserHolder;
     private bool LaserLocationPicked;
@@ -127,16 +126,15 @@ public class Enemy : MonoBehaviour
 
         //Laser:
         ShootingLaser = false;
-        LaserShot = false;
         LaserRange = 7;
         LaserChargeTime = 0.5f;
         LaserChargeTimeElapsed = 0f;
 
         LaserDuration = 0.2f;
-        LaserDurationElapsed = 0;
+        LaserDurationElapsed = 0f;
 
-        LaserRechargeTime = 1.2f;
-        LaserRechargeTimeElapsed = 0;
+        LaserCooldownTime = 1.2f;
+        LaserCooldownElapsed = 0;
 
         LaserLocationPicked = false;
         #endregion
@@ -342,7 +340,7 @@ public class Enemy : MonoBehaviour
                                 dir *= hit.distance;
                                 LaserEndPosition = dir;
                             }
-
+                            Debug.Log("Firing");
                             //keep the laser firing until the duration ends
                             if (LaserDurationElapsed < LaserDuration)
                             {
@@ -361,7 +359,7 @@ public class Enemy : MonoBehaviour
                         LaserDurationElapsed = 0;
 
                         //laser cooldown, keeps the enemy from firing over and over again
-                        if(distanceTo(playerGameObject) < LaserRange && LaserRechargeTimeElapsed >= LaserRechargeTime)
+                        if(distanceTo(playerGameObject) <= LaserRange && LaserCooldownTime >= LaserCooldownElapsed)
                         {
                             ShootingLaser = true;
                             LaserChargeTimeElapsed = 0;
@@ -370,11 +368,11 @@ public class Enemy : MonoBehaviour
                         }
                         else
                         {
-                            LaserChargeTimeElapsed += Time.deltaTime; //recharge the laser as the enemy is free to move around again
+                            LaserCooldownElapsed += Time.deltaTime; //recharge the laser as the enemy is free to move around again (cooldown)
                         }
 
                         //stop the player from moving if it's a certain distance from the player, otherwise keep moving
-                        if(distanceTo(playerGameObject) < LaserRange)
+                        if(distanceTo(playerGameObject) <= LaserRange)
                             path.maxSpeed = 0;
                         else
                             path.maxSpeed = speed;

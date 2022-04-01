@@ -76,7 +76,7 @@ public class WaveController : MonoBehaviour
         enemyIncreasePerWave = 2;
         enemiesSpawned = 0;
         timeSinceLastEnemySpawn = 0f;
-        wave = 9; //CHANGE BACK TO 1
+        wave = 1;
 
         enemiesToSpawn = startEnemyCount;
 
@@ -103,7 +103,7 @@ public class WaveController : MonoBehaviour
         if (!PauseButton.IsPaused) {
             if (player.GetComponent<Player>().isAlive)
             {
-                //looping through the enemies array to see if any of them are dead, and removing the ones that are
+                //looping through the enemies array to see if any of them are dead, and removing the ones that are to save memory
                 for (int i = 0; i < Enemies.Count; i++)
                 {
                     if (Enemies[i].gameObject == null)
@@ -184,6 +184,8 @@ public class WaveController : MonoBehaviour
             maxEnemy++;
 
         int t = Random.Range(0, maxEnemy); //getting a random enemy type to spawn
+
+        t = 3; //TEMP REMOVE THIS
 
         Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity)); //create the enemy object
         particleController.AddParticles(Instantiate(spawnParticles, Enemies[Enemies.Count - 1].transform.position, Quaternion.identity));
