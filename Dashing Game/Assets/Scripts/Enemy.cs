@@ -10,7 +10,6 @@ using UnityEngine.Experimental.Rendering.Universal;
  * 1: Shooter (green)
  * 2: Bomber (blue)
  * 3: Laser (yellow)
- * 3: Ghost (clear) <-- I want to delete this one it sucks beyond compare lol
  */
 
 public class Enemy : MonoBehaviour
@@ -65,6 +64,22 @@ public class Enemy : MonoBehaviour
     private float timePassed;
 
     //Laser
+    private bool ShootingLaser;
+    private bool LaserShot;
+    private float LaserRange; //how far the laser enemy has to be from the player until it fires
+    private float LaserChargeTime; //how long it takes the laser chare particles to charge
+    private float LaserChargeTimeElapsed;
+
+    private float LaserDuration;
+    private float LaserDurationElapsed; 
+
+    private float LaserRechargeTime;
+    private float LaserRechargeTimeElapsed;
+    public LineRenderer LaserLine;
+    private LineRenderer LaserHolder;
+    private bool LaserLocationPicked;
+
+    private Vector3 LaserEndPosition = Vector3.zero; //where the laser will point to 
     #endregion
 
     private float AttackSpeed;
@@ -111,7 +126,19 @@ public class Enemy : MonoBehaviour
         bomberSpeedChange = 1.3f;
 
         //Laser:
+        ShootingLaser = false;
+        LaserShot = false;
+        LaserRange = 7;
+        LaserChargeTime = 0.5f;
+        LaserChargeTimeElapsed = 0f;
 
+        LaserDuration = 0.2f;
+        LaserDurationElapsed = 0;
+
+        LaserRechargeTime = 1.2f;
+        LaserRechargeTimeElapsed = 0;
+
+        LaserLocationPicked = false;
         #endregion
 
         speed = 9;
@@ -197,6 +224,7 @@ public class Enemy : MonoBehaviour
                     break;
 
                 case 3:
+                    //Laser
                     break;
             }
         }
@@ -284,6 +312,73 @@ public class Enemy : MonoBehaviour
 
                 //Laser type
                 case 3:
+                    if(ShootingLaser)
+                    {
+                        //charge the laser, stop the enemy from moving
+                        path.maxSpeed = 0;
+
+                        if(LaserChargeTimeElapsed < LaserChargeTime)
+                        {
+                            LaserChargeTime += Time.deltaTime;
+                            LaserLocationPicked = false; //calculate a new position
+                            LaserDurationElapsed = 0;
+                        }
+                        else
+                        {
+                            //play particle animations
+
+                            //shoot the laser
+                            if(LaserHolder == null)
+                                LaserHolder = Instantiate(LaserLine, Vector2.zero, Quaternion.identity); //make a new laser object if one doesn't already exist
+
+                            //calculate where the player is only if there isn't a location picked already
+                            if (!LaserLocationPicked)
+                            {
+                                Vector3 dir = new Vector3(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y, 0);
+                                dir = dir.normalized;
+
+                                //calculate where the lazer should stop using raycasting
+                                RaycastHit2D hit = Physics2D.Raycast(transform.position, dir);
+                                dir *= hit.distance;
+                                LaserEndPosition = dir;
+                            }
+
+                            //keep the laser firing until the duration ends
+                            if (LaserDurationElapsed < LaserDuration)
+                            {
+                                LaserHolder.SetPosition(1, LaserEndPosition);
+                                LaserDurationElapsed += Time.deltaTime;
+                            }
+                            else
+                            {
+                                ShootingLaser = false; //stop firing the laser
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //reset laser duration so it can fire to its entirety next time it's fired
+                        LaserDurationElapsed = 0;
+
+                        //laser cooldown, keeps the enemy from firing over and over again
+                        if(distanceTo(playerGameObject) < LaserRange && LaserRechargeTimeElapsed >= LaserRechargeTime)
+                        {
+                            ShootingLaser = true;
+                            LaserChargeTimeElapsed = 0;
+
+                            //start particle animations for charging
+                        }
+                        else
+                        {
+                            LaserChargeTimeElapsed += Time.deltaTime; //recharge the laser as the enemy is free to move around again
+                        }
+
+                        //stop the player from moving if it's a certain distance from the player, otherwise keep moving
+                        if(distanceTo(playerGameObject) < LaserRange)
+                            path.maxSpeed = 0;
+                        else
+                            path.maxSpeed = speed;
+                    }
                     break;
             }
         }
@@ -337,12 +432,18 @@ public class Enemy : MonoBehaviour
         Colors.Add(new Color32(0, 255, 0, 255));     //Green              (Shooter Enemy)
         Colors.Add(new Color32(22, 174, 250, 255));  //Blue               (Bomber Enemy)
         Colors.Add(new Color32(255, 255, 0, 255));   //yellow             (Laser Enemy)
-        Colors.Add(new Color32(200, 200, 200, 150)); //Transparent White  (Ghost Enemy)
     }
 
     private bool isTouching(Collider2D target)
     {
         Collider2D col = gameObject.GetComponent<Collider2D>();
         return col.IsTouching(target);
+    }
+
+    void OnDestroy()
+    {
+        //get rid of objects that are no longer needed
+        if(LaserHolder != null)
+            Destroy(LaserHolder);
     }
 }
