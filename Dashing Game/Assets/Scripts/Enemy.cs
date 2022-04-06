@@ -74,8 +74,8 @@ public class Enemy : MonoBehaviour
 
     private float LaserCooldownTime;
     private float LaserCooldownElapsed;
-    public LineRenderer LaserLine;
-    private LineRenderer LaserHolder;
+    public GameObject LaserGameObject;
+    private GameObject LaserHolder; //for holding the newly instantiated laserholder gameobject
     private bool LaserLocationPicked;
 
     private Vector3 LaserEndPosition = Vector3.zero; //where the laser will point to 
@@ -223,6 +223,14 @@ public class Enemy : MonoBehaviour
 
                 case 3:
                     //Laser
+                    if(distanceTo(playerGameObject) < LaserRange)
+                    {
+                        path.maxSpeed = 0;
+                    }
+                    else if(!ShootingLaser)
+                    {
+                        path.maxSpeed = speed;
+                    }
                     break;
             }
         }
@@ -310,6 +318,66 @@ public class Enemy : MonoBehaviour
 
                 //Laser type
                 case 3:
+                    /*
+                     *     private bool ShootingLaser;
+    private float LaserRange; //how far the laser enemy has to be from the player until it fires
+    private float LaserChargeTime; //how long it takes the laser chare particles to charge
+    private float LaserChargeTimeElapsed;
+
+    private float LaserDuration;
+    private float LaserDurationElapsed; 
+
+    private float LaserCooldownTime;
+    private float LaserCooldownElapsed;
+    public GameObject LaserLine;
+    private GameObject LaserHolder; //for holding the newly instantiated laserholder
+    private bool LaserLocationPicked;
+
+    private Vector3 LaserEndPosition = Vector3.zero; //where the laser will point to 
+                     */
+
+                    if(distanceTo(playerGameObject) < LaserRange && LaserCooldownElapsed > LaserCooldownTime && !ShootingLaser)
+                    {
+                        //shooting the laser if the player is close enough to the enemy and the laser isn't on cooldown
+                        ShootingLaser = true;
+
+                        LaserCooldownElapsed = 0;    //putting the laser on cooldown again
+                        LaserChargeTimeElapsed = 0;  //making the laser go through another recharge cycle (play particles)
+                        LaserDurationElapsed = 0;    //laser has not started firing yet
+                    }
+                    else
+                    {
+                        //cooldown the laser
+                        LaserCooldownElapsed += Time.deltaTime;
+                    }
+
+                    //shooting code is seperate for better readability
+                    if(ShootingLaser)
+                    {
+                        if(LaserChargeTimeElapsed > LaserChargeTime)
+                        {
+                            //if the laser is done charging, shoot until the laser duration is done
+                            if(LaserDurationElapsed < LaserDuration)
+                            {
+                                //fire the laser
+                                if (LaserHolder == null)
+                                    LaserHolder = Instantiate(LaserGameObject, Vector3.zero, );
+
+                                LaserDurationElapsed += Time.deltaTime;
+                            }
+                            else
+                            {
+                                ShootingLaser = false; //laser is done firing
+                            }
+                        }
+                        else
+                        {
+                            //charge the laser (play particles)
+                            LaserChargeTimeElapsed += Time.deltaTime;
+                        }
+                    }
+
+                    /*
                     if(ShootingLaser)
                     {
                         //charge the laser, stop the enemy from moving
@@ -384,6 +452,7 @@ public class Enemy : MonoBehaviour
                         else
                             path.maxSpeed = speed;
                     }
+                    */
                     break;
             }
         }
