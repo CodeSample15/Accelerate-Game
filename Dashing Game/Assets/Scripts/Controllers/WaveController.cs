@@ -116,7 +116,7 @@ public class WaveController : MonoBehaviour
                 //detecting if it's time to spawn yet or not
                 if (timeSinceLastEnemySpawn >= nextEnemyWait)
                 {
-                    if (enemiesSpawned < 1) //enemiesToSpawn) UNCOMMENT THIS //making sure the wave is not over
+                    if (enemiesSpawned < enemiesToSpawn)
                     {
                         Debug.LogWarning("Spawning one enemy at a time for debugging");
                         timeSinceLastEnemySpawn = 0;

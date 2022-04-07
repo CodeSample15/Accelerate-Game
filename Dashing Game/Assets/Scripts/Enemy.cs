@@ -79,6 +79,7 @@ public class Enemy : MonoBehaviour
     private bool LaserLocationPicked;
 
     private Vector3 LaserEndPosition = Vector3.zero; //where the laser will point to 
+    Vector3 laserDirection = Vector3.zero; //which way the laser will go
     #endregion
 
     private float AttackSpeed;
@@ -130,7 +131,7 @@ public class Enemy : MonoBehaviour
         LaserChargeTime = 0.5f;
         LaserChargeTimeElapsed = 0f;
 
-        LaserDuration = 0.2f;
+        LaserDuration = 0.7f;
         LaserDurationElapsed = 0f;
 
         LaserCooldownTime = 1.2f;
@@ -231,6 +232,10 @@ public class Enemy : MonoBehaviour
                     {
                         path.maxSpeed = speed;
                     }
+                    else
+                    {
+                        path.maxSpeed = 0;
+                    }
                     break;
             }
         }
@@ -318,24 +323,6 @@ public class Enemy : MonoBehaviour
 
                 //Laser type
                 case 3:
-                    /*
-                     *     private bool ShootingLaser;
-    private float LaserRange; //how far the laser enemy has to be from the player until it fires
-    private float LaserChargeTime; //how long it takes the laser chare particles to charge
-    private float LaserChargeTimeElapsed;
-
-    private float LaserDuration;
-    private float LaserDurationElapsed; 
-
-    private float LaserCooldownTime;
-    private float LaserCooldownElapsed;
-    public GameObject LaserLine;
-    private GameObject LaserHolder; //for holding the newly instantiated laserholder
-    private bool LaserLocationPicked;
-
-    private Vector3 LaserEndPosition = Vector3.zero; //where the laser will point to 
-                     */
-
                     if(distanceTo(playerGameObject) < LaserRange && LaserCooldownElapsed > LaserCooldownTime && !ShootingLaser)
                     {
                         //shooting the laser if the player is close enough to the enemy and the laser isn't on cooldown
@@ -344,6 +331,8 @@ public class Enemy : MonoBehaviour
                         LaserCooldownElapsed = 0;    //putting the laser on cooldown again
                         LaserChargeTimeElapsed = 0;  //making the laser go through another recharge cycle (play particles)
                         LaserDurationElapsed = 0;    //laser has not started firing yet
+
+                        LaserLocationPicked = false; //recalculating positions for the laser (should only do this once so that the laser doesn't follow the player)
                     }
                     else
                     {
@@ -361,98 +350,45 @@ public class Enemy : MonoBehaviour
                             {
                                 //fire the laser
                                 if (LaserHolder == null)
-                                    LaserHolder = Instantiate(LaserGameObject, Vector3.zero, );
+                                    LaserHolder = Instantiate(LaserGameObject, Vector3.zero, Quaternion.identity);
 
-                                LaserDurationElapsed += Time.deltaTime;
+                                LaserHolder.GetComponent<LineRenderer>().SetPosition(0, transform.position);
+                                LaserHolder.GetComponent<LineRenderer>().SetPosition(1, LaserEndPosition);
+
+                                //calculate if the player touches the laser
+                                RaycastHit2D playerHit = Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity, 1<<12); //seperate raycast that filters the player's layer
+                                if (playerHit.collider != null)
+                                    Debug.Log("hit");
+
+                                LaserDurationElapsed += Time.deltaTime; //shooting the laser until time is up
                             }
                             else
                             {
-                                ShootingLaser = false; //laser is done firing
+                                //laser is done firing
+                                LaserHolder.GetComponent<LineRenderer>().SetPosition(0, Vector3.zero); //hide the laser by setting both positions to zero
+                                LaserHolder.GetComponent<LineRenderer>().SetPosition(1, Vector3.zero);
+
+                                ShootingLaser = false;
                             }
                         }
                         else
                         {
+                            if (!LaserLocationPicked)
+                            {
+                                //calculate positions for laser
+                                LayerMask playerLayerMask = 1 << 8;
+                                laserDirection = (playerGameObject.transform.position - transform.position).normalized;
+                                RaycastHit2D hit = Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity, playerLayerMask);
+                                Vector3 scaledLaserDirection = laserDirection * Mathf.Clamp(hit.distance, 0, 1000f);
+
+                                LaserEndPosition = scaledLaserDirection + transform.position;
+                                LaserLocationPicked = true;
+                            }
+
                             //charge the laser (play particles)
                             LaserChargeTimeElapsed += Time.deltaTime;
                         }
                     }
-
-                    /*
-                    if(ShootingLaser)
-                    {
-                        //charge the laser, stop the enemy from moving
-                        path.maxSpeed = 0;
-                        Debug.Log("reeee");
-                        if(LaserChargeTimeElapsed < LaserChargeTime)
-                        {
-                            Debug.Log("doin the thing");
-                            //charge laser (allow time for particle effect to finish playing)
-                            LaserChargeTimeElapsed += Time.deltaTime;
-                            LaserLocationPicked = false; //calculate a new position
-                            LaserDurationElapsed = 0; //reset the duration of the laser because it hasn't started yet
-                        }
-                        else
-                        {
-                            //play particle animations
-
-                            //shoot the laser
-                            if(LaserHolder == null)
-                                LaserHolder = Instantiate(LaserLine, Vector2.zero, Quaternion.identity); //make a new laser object if one doesn't already exist
-
-                            //calculate where the player is only if there isn't a location picked already
-                            if (!LaserLocationPicked)
-                            {
-                                Vector3 dir = new Vector3(player.transform.position.x - transform.position.x, player.transform.position.y - transform.position.y, 0);
-                                //dir = dir.normalized;
-
-                                //calculate where the lazer should stop using raycasting
-                                //RaycastHit2D hit = Physics2D.Raycast(transform.position, dir);
-                                //dir *= hit.distance;
-                                LaserEndPosition = new Vector3(dir.x + transform.position.x, dir.y + transform.position.y, 0) * 1000;
-                            }
-                            Debug.Log("Firing");
-                            //keep the laser firing until the duration ends
-                            if (LaserDurationElapsed < LaserDuration)
-                            {
-                                LaserHolder.SetPosition(0, transform.position);
-                                LaserHolder.SetPosition(1, LaserEndPosition);
-                                LaserDurationElapsed += Time.deltaTime; //the laser keeps firing
-                            }
-                            else
-                            {
-                                ShootingLaser = false; //stop firing the laser
-
-                                Debug.Log("done");
-                                LaserHolder.SetPosition(0, Vector3.zero);
-                                LaserHolder.SetPosition(0, Vector3.zero);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        //reset laser duration so it can fire to its entirety next time it's fired
-                        LaserDurationElapsed = 0;
-
-                        //laser cooldown, keeps the enemy from firing over and over again
-                        if(distanceTo(playerGameObject) <= LaserRange && LaserCooldownTime >= LaserCooldownElapsed)
-                        {
-                            ShootingLaser = true;
-                            LaserChargeTimeElapsed = 0; //make the laser charge up again
-
-                            //start particle animations for charging
-                        }
-                        else
-                        {
-                            LaserCooldownElapsed += Time.deltaTime; //recharge the laser as the enemy is free to move around again (cooldown)
-                        }
-
-                        //stop the player from moving if it's a certain distance from the player, otherwise keep moving
-                        if(distanceTo(playerGameObject) <= LaserRange)
-                            path.maxSpeed = 0;
-                        else
-                            path.maxSpeed = speed;
-                    }
-                    */
                     break;
             }
         }
@@ -518,6 +454,6 @@ public class Enemy : MonoBehaviour
     {
         //get rid of objects that are no longer needed
         if(LaserHolder != null)
-            Destroy(LaserHolder);
+            Destroy(LaserHolder.gameObject);
     }
 }

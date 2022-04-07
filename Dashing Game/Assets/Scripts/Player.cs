@@ -494,7 +494,7 @@ public class Player : MonoBehaviour
         else if (type == 2)     //Bomber
             moneyAdded += 2;    //slightly more since they have the chance to explode before you kill them
 
-        else if (type == 3)     //Ghost
+        else if (type == 3)     //Laser
             moneyAdded += 2;
     }
 
@@ -503,8 +503,10 @@ public class Player : MonoBehaviour
     /// </summary>
     private bool onGround(bool checkWall)
     {
-        RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.5f);
-        RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.5f);
+        int groundLayerMask = 1 << 8;
+
+        RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.5f, groundLayerMask);
+        RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.5f, groundLayerMask);
 
         bool rightCol = false;
         bool leftCol = false;
@@ -517,9 +519,9 @@ public class Player : MonoBehaviour
                 leftCol = true;
 
         if (checkWall)
-            return Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f) || rightCol || leftCol;
+            return Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f, groundLayerMask) || rightCol || leftCol;
         else
-            return Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f);
+            return Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f, groundLayerMask);
     }
 
     /// <summary>
@@ -530,8 +532,10 @@ public class Player : MonoBehaviour
     /// <returns></returns>
     private bool onGround(ref bool leftCol, ref bool rightCol)
     {
-        RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.5f);
-        RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.5f);
+        int groundMask = 1 << 8; //bitmask to only accept the 8th layer (ground)        1 0 0 0 0 0 0 0
+
+        RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.5f, groundMask);
+        RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.5f, groundMask);
 
         rightCol = false;
         leftCol = false;
@@ -543,7 +547,10 @@ public class Player : MonoBehaviour
             if (left.collider.CompareTag("Ground"))
                 leftCol = true;
 
-        return Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f) || rightCol || leftCol;
+        RaycastHit2D bottom = Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f, groundMask);
+        bool ground = bottom.collider != null && bottom.collider.CompareTag("Ground");
+
+        return ground || rightCol || leftCol;
     }
 
     /// <summary>

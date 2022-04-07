@@ -130,7 +130,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3358492}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -251,7 +251,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 75724992}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: RightLegSolver_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -371,7 +371,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 118212579}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -491,7 +491,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 148162149}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -522,7 +522,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 167380210}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -648,7 +648,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 229460738}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: RightLegTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1041,7 +1041,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 354703624}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1074,7 +1074,7 @@ GameObject:
   - component: {fileID: 361146916}
   - component: {fileID: 361146918}
   - component: {fileID: 361146917}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: <Group>_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1233,6 +1233,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dash Particles
       objectReference: {fileID: 0}
+    - target: {fileID: 7832359506020672453, guid: 667c9ba32d90d50438af5216f08c310d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 667c9ba32d90d50438af5216f08c310d, type: 3}
 --- !u!4 &381328641 stripped
@@ -1332,7 +1337,7 @@ GameObject:
   m_Component:
   - component: {fileID: 399523651}
   - component: {fileID: 399523652}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: RightArmSolver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1729,7 +1734,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 419520570}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1969,7 +1974,7 @@ GameObject:
   - component: {fileID: 491374273}
   - component: {fileID: 491374275}
   - component: {fileID: 491374274}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: Scarf
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6919,7 +6924,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 531667650}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: LeftLegSolver_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6949,7 +6954,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 537381252}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: LeftLegTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7169,7 +7174,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 595653973}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: LeftArmSolver_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7201,7 +7206,7 @@ GameObject:
   - component: {fileID: 644767080}
   - component: {fileID: 644767082}
   - component: {fileID: 644767081}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: <Group>_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7304,7 +7309,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 652348764}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7335,7 +7340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 668542425}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7368,7 +7373,7 @@ GameObject:
   - component: {fileID: 691972310}
   - component: {fileID: 691972312}
   - component: {fileID: 691972311}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Background Particles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12283,7 +12288,7 @@ GameObject:
   m_Component:
   - component: {fileID: 727224743}
   - component: {fileID: 727224744}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: Point Light 2D
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12569,7 +12574,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 812333361}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12868,7 +12873,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 906973461}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12900,7 +12905,7 @@ GameObject:
   m_Component:
   - component: {fileID: 956569411}
   - component: {fileID: 956569412}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: LeftLegSolver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13049,7 +13054,7 @@ GameObject:
   - component: {fileID: 977481362}
   - component: {fileID: 977481363}
   - component: {fileID: 977481360}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: DashCharacter
   m_TagString: Player
   m_Icon: {fileID: 2488908585195742037, guid: 0000000000000000d000000000000000, type: 0}
@@ -13712,7 +13717,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1237053238}
   - component: {fileID: 1237053239}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: ScarfSolver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13819,7 +13824,7 @@ GameObject:
   - component: {fileID: 1289697705}
   - component: {fileID: 1289697707}
   - component: {fileID: 1289697706}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: <Group>
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13993,7 +13998,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1373887225}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: RightArmSolver_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14113,7 +14118,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1413466158}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14392,7 +14397,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1545544419}
   - component: {fileID: 1545544420}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: LeftArmSolver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14455,7 +14460,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1550158135}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14934,7 +14939,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1655628980}
   - component: {fileID: 1655628981}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: RightLegSolver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15079,7 +15084,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1692099609}
   - component: {fileID: 1692099608}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: Dash Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15248,7 +15253,7 @@ GameObject:
   - component: {fileID: 1787653289}
   - component: {fileID: 1787653291}
   - component: {fileID: 1787653290}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: <Group>_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15353,7 +15358,7 @@ GameObject:
   - component: {fileID: 1790811020}
   - component: {fileID: 1790811022}
   - component: {fileID: 1790811021}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: <Group>_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15562,7 +15567,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1798670002}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15598,7 +15603,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1799186451}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: RightArmTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15903,7 +15908,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1844536739}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: Particle Holder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15934,7 +15939,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1856773101}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15965,7 +15970,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1864781398}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: LeftArmTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15997,7 +16002,7 @@ GameObject:
   - component: {fileID: 1895936336}
   - component: {fileID: 1895936338}
   - component: {fileID: 1895936337}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: <Group>_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16350,7 +16355,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1961635855}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: ScarfTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16380,7 +16385,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1973025879}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: ScarfSolver_Target
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16579,7 +16584,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2071272002}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: bone_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}

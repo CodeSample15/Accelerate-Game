@@ -184,6 +184,8 @@ MonoBehaviour:
   Type: 0
   explosionEffect: {fileID: 0}
   cameraShake: {fileID: 0}
+  LaserGameObject: {fileID: 2262202370542642236, guid: c34ab102e948fa2478d94beb9b44c271,
+    type: 3}
   timeSinceLastAttack: 0
 --- !u!1 &3723053849606403387
 GameObject:
