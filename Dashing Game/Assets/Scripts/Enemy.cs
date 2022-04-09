@@ -78,6 +78,10 @@ public class Enemy : MonoBehaviour
     private GameObject LaserHolder; //for holding the newly instantiated laserholder gameobject
     private bool LaserLocationPicked;
 
+    private float LaserDamageTime; //how long it takes for damage to be done to the player
+    private float LaserDamageTimeElapsed; //how much time has elapsed since the last time damage was done to the player
+    private float LaserDamage; //how much damage the laser does to the player
+
     private Vector3 LaserEndPosition = Vector3.zero; //where the laser will point to 
     Vector3 laserDirection = Vector3.zero; //which way the laser will go
     #endregion
@@ -136,6 +140,10 @@ public class Enemy : MonoBehaviour
 
         LaserCooldownTime = 1.2f;
         LaserCooldownElapsed = 0;
+
+        LaserDamageTime = 0.1f;
+        LaserDamageTimeElapsed = 0;
+        LaserDamage = 0.5f;
 
         LaserLocationPicked = false;
         #endregion
@@ -356,9 +364,22 @@ public class Enemy : MonoBehaviour
                                 LaserHolder.GetComponent<LineRenderer>().SetPosition(1, LaserEndPosition);
 
                                 //calculate if the player touches the laser
-                                RaycastHit2D playerHit = Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity, 1<<12); //seperate raycast that filters the player's layer
-                                if (playerHit.collider != null)
-                                    Debug.Log("hit");
+                                int layerMask = 1 << 12 | 1 << 8; //filtering for walls and the player
+                                RaycastHit2D playerHit = Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity, layerMask); //seperate raycast that filters the player's layer
+                                if (playerHit.collider != null && LaserDamageTimeElapsed > LaserDamageTime)
+                                {
+                                    if (playerHit.collider.CompareTag("Player") && !player.isDashing) //only dealing damage if the collider hit is the player and not a wall, and if the player isn't dashing
+                                    {
+                                        PlayerDamageAnimation.SetTrigger("Damage");
+                                        playerGameObject.GetComponent<Player>().Health -= LaserDamage;
+
+                                        LaserDamageTimeElapsed = 0;
+                                    }
+                                }
+                                else if(LaserDamageTimeElapsed < LaserDamageTime)
+                                {
+                                    LaserDamageTimeElapsed += Time.deltaTime;
+                                }
 
                                 LaserDurationElapsed += Time.deltaTime; //shooting the laser until time is up
                             }
