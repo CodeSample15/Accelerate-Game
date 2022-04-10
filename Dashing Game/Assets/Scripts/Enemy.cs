@@ -145,7 +145,7 @@ public class Enemy : MonoBehaviour
         LaserDuration = 0.7f;
         LaserDurationElapsed = 0f;
 
-        LaserCooldownTime = 0f; //CHANGE BACK TO 4
+        LaserCooldownTime = 3f;
         LaserCooldownElapsed = LaserCooldownTime; //start off ready to fire
 
         LaserDamageTime = 0.1f;
