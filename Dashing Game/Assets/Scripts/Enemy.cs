@@ -139,13 +139,13 @@ public class Enemy : MonoBehaviour
 
         ShootingLaser = false;
         LaserRange = 7;
-        LaserChargeTime = 1.5f;
+        LaserChargeTime = 0.8f;
         LaserChargeTimeElapsed = 0f;
 
         LaserDuration = 0.7f;
         LaserDurationElapsed = 0f;
 
-        LaserCooldownTime = 4f;
+        LaserCooldownTime = 0f; //CHANGE BACK TO 4
         LaserCooldownElapsed = LaserCooldownTime; //start off ready to fire
 
         LaserDamageTime = 0.1f;
@@ -419,11 +419,12 @@ public class Enemy : MonoBehaviour
                                 LayerMask playerLayerMask = 1 << 8; //only hit walls
                                 laserDirection = (playerGameObject.transform.position - transform.position).normalized;
                                 RaycastHit2D hit = Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity, playerLayerMask);
-                                Vector3 scaledLaserDirection = laserDirection * Mathf.Clamp(hit.distance, 0, 1000f);
 
+                                Vector3 scaledLaserDirection = laserDirection * (hit.distance == 0 ? 1000 : hit.distance);
+                                
                                 LaserEndPosition = scaledLaserDirection + transform.position;
+                                Debug.Log("End Position: " + LaserEndPosition + "     Position: " + transform.position);
                                 LaserLocationPicked = true;
-                                Debug.Log("all good amigo");
                             }
 
                             //charge the laser (play particles)
