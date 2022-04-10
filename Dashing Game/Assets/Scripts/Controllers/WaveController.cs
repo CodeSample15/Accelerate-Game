@@ -118,7 +118,6 @@ public class WaveController : MonoBehaviour
                 {
                     if (enemiesSpawned < enemiesToSpawn)
                     {
-                        Debug.LogWarning("Spawning one enemy at a time for debugging");
                         timeSinceLastEnemySpawn = 0;
                         StartCoroutine(spawnNewEnemy());
                     }
@@ -185,8 +184,6 @@ public class WaveController : MonoBehaviour
             maxEnemy++;
 
         int t = Random.Range(0, maxEnemy); //getting a random enemy type to spawn
-
-        t = 3; //TEMP REMOVE THIS
 
         Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity)); //create the enemy object
         particleController.AddParticles(Instantiate(spawnParticles, Enemies[Enemies.Count - 1].transform.position, Quaternion.identity));
