@@ -184,6 +184,10 @@ MonoBehaviour:
   Type: 0
   explosionEffect: {fileID: 0}
   cameraShake: {fileID: 0}
+  LaserChargeParticles: {fileID: 1376493300451725224, guid: 35523304a1390d2469cbcbbcb22aa00b,
+    type: 3}
+  LaserShootParticles: {fileID: 8252404646579538432, guid: a71f0a4e387f5304b83d204ac1801982,
+    type: 3}
   LaserGameObject: {fileID: 2262202370542642236, guid: c34ab102e948fa2478d94beb9b44c271,
     type: 3}
   timeSinceLastAttack: 0

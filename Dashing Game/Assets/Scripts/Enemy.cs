@@ -64,6 +64,11 @@ public class Enemy : MonoBehaviour
     private float timePassed;
 
     //Laser
+    public GameObject LaserChargeParticles;
+    public GameObject LaserShootParticles;
+
+    private bool LaserShootParticlesPlayed; //keeping track of whether the shoot particle system was activated yet
+
     private bool ShootingLaser;
     private float LaserRange; //how far the laser enemy has to be from the player until it fires
     private float LaserChargeTime; //how long it takes the laser chare particles to charge
@@ -130,20 +135,22 @@ public class Enemy : MonoBehaviour
         bomberSpeedChange = 1.3f;
 
         //Laser:
+        LaserShootParticlesPlayed = false;
+
         ShootingLaser = false;
         LaserRange = 7;
-        LaserChargeTime = 0.5f;
+        LaserChargeTime = 1.5f;
         LaserChargeTimeElapsed = 0f;
 
         LaserDuration = 0.7f;
         LaserDurationElapsed = 0f;
 
-        LaserCooldownTime = 1.2f;
-        LaserCooldownElapsed = 0;
+        LaserCooldownTime = 4f;
+        LaserCooldownElapsed = LaserCooldownTime; //start off ready to fire
 
         LaserDamageTime = 0.1f;
         LaserDamageTimeElapsed = 0;
-        LaserDamage = 0.5f;
+        LaserDamage = 2f;
 
         LaserLocationPicked = false;
         #endregion
@@ -341,6 +348,11 @@ public class Enemy : MonoBehaviour
                         LaserDurationElapsed = 0;    //laser has not started firing yet
 
                         LaserLocationPicked = false; //recalculating positions for the laser (should only do this once so that the laser doesn't follow the player)
+
+                        GameObject temp = Instantiate(LaserChargeParticles, transform.position, Quaternion.Euler(new Vector3(90, 0, 0)));
+                        temp.transform.parent = gameObject.transform;
+
+                        LaserShootParticlesPlayed = false;
                     }
                     else
                     {
@@ -359,6 +371,13 @@ public class Enemy : MonoBehaviour
                                 //fire the laser
                                 if (LaserHolder == null)
                                     LaserHolder = Instantiate(LaserGameObject, Vector3.zero, Quaternion.identity);
+
+                                //play the particle system (auto deleted when done playing)
+                                if (!LaserShootParticlesPlayed)
+                                {
+                                    Instantiate(LaserShootParticles, transform.position, Quaternion.Euler(new Vector3(90, 0, 0)));
+                                    LaserShootParticlesPlayed = true;
+                                }
 
                                 LaserHolder.GetComponent<LineRenderer>().SetPosition(0, transform.position);
                                 LaserHolder.GetComponent<LineRenderer>().SetPosition(1, LaserEndPosition);
@@ -397,13 +416,14 @@ public class Enemy : MonoBehaviour
                             if (!LaserLocationPicked)
                             {
                                 //calculate positions for laser
-                                LayerMask playerLayerMask = 1 << 8;
+                                LayerMask playerLayerMask = 1 << 8; //only hit walls
                                 laserDirection = (playerGameObject.transform.position - transform.position).normalized;
                                 RaycastHit2D hit = Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity, playerLayerMask);
                                 Vector3 scaledLaserDirection = laserDirection * Mathf.Clamp(hit.distance, 0, 1000f);
 
                                 LaserEndPosition = scaledLaserDirection + transform.position;
                                 LaserLocationPicked = true;
+                                Debug.Log("all good amigo");
                             }
 
                             //charge the laser (play particles)
