@@ -25,7 +25,7 @@ public class WaveController : MonoBehaviour
     [Header("Enemy spawning")]
     public int GreenEnemyWave = 5; //five waves for the green enemies to start spawning
     public int BlueEnemyWave = 10; //ten waves for the blue enemies to start spawning
-    public int GhostEnemyWave = 15; //fifteeen waves for the ghost enemies to start spawning
+    public int YellowEnemyWave = 15; //fifteeen waves for the ghost enemies to start spawning
 
     [Header("Difficulty settings")]
     [Tooltip("How much the amount of random time before an enemy spawns in decreased")]
@@ -86,7 +86,7 @@ public class WaveController : MonoBehaviour
 
         GreenEnemyWave = 2;
         BlueEnemyWave = 4;
-        GhostEnemyWave = 7;
+        YellowEnemyWave = 7;
 
         difficultyIncrease = 0.1f;
     }
@@ -180,7 +180,7 @@ public class WaveController : MonoBehaviour
             maxEnemy++;
         if (wave >= BlueEnemyWave)
             maxEnemy++;
-        if (wave >= GhostEnemyWave)
+        if (wave >= YellowEnemyWave)
             maxEnemy++;
 
         int t = Random.Range(0, maxEnemy); //getting a random enemy type to spawn

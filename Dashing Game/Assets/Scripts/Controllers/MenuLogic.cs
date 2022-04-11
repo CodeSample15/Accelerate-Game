@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class MenuLogic : MonoBehaviour
 {
@@ -45,6 +46,16 @@ public class MenuLogic : MonoBehaviour
             RestartButton.SetActive(buttonsActive);
             ExitButton.SetActive(buttonsActive);
         }
+
+        if(buttonsActive && PauseButton.IsPaused)
+        {
+            //restart button becomes resume (prevents people from accidentally restarting their game)
+            RestartButton.GetComponentInChildren<TextMeshProUGUI>().SetText("Resume");
+        }
+        else
+        {
+            RestartButton.GetComponentInChildren<TextMeshProUGUI>().SetText("Restart");
+        }
     }
 
     /// <summary>
@@ -52,7 +63,7 @@ public class MenuLogic : MonoBehaviour
     /// </summary>
     public void Play()
     {
-        int nextLevel = Random.Range(2, NumberOfStages+2);
+        int nextLevel = Random.Range(2, NumberOfStages+2); //offset by two for the home and store scenes
 
         //playing button animation if there is one
         if (PressedButtonAnimation != null)
@@ -65,6 +76,20 @@ public class MenuLogic : MonoBehaviour
     public void Play(int levelNum)
     {
         StartCoroutine(loadScene(levelNum));
+    }
+
+    //for the restart button, since it will change function if the game is paused or not
+    public void ResumeOrRestart()
+    {
+        //will resume if the game is paused, will load a new level if the game isn't
+        if (PauseButton.IsPaused)
+        {
+            PauseButton.TogglePause();
+        }
+        else
+        {
+            Play();
+        }
     }
 
     //quit the game application

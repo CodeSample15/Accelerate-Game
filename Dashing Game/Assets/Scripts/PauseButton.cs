@@ -40,4 +40,9 @@ public class PauseButton : MonoBehaviour
     {
         paused = !paused;
     }
+
+    public static void TogglePause()
+    {
+        paused = !paused;
+    }
 }

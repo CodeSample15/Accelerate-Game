@@ -172,4 +172,9 @@ public class HomeScreenController : MonoBehaviour
     {
         MenuShowing = !MenuShowing;
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
