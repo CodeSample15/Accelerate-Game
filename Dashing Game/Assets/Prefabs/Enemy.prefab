@@ -175,14 +175,14 @@ MonoBehaviour:
   playerGameObject: {fileID: 0}
   PlayerDamageAnimation: {fileID: 0}
   enemyController: {fileID: 0}
-  particleController: {fileID: 0}
   Colors:
   - serializedVersion: 2
     rgba: 3022971664
   - serializedVersion: 2
     rgba: 422
   Type: 0
-  explosionEffect: {fileID: 0}
+  explosionEffect: {fileID: 428892633806106970, guid: 65c1d1c9ea977a34d98f31e9d95be1e4,
+    type: 3}
   cameraShake: {fileID: 0}
   LaserChargeParticles: {fileID: 1376493300451725224, guid: 35523304a1390d2469cbcbbcb22aa00b,
     type: 3}

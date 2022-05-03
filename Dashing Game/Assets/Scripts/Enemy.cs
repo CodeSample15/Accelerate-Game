@@ -21,7 +21,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] public Animator PlayerDamageAnimation;
     
     public WaveController enemyController;
-    public ParticleController particleController;
 
     public List<Color32> Colors;
 
@@ -314,7 +313,7 @@ public class Enemy : MonoBehaviour
                             //explode-----------------------------------------------------------------------
 
                             //make new explosion particles and move them to the location of the enemy
-                            particleController.AddParticles(Instantiate(explosionEffect, transform.position, Quaternion.Euler(new Vector3(90,0,0))));
+                            Instantiate(explosionEffect, transform.position, Quaternion.Euler(new Vector3(90,0,0)));
 
                             //damage place based off of distance from explosion location
                             float damage = Mathf.Clamp(BomberDamage - (distanceTo(playerGameObject) * BomberDamageDampener), 0, BomberDamage); //calculating damage

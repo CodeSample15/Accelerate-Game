@@ -17,7 +17,6 @@ public class WaveController : MonoBehaviour
 
     public GameObject enemy;
     public ParticleSystem spawnParticles;
-    public ParticleController particleController;
     public TextMeshProUGUI waveText; //to tell the player what wave they're currently on
     public Animator waveTextAnimation;
     public PauseButton pauseButton;
@@ -186,11 +185,11 @@ public class WaveController : MonoBehaviour
         int t = Random.Range(0, maxEnemy); //getting a random enemy type to spawn
 
         Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity)); //create the enemy object
-        particleController.AddParticles(Instantiate(spawnParticles, Enemies[Enemies.Count - 1].transform.position, Quaternion.identity));
+        ParticleSystem particleHolder = Instantiate(spawnParticles, Enemies[Enemies.Count - 1].transform.position, Quaternion.identity); //create a temp holder
 
         //converting the color32 of the enemy color to regular color
         Color enemyColor = Enemies[Enemies.Count - 1].GetComponent<Enemy>().getColor(t);
-        ParticleSystem.MainModule settings = particleController.Particles[particleController.Particles.Count - 1].main;
+        ParticleSystem.MainModule settings = particleHolder.main;
         settings.startColor = enemyColor;
 
         yield return new WaitForSeconds(0.3f); //letting the particles play before spawning the enemy

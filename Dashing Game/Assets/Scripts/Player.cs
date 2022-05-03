@@ -20,7 +20,6 @@ public class Player : MonoBehaviour
     public ParticleSystem dash_particles;
     public GameObject particle_holder;
     public ParticleSystem enemy_death_particles;
-    public ParticleController particleController;
     public ParticleSystem death_effect;
     public Light2D dash_light;
     public Animator menu_animations;
@@ -319,8 +318,7 @@ public class Player : MonoBehaviour
         else
         {
             //If the player is dead:
-            death_effect.gameObject.transform.position = new Vector2(transform.position.x, transform.position.y);
-            death_effect.Play();
+            Instantiate(death_effect, transform.position, Quaternion.identity);
             enemy_controller.Spawning = false;
 
             //save data-----------------------------------------
@@ -450,14 +448,14 @@ public class Player : MonoBehaviour
 
                 //setting animations and particles
                 character_animations.SetTrigger("Jump");
-                particleController.AddParticles(Instantiate(jump_particles, new Vector3(transform.position.x, transform.position.y - feetDistance, 100f), Quaternion.identity));
+                Instantiate(jump_particles, new Vector3(transform.position.x, transform.position.y - feetDistance, 100f), Quaternion.identity);
             }
             else if (!doubleJumped)
             {
                 doubleJumped = true;
                 character_animations.SetTrigger("Jump");
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce + jumpHeightUpgrade); //UPGRADE
-                particleController.AddParticles(Instantiate(jump_particles, new Vector3(transform.position.x, transform.position.y - feetDistance, 100f), Quaternion.identity));
+                Instantiate(jump_particles, new Vector3(transform.position.x, transform.position.y - feetDistance, 100f), Quaternion.identity);
             }
 
             /* // Other animation code for side jumps:
@@ -577,8 +575,8 @@ public class Player : MonoBehaviour
                         Color deathParticleColor = other.gameObject.GetComponent<Enemy>().getColor(enemyType);
 
                         //making enemy particles and setting the color of the enemy death particles
-                        particleController.AddParticles(Instantiate(enemy_death_particles, other.gameObject.transform.position, Quaternion.identity));
-                        ParticleSystem.MainModule settings = particleController.Particles[particleController.Particles.Count - 1].main;
+                        ParticleSystem particleHolder = Instantiate(enemy_death_particles, other.gameObject.transform.position, Quaternion.identity); //create a temp particle holder
+                        ParticleSystem.MainModule settings = particleHolder.main;
                         settings.startColor = deathParticleColor;
 
                         //updating stats
