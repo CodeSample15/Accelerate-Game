@@ -12876,6 +12876,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2018923148}
     m_Modifications:
+    - target: {fileID: 4909992397572192763, guid: dee24eefe7581aa47ba86fbd2f42d11e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 23.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8115546959946374838, guid: dee24eefe7581aa47ba86fbd2f42d11e,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 24.7
+      objectReference: {fileID: 0}
     - target: {fileID: 8115546960756809708, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}
       propertyPath: m_RootOrder
@@ -12909,7 +12919,7 @@ PrefabInstance:
     - target: {fileID: 8115546960756809708, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -122.19
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8115546960756809708, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}
@@ -13530,7 +13540,6 @@ MonoBehaviour:
   enemy: {fileID: 155607423}
   spawnParticles: {fileID: 2886635611337675392, guid: 8546532acc0bc8249bb4e4ae630a5b1c,
     type: 3}
-  particleController: {fileID: 0}
   waveText: {fileID: 1253614027062196924}
   waveTextAnimation: {fileID: 1253614027062196923}
   pauseButton: {fileID: 1253614027062196925}
@@ -15765,7 +15774,7 @@ PrefabInstance:
     - target: {fileID: 8115546960756809708, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -181.45032
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8115546960756809708, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}

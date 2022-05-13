@@ -52,7 +52,7 @@ public class MenuLogic : MonoBehaviour
             //restart button becomes resume (prevents people from accidentally restarting their game)
             RestartButton.GetComponentInChildren<TextMeshProUGUI>().SetText("Resume");
         }
-        else
+        else if(RestartButton != null)
         {
             RestartButton.GetComponentInChildren<TextMeshProUGUI>().SetText("Restart");
         }
