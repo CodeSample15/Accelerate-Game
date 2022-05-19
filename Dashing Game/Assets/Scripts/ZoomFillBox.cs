@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class ZoomFillBox : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class ZoomFillBox : MonoBehaviour
     [SerializeField] public float refillTime;
 
     private ParticleSystem particles;
+    private Light2D lights;
 
     private bool refilled;
     private float timeSinceLastRefill;
@@ -38,6 +40,7 @@ public class ZoomFillBox : MonoBehaviour
     void Awake()
     {
         particles = GetComponentInChildren<ParticleSystem>();
+        lights = GetComponentInChildren<Light2D>();
 
         //start out with the boxes being filled
         refilled = true;
@@ -69,12 +72,15 @@ public class ZoomFillBox : MonoBehaviour
             if (timeSinceLastRefill >= refillTime)
             {
                 refilled = true;
-                particles.Play();
+                if(!particles.isPlaying)
+                    particles.Play();
+                lights.enabled = true;
             }
             else
             {
                 timeSinceLastRefill += Time.deltaTime;
                 particles.Stop();
+                lights.enabled = false;
             }
         }
         else if(!activatedFillBoxes[boxID])
@@ -104,7 +110,7 @@ public class ZoomFillBox : MonoBehaviour
         {
             if (other.gameObject.CompareTag("Player"))
             {
-                if (refilled && player.GetComponent<Player>().DashPower != 100)
+                if (refilled && player.GetComponent<Player>().DashPower < player.GetComponent<Player>().MaxDash)
                 {
                     timeSinceLastRefill = 0f;
 

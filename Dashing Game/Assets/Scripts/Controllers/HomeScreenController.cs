@@ -66,8 +66,8 @@ public class HomeScreenController : MonoBehaviour
         if (Saver.loadData() == null || false)
         {
             //new player, create new player data file
-            PlayerData newPlayerData = new PlayerData(true, 0, 0, 
-                                                     0, 0, 0, 0, 0);
+            PlayerData newPlayerData = new PlayerData(true, 0, 0,    //new player, money, and highscore
+                                                     0, 0, 0, 0, 0); //upgrades (reset all to zero)
 
             Debug.Log("New player, creating player data file");
             Saver.SavePlayer(newPlayerData);
