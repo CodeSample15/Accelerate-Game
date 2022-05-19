@@ -84,6 +84,8 @@ public class HomeScreenController : MonoBehaviour
 
     void Update()
     {
+        
+
         Vector2 menuPosition = Menu.GetComponent<RectTransform>().anchoredPosition;
         Vector2 targetPosition;
 
@@ -171,6 +173,14 @@ public class HomeScreenController : MonoBehaviour
     public void SettingsClick()
     {
         MenuShowing = !MenuShowing;
+    }
+
+    public void BackGroundClicked()
+    {
+        //if the setting menu is currently showing, hide it
+        //this can also be used to "click off" of certain menus that can be added in the future
+        if (MenuShowing)
+            MenuShowing = false;
     }
 
     public void QuitGame()
