@@ -44,6 +44,8 @@ public class HomeScreenController : MonoBehaviour
 
     private bool alreadySelectedButtons;
 
+    private PlayerData data;
+
     public bool MenuIsShowing
     {
         get { return MenuShowing; }
@@ -51,9 +53,6 @@ public class HomeScreenController : MonoBehaviour
 
     void Awake()
     {
-        CurrentSprite = 0; //change this to information loaded from player file
-        MusicVolume = true; //same with this one
-
         MenuShowing = false;
         MenuSpeed = 6f;
 
@@ -67,25 +66,31 @@ public class HomeScreenController : MonoBehaviour
         {
             //new player, create new player data file
             PlayerData newPlayerData = new PlayerData(true, 0, 0,    //new player, money, and highscore
-                                                     0, 0, 0, 0, 0); //upgrades (reset all to zero)
+                                                     0, 0, 0, 0, 0,  //upgrades (reset all to zero)
+                                                     0, true);       //sound (medium volume, music turned on)
 
             Debug.Log("New player, creating player data file");
             Saver.SavePlayer(newPlayerData);
         }
 
         //load data
-        PlayerData data = Saver.loadData();
+        data = Saver.loadData();
 
         money = data.Money;
         highScore = data.HighScore;
 
+        //set button sprites depending on loaded data
+        VolumeButton.GetComponent<Image>().sprite = VolumeSprites[data.VolumeLevel];
+        MusicVolumeButton.GetComponent<Image>().sprite = MusicVolumeSprites[data.MusicPlaying ? 0 : 1];
+
         Debug.Log("Player data loaded!");
+
+        CurrentSprite = data.VolumeLevel; //what sprite the volume level is on (also shows the level of the volume)
+        MusicVolume = data.MusicPlaying;  //whether or not the music is playing in the background (on top of the sound effects)
     }
 
     void Update()
     {
-        
-
         Vector2 menuPosition = Menu.GetComponent<RectTransform>().anchoredPosition;
         Vector2 targetPosition;
 
@@ -147,11 +152,14 @@ public class HomeScreenController : MonoBehaviour
 
     public void VolumeClick()
     {
-        CurrentSprite++;
-        if (CurrentSprite >= VolumeSprites.Length)
-            CurrentSprite = 0;
+        CurrentSprite--;
+        if (CurrentSprite < 0)
+            CurrentSprite = VolumeSprites.Length-1;
 
         VolumeButton.GetComponent<Image>().sprite = VolumeSprites[CurrentSprite];
+
+        data.VolumeLevel = CurrentSprite;
+        Saver.SavePlayer(data);
     }
 
     public void MusicClick()
@@ -162,6 +170,9 @@ public class HomeScreenController : MonoBehaviour
             MusicVolumeButton.GetComponent<Image>().sprite = MusicVolumeSprites[0];
         else
             MusicVolumeButton.GetComponent<Image>().sprite = MusicVolumeSprites[1];
+
+        data.MusicPlaying = MusicVolume;
+        Saver.SavePlayer(data);
     }
 
     public void AnimateStoreButton()

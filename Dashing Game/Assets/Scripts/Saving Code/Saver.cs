@@ -14,13 +14,13 @@ public static class Saver
         stream.Close();
     }
 
-    public static void SavePlayer(bool newPlayer, int money, int highScore, int Speed, int MaxHealth, int MaxDash, int DashRecharge, int JumpHeight)
+    public static void SavePlayer(bool newPlayer, int money, int highScore, int Speed, int MaxHealth, int MaxDash, int DashRecharge, int JumpHeight, int Volume, bool Music)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/playerData.dta";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        PlayerData data = new PlayerData(newPlayer, money, highScore, Speed, MaxHealth, MaxDash, DashRecharge, JumpHeight);
+        PlayerData data = new PlayerData(newPlayer, money, highScore, Speed, MaxHealth, MaxDash, DashRecharge, JumpHeight, Volume, Music);
 
         formatter.Serialize(stream, data);
         stream.Close();

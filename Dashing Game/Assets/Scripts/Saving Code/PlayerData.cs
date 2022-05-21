@@ -17,6 +17,10 @@ public class PlayerData
     private int DashRecharge;
     private int JumpHeight;
 
+    //Sound data
+    private int Volume;
+    private bool Music;
+
     //giving scripts access to the player data
     public bool isNewPlayer
     {
@@ -62,9 +66,22 @@ public class PlayerData
         get { return JumpHeight; }
         set { JumpHeight = Mathf.Min(Mathf.Max(value, 0), 5); } //making sure the number is between 0 and 5
     }
+    
+    //sound
+    public int VolumeLevel
+    {
+        get { return Volume; }
+        set { Volume = value; }
+    }
+    public bool MusicPlaying
+    {
+        get { return Music; }
+        set { Music = value; }
+    }
 
     public PlayerData(bool newPlayer, int money, int highScore, 
-        int Speed, int MaxHealth, int MaxDash, int DashRecharge, int JumpHeight) //upgrades
+        int Speed, int MaxHealth, int MaxDash, int DashRecharge, int JumpHeight,  //upgrades
+        int Volume, bool Music) //sound
     {
         this.newPlayer = newPlayer;
         this.money = money;
@@ -75,5 +92,8 @@ public class PlayerData
         this.MaxDash = MaxDash;
         this.DashRecharge = DashRecharge;
         this.JumpHeight = JumpHeight;
+
+        this.Volume = Volume;
+        this.Music = Music;
     }
 }

@@ -35,6 +35,8 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private Collider2D col;
 
+    private bool detectingEnemies; //whether the DetectEnemies coroutine is still running
+
     private float movementSpeed; // how fast the player travels at maximum speed
     private float walkingSpeed; // where the animation will switch from walking to running
     private float dashSpeed; // how fast the player travels when dashing
@@ -142,6 +144,8 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
+
+        detectingEnemies = false;
 
         //adjustable variables
         movementSpeed = 6f;
@@ -299,7 +303,8 @@ public class Player : MonoBehaviour
                 //-------------------------------------------------------------------------------------- (Animations)
 
                 //detect collisions with enemies (inefficient, might need a fix in the future)
-                DetectEnemies();
+                if(!detectingEnemies)
+                    StartCoroutine(DetectEnemies());
             }
             else
             {
@@ -556,10 +561,12 @@ public class Player : MonoBehaviour
     /// 
     /// The script will loop through each active enemy gameobject in the EnemyController's active enemies array to search for collisions between the two gameobjects
     /// </summary>
-    private void DetectEnemies()
+    private IEnumerator DetectEnemies()
     {
         if (dashing)
         {
+            detectingEnemies = true;
+
             Collider2D other;
 
             //looping through each enemy and checking if it is colliding with the player
@@ -591,6 +598,9 @@ public class Player : MonoBehaviour
                 }
             }
         }
+
+        detectingEnemies = false;
+        yield return null;
     }
 
     IEnumerator animateScore(int newScore)

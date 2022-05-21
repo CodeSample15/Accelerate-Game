@@ -63,6 +63,7 @@ public class Enemy : MonoBehaviour
     private float timePassed;
 
     //Laser
+    public GameObject LazerCrossHair;
     public GameObject LaserChargeParticles;
     public GameObject LaserShootParticles;
 
