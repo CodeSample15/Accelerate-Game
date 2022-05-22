@@ -19,6 +19,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] public BulletController bulletController;
     [SerializeField] public GameObject playerGameObject;
     [SerializeField] public Animator PlayerDamageAnimation;
+    [SerializeField] private ParticleSystem DeathParticles;
     
     public WaveController enemyController;
 
@@ -30,6 +31,7 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rb;
     private AIPath path;
     private SpriteRenderer sprite;
+    private ParticleSystem deathParticlesInstance;
 
     #region Enemy Data
     //Melee
@@ -105,6 +107,9 @@ public class Enemy : MonoBehaviour
     {
         path = GetComponent<AIPath>();
         sprite = GetComponentInChildren<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
+
+        deathParticlesInstance = Instantiate(DeathParticles, transform.position, Quaternion.identity);
 
         #region Stats
         //Melee:
@@ -160,11 +165,6 @@ public class Enemy : MonoBehaviour
         initColors();
 
         timeSinceLastAttack = 0f; //Starts off being able to attack right away
-    }
-
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -420,10 +420,14 @@ public class Enemy : MonoBehaviour
                                 laserDirection = (playerGameObject.transform.position - transform.position).normalized;
                                 RaycastHit2D hit = Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity, playerLayerMask);
 
+                                //spawn the crosshair indicator only if the player is in direct los  with the enemy
+                                if (Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity).collider.CompareTag("Player"))
+                                    Instantiate(LazerCrossHair, player.transform.position, Quaternion.identity);
+
                                 Vector3 scaledLaserDirection = laserDirection * (hit.distance == 0 ? 1000 : hit.distance);
                                 
                                 LaserEndPosition = scaledLaserDirection + transform.position;
-                                Debug.Log("End Position: " + LaserEndPosition + "     Position: " + transform.position);
+                                //Debug.Log("End Position: " + LaserEndPosition + "     Position: " + transform.position);
                                 LaserLocationPicked = true;
                             }
 
@@ -497,5 +501,14 @@ public class Enemy : MonoBehaviour
         //get rid of objects that are no longer needed
         if(LaserHolder != null)
             Destroy(LaserHolder.gameObject);
+
+        //play death particles
+        if (deathParticlesInstance != null)
+        {
+            deathParticlesInstance.transform.position = transform.position;
+            ParticleSystem.MainModule settings = deathParticlesInstance.main;
+            settings.startColor = (Color)Colors[Type];
+            deathParticlesInstance.Play();
+        }
     }
 }

@@ -174,6 +174,8 @@ MonoBehaviour:
   bulletController: {fileID: 0}
   playerGameObject: {fileID: 0}
   PlayerDamageAnimation: {fileID: 0}
+  DeathParticles: {fileID: 3650307596008953324, guid: da1e6ba99f47c634386fb43b2d1afaab,
+    type: 3}
   enemyController: {fileID: 0}
   Colors:
   - serializedVersion: 2
@@ -184,6 +186,8 @@ MonoBehaviour:
   explosionEffect: {fileID: 428892633806106970, guid: 65c1d1c9ea977a34d98f31e9d95be1e4,
     type: 3}
   cameraShake: {fileID: 0}
+  LazerCrossHair: {fileID: 8361563159964518743, guid: fa48a8516b8133c4abe317648c59cf5a,
+    type: 3}
   LaserChargeParticles: {fileID: 1376493300451725224, guid: 35523304a1390d2469cbcbbcb22aa00b,
     type: 3}
   LaserShootParticles: {fileID: 8252404646579538432, guid: a71f0a4e387f5304b83d204ac1801982,
