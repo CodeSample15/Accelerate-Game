@@ -65,7 +65,7 @@ public class Enemy : MonoBehaviour
     private float timePassed;
 
     //Laser
-    public GameObject LazerCrossHair;
+    public GameObject LaserCrossHair;
     public GameObject LaserChargeParticles;
     public GameObject LaserShootParticles;
 
@@ -422,7 +422,7 @@ public class Enemy : MonoBehaviour
 
                                 //spawn the crosshair indicator only if the player is in direct los  with the enemy
                                 if (Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity).collider.CompareTag("Player"))
-                                    Instantiate(LazerCrossHair, player.transform.position, Quaternion.identity);
+                                    Instantiate(LaserCrossHair, player.transform.position, Quaternion.identity);
 
                                 Vector3 scaledLaserDirection = laserDirection * (hit.distance == 0 ? 1000 : hit.distance);
                                 

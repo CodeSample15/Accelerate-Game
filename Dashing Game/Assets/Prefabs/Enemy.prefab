@@ -186,7 +186,7 @@ MonoBehaviour:
   explosionEffect: {fileID: 428892633806106970, guid: 65c1d1c9ea977a34d98f31e9d95be1e4,
     type: 3}
   cameraShake: {fileID: 0}
-  LazerCrossHair: {fileID: 8361563159964518743, guid: fa48a8516b8133c4abe317648c59cf5a,
+  LaserCrossHair: {fileID: 8361563159964518743, guid: fa48a8516b8133c4abe317648c59cf5a,
     type: 3}
   LaserChargeParticles: {fileID: 1376493300451725224, guid: 35523304a1390d2469cbcbbcb22aa00b,
     type: 3}
