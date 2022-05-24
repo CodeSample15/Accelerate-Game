@@ -48,6 +48,9 @@ public class WaveController : MonoBehaviour
     private int enemiesToSpawn;
     private int enemiesSpawned; //how many enemies are in the wave
 
+    //if the enemy was successfully spawned
+    private bool enemySpawned;
+
     private int wave; //current wave
 
     public List<GameObject> ActiveEnemies
@@ -88,6 +91,8 @@ public class WaveController : MonoBehaviour
         YellowEnemyWave = 7;
 
         difficultyIncrease = 0.1f;
+
+        enemySpawned = true;
     }
 
     void Start()
@@ -112,12 +117,16 @@ public class WaveController : MonoBehaviour
                     }
                 }
 
+                if (!enemySpawned)
+                    timeSinceLastEnemySpawn = nextEnemyWait;
+
                 //detecting if it's time to spawn yet or not
                 if (timeSinceLastEnemySpawn >= nextEnemyWait)
                 {
                     if (enemiesSpawned < enemiesToSpawn)
                     {
                         timeSinceLastEnemySpawn = 0;
+                        enemySpawned = false;
                         StartCoroutine(spawnNewEnemy());
                     }
                     else
@@ -172,40 +181,48 @@ public class WaveController : MonoBehaviour
         float y = Random.Range(Mathf.Min(PointOne.y, topLeftBound.y), Mathf.Max(PointTwo.y, bottomRightBound.y));
 
         Vector2 spawnPosition = new Vector2(x, y);
+        transform.position = spawnPosition;
+        int layerMask = 1 << 8;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, 0.001f, layerMask);
 
-        //increasing number of possible enemies to spawn depending on wave
-        int maxEnemy = 1;
-        if (wave >= GreenEnemyWave)
-            maxEnemy++;
-        if (wave >= BlueEnemyWave)
-            maxEnemy++;
-        if (wave >= YellowEnemyWave)
-            maxEnemy++;
-
-        int t = Random.Range(0, maxEnemy); //getting a random enemy type to spawn
-
-        Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity)); //create the enemy object
-        ParticleSystem particleHolder = Instantiate(spawnParticles, Enemies[Enemies.Count - 1].transform.position, Quaternion.identity); //create a temp holder
-
-        //converting the color32 of the enemy color to regular color
-        Color enemyColor = Enemies[Enemies.Count - 1].GetComponent<Enemy>().getColor(t);
-        ParticleSystem.MainModule settings = particleHolder.main;
-        settings.startColor = enemyColor;
-
-        yield return new WaitForSeconds(0.3f); //letting the particles play before spawning the enemy
-
-        while (PauseButton.IsPaused)
+        if (hit.collider == null)
         {
-            yield return new WaitForSeconds(0.01f);
-        }
+            enemySpawned = true;
 
-        if (spawning)
-        {
-            Enemies[Enemies.Count - 1].SetActive(true);
-            Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = t;
-            Enemies[Enemies.Count - 1].GetComponent<Enemy>().Colorize();
+            //increasing number of possible enemies to spawn depending on wave
+            int maxEnemy = 1;
+            if (wave >= GreenEnemyWave)
+                maxEnemy++;
+            if (wave >= BlueEnemyWave)
+                maxEnemy++;
+            if (wave >= YellowEnemyWave)
+                maxEnemy++;
+            
+            int t = Random.Range(0, maxEnemy); //getting a random enemy type to spawn
 
-            enemiesSpawned++; //update the wave status
+            Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity)); //create the enemy object
+            ParticleSystem particleHolder = Instantiate(spawnParticles, Enemies[Enemies.Count - 1].transform.position, Quaternion.identity); //create a temp holder
+
+            //converting the color32 of the enemy color to regular color
+            Color enemyColor = Enemies[Enemies.Count - 1].GetComponent<Enemy>().getColor(t);
+            ParticleSystem.MainModule settings = particleHolder.main;
+            settings.startColor = enemyColor;
+
+            yield return new WaitForSeconds(0.3f); //letting the particles play before spawning the enemy
+
+            while (PauseButton.IsPaused)
+            {
+                yield return new WaitForSeconds(0.01f);
+            }
+
+            if (spawning)
+            {
+                Enemies[Enemies.Count - 1].SetActive(true);
+                Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = t;
+                Enemies[Enemies.Count - 1].GetComponent<Enemy>().Colorize();
+
+                enemiesSpawned++; //update the wave status
+            }
         }
     }
 

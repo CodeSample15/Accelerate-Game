@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -739,13 +739,13 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!43 &378151592
+--- !u!43 &397597590
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1720
+  m_Name: pb_Mesh-1780
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -902,13 +902,13 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!43 &397597590
+--- !u!43 &408129784
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1718
+  m_Name: pb_Mesh-1782
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6538,8 +6538,6 @@ MonoBehaviour:
   damage_animation: {fileID: 1729364508}
   dash_particles: {fileID: 1027322277}
   particle_holder: {fileID: 698729515}
-  enemy_death_particles: {fileID: 3650307596008953324, guid: da1e6ba99f47c634386fb43b2d1afaab,
-    type: 3}
   death_effect: {fileID: 1946638725032598649, guid: 0aaea43c19427ee4bb62611ca9a88018,
     type: 3}
   dash_light: {fileID: 1904281272}
@@ -13019,7 +13017,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1716
+  m_Name: pb_Mesh-1778
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -13306,6 +13304,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2084067454}
   - component: {fileID: 2084067455}
+  - component: {fileID: 2084067453}
   m_Layer: 0
   m_Name: Enemy Controller
   m_TagString: Untagged
@@ -13313,6 +13312,32 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!61 &2084067453
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2084067452}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!4 &2084067454
 Transform:
   m_ObjectHideFlags: 0
@@ -13322,7 +13347,7 @@ Transform:
   m_GameObject: {fileID: 2084067452}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.8792024, y: 4.9350495, z: -110.96532}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.2145602, y: 0.2145602, z: 0.2145602}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -13360,7 +13385,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1722
+  m_Name: pb_Mesh-1784
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -15292,7 +15317,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 378151592}
+      objectReference: {fileID: 408129784}
     - target: {fileID: 7123194735822192996, guid: d30b12e44ec4e8b49b27a8e8d8b9b856,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15307,7 +15332,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 378151592}
+      objectReference: {fileID: 408129784}
     - target: {fileID: 7123194735822192999, guid: d30b12e44ec4e8b49b27a8e8d8b9b856,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

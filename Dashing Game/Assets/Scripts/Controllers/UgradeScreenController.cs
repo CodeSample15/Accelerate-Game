@@ -47,7 +47,7 @@ public class UgradeScreenController : MonoBehaviour
         DashRechargeStartPrice = 60;
         JumpHeightStartPrice = 30;
 
-        increaseRate = 1.2f;
+        increaseRate = 1.8f;
     }
 
     //private methods
