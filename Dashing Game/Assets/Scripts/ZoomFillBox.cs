@@ -6,7 +6,6 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class ZoomFillBox : MonoBehaviour
 {
-    [SerializeField] public Player player;
     [SerializeField] public float refillTime;
 
     private ParticleSystem particles;
@@ -110,11 +109,11 @@ public class ZoomFillBox : MonoBehaviour
         {
             if (other.gameObject.CompareTag("Player"))
             {
-                if (refilled && player.GetComponent<Player>().DashPower < player.GetComponent<Player>().MaxDash)
+                if (refilled && other.GetComponent<Player>().DashPower < other.GetComponent<Player>().MaxDash)
                 {
                     timeSinceLastRefill = 0f;
 
-                    player.DashPower = player.GetComponent<Player>().MaxDash;
+                    other.GetComponent<Player>().DashPower = other.GetComponent<Player>().MaxDash;
                     refilled = false;
 
                     if (activatedFillBoxes.Count > 1)
