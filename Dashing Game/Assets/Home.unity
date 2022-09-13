@@ -686,7 +686,7 @@ MonoBehaviour:
   FadeAnimation: {fileID: 835518860}
   PlayerMovePosition: {x: 0, y: 0}
   AnimationDelay: 0.7
-  NumberOfStages: 5
+  NumberOfStages: 1
 --- !u!4 &378254163
 Transform:
   m_ObjectHideFlags: 0
@@ -738,7 +738,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.11320752, g: 0.11320752, b: 0.11320752, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
