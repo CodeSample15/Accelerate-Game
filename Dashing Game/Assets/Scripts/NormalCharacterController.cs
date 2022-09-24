@@ -145,7 +145,7 @@ public class NormalCharacterController : MonoBehaviour
 
         doubleJumped = false;
 
-        feetDistance = 0.01f;
+        feetDistance = 0.5f;
 
         lastDashDir = new Vector2(0, 1);
 
@@ -281,7 +281,7 @@ public class NormalCharacterController : MonoBehaviour
             // And then smoothing it out and applying it to the character
             if (!Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1f), transform.right, sideDetectionLength)) //detecting if the player is on a wall or not
                 rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .05f);
-            rb.AddForce(transform.right * sideJumpVelocity);
+            rb.AddForce(Vector2.right * sideJumpVelocity);
 
             lastDashDir = new Vector2(0, 1); //when the player starts to dash, they will always start by going up first
 
