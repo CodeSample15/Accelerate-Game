@@ -81,7 +81,7 @@ public class BulletCode : MonoBehaviour
             if (!player.GetComponent<Player>().isDashing)
             {
                 player.Health -= damage;
-                player.character_animations.SetTrigger("Damage");
+                //player.character_animations.SetTrigger("Damage");
             }
             Destroy(gameObject);
         }

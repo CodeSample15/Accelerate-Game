@@ -9,7 +9,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Player : MonoBehaviour
 {
     #region Public Variables
-    public Animator character_animations;
+    //public Animator character_animations;
     public WaveController enemy_controller;
     public Joystick joystick;
     public Slider health_bar;
@@ -265,6 +265,7 @@ public class Player : MonoBehaviour
                 }
 
                 //handle animations--------------------------------------------------------------------- (Animations)
+                /*
                 //set the speed of the running animation
                 character_animations.SetFloat("RunSpeed", movement.x);
 
@@ -299,6 +300,7 @@ public class Player : MonoBehaviour
                 }
 
                 character_animations.SetBool("Falling", rb.velocity.y < -0.8f && !dashing);
+                */
                 //-------------------------------------------------------------------------------------- (Animations)
 
                 //detect collisions with enemies (inefficient, might need a fix in the future)
@@ -378,7 +380,7 @@ public class Player : MonoBehaviour
             // And then smoothing it out and applying it to the character
             if (!Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1f), transform.right, sideDetectionLength)) //detecting if the player is on a wall or not
                 rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .05f);
-            rb.AddForce(transform.right * sideJumpVelocity);
+            rb.AddForce(Vector2.right * sideJumpVelocity);
 
             lastDashDir = new Vector2(0, 1); //when the player starts to dash, they will always start by going up first
 
@@ -451,13 +453,13 @@ public class Player : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce + jumpHeightUpgrade); //UPGRADE
 
                 //setting animations and particles
-                character_animations.SetTrigger("Jump");
+                //character_animations.SetTrigger("Jump");
                 Instantiate(jump_particles, new Vector3(transform.position.x, transform.position.y - feetDistance, 100f), Quaternion.identity);
             }
             else if (!doubleJumped)
             {
                 doubleJumped = true;
-                character_animations.SetTrigger("Jump");
+                //character_animations.SetTrigger("Jump");
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce + jumpHeightUpgrade); //UPGRADE
                 Instantiate(jump_particles, new Vector3(transform.position.x, transform.position.y - feetDistance, 100f), Quaternion.identity);
             }

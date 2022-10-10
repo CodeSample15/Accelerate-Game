@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] public Player player;
     [SerializeField] public BulletController bulletController;
     [SerializeField] public GameObject playerGameObject;
-    [SerializeField] public Animator PlayerDamageAnimation;
+    //[SerializeField] public Animator PlayerDamageAnimation;
     [SerializeField] private ParticleSystem DeathParticles;
     
     public WaveController enemyController;
@@ -272,7 +272,7 @@ public class Enemy : MonoBehaviour
                     if (isTouching(playerCol) && !playerGameObject.GetComponent<Player>().isDashing)
                     {
                         //the player isn't dashing, so the enemy can attack
-                        PlayerDamageAnimation.SetTrigger("Damage");
+                        //PlayerDamageAnimation.SetTrigger("Damage");
                         playerGameObject.GetComponent<Player>().Health -= MeleeDamage;
 
                         timeSinceLastAttack = 0f; //attacked, so the cooldown restarts
@@ -321,7 +321,7 @@ public class Enemy : MonoBehaviour
 
                             if (damage > 0 && distanceTo(playerGameObject) < Radius/2)
                             {
-                                PlayerDamageAnimation.SetTrigger("Damage");
+                                //PlayerDamageAnimation.SetTrigger("Damage");
                                 playerGameObject.GetComponent<Player>().Health -= damage;
                             }
 
@@ -389,7 +389,7 @@ public class Enemy : MonoBehaviour
                                 {
                                     if (playerHit.collider.CompareTag("Player") && !player.isDashing) //only dealing damage if the collider hit is the player and not a wall, and if the player isn't dashing
                                     {
-                                        PlayerDamageAnimation.SetTrigger("Damage");
+                                        //PlayerDamageAnimation.SetTrigger("Damage");
                                         playerGameObject.GetComponent<Player>().Health -= LaserDamage;
 
                                         LaserDamageTimeElapsed = 0;
