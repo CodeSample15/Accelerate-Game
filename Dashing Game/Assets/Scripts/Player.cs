@@ -425,6 +425,8 @@ public class Player : MonoBehaviour
             particle_holder.transform.rotation = Quaternion.FromToRotation(Vector3.right, (Vector2)targetVelocity.normalized);
             particle_holder.transform.Rotate(0, 0, -90);
 
+            //add some rotational velocity for effect
+
             //turning on the dash light
             dash_light.enabled = true;
         }
