@@ -153,7 +153,7 @@ public class Enemy : MonoBehaviour
         LaserCooldownTime = 3f;
         LaserCooldownElapsed = LaserCooldownTime; //start off ready to fire
 
-        LaserDamageTime = 0.1f;
+        LaserDamageTime = 0.1f; //player is damaged every 0.1 seconds when touching laser
         LaserDamageTimeElapsed = 0;
         LaserDamage = 2f;
 
@@ -349,7 +349,7 @@ public class Enemy : MonoBehaviour
 
                         LaserLocationPicked = false; //recalculating positions for the laser (should only do this once so that the laser doesn't follow the player)
 
-                        GameObject temp = Instantiate(LaserChargeParticles, transform.position, Quaternion.Euler(new Vector3(90, 0, 0)));
+                        GameObject temp = Instantiate(LaserChargeParticles, transform.position, Quaternion.Euler(new Vector3(90, 0, 0))); //starting the charging particles
                         temp.transform.parent = gameObject.transform;
 
                         LaserShootParticlesPlayed = false;
@@ -413,21 +413,23 @@ public class Enemy : MonoBehaviour
                         }
                         else
                         {
+                            //calculate a place to fire the laser
                             if (!LaserLocationPicked)
                             {
                                 //calculate positions for laser
                                 LayerMask playerLayerMask = 1 << 8; //only hit walls
                                 laserDirection = (playerGameObject.transform.position - transform.position).normalized;
                                 RaycastHit2D hit = Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity, playerLayerMask);
-
-                                //spawn the crosshair indicator only if the player is in direct los  with the enemy
+                                float distance = Vector2.Distance(hit.point, transform.position);
+                                
+                                //spawn the crosshair indicator only if the player is in direct los with the enemy
                                 if (Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity).collider.CompareTag("Player"))
                                     Instantiate(LaserCrossHair, player.transform.position, Quaternion.identity);
 
-                                Vector3 scaledLaserDirection = laserDirection * (hit.distance == 0 ? 1000 : hit.distance);
+                                Vector3 scaledLaserDirection = laserDirection * (distance == 0 ? 1000 : distance);
                                 
                                 LaserEndPosition = scaledLaserDirection + transform.position;
-                                //Debug.Log("End Position: " + LaserEndPosition + "     Position: " + transform.position);
+                                LaserEndPosition.z = transform.position.z;
                                 LaserLocationPicked = true;
                             }
 

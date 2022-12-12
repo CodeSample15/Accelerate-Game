@@ -9,7 +9,9 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class Player : MonoBehaviour
 {
     #region Public Variables
-    //public Animator character_animations;
+    [SerializeField] public bool isTriangle; //whether or not the player is using the triangle character (for future updates with character customization)
+
+    public Animator character_animations;
     public WaveController enemy_controller;
     public Joystick joystick;
     public Slider health_bar;
@@ -69,6 +71,11 @@ public class Player : MonoBehaviour
     private bool doubleJumped; //test if the player has already double jumped
 
     private Vector3 velocity = Vector3.zero;
+
+    private float spin;
+
+    [Tooltip("How fast the player spins to the side when moving in that direction")]
+    [SerializeField] private float spinModifier = 1f;
 
     //player data
     private PlayerData data;
@@ -144,6 +151,9 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
 
+        if (!isTriangle)
+            character_animations = GetComponent<Animator>();
+
         detectingEnemies = false;
 
         //adjustable variables
@@ -164,6 +174,8 @@ public class Player : MonoBehaviour
         scoreGrowSize = 0.55f;
         scoreShrinkSpeed = 0.009f;
         scoreGrowSpeed = 0.06f;
+
+        spin = 0;
 
         //fixed starting value variables for things like health and the amount of dash ability left
         dashing = false;
@@ -213,6 +225,8 @@ public class Player : MonoBehaviour
                 */
                 movement.x = Input.GetAxisRaw("Horizontal");
                 movement.y = Input.GetAxisRaw("Vertical");
+
+                spin = -spinModifier * movement.x;
 
                 if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("joystick button 0"))
                     jump();
@@ -265,42 +279,43 @@ public class Player : MonoBehaviour
                 }
 
                 //handle animations--------------------------------------------------------------------- (Animations)
-                /*
-                //set the speed of the running animation
-                character_animations.SetFloat("RunSpeed", movement.x);
-
-                //Tell the character to go into dashing animation
-                character_animations.SetBool("Dashing", dashing);
-
-                if (Mathf.Abs(movement.x) > 0)
-                    character_animations.SetBool("Running", !character_animations.GetBool("Falling"));
-                else
-                    character_animations.SetBool("Running", false);
-
-                //detecting if the player is traveling slow enough to be walking
-                if (Mathf.Abs(movement.x) <= walkingSpeed && movement.x != 0)
+                if (!isTriangle)
                 {
-                    character_animations.SetBool("Walking", true);
-                    character_animations.SetBool("Running", false);
-                }
-                else
-                {
-                    character_animations.SetBool("Walking", false);
-                }
+                    //set the speed of the running animation
+                    character_animations.SetFloat("RunSpeed", movement.x);
 
-                if (movement.x < 0)
-                {
-                    //character is running to the left
-                    transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
-                }
-                else if (movement.x > 0)
-                {
-                    //character is running to the right
-                    transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                }
+                    //Tell the character to go into dashing animation
+                    character_animations.SetBool("Dashing", dashing);
 
-                character_animations.SetBool("Falling", rb.velocity.y < -0.8f && !dashing);
-                */
+                    if (Mathf.Abs(movement.x) > 0)
+                        character_animations.SetBool("Running", !character_animations.GetBool("Falling"));
+                    else
+                        character_animations.SetBool("Running", false);
+
+                    //detecting if the player is traveling slow enough to be walking
+                    if (Mathf.Abs(movement.x) <= walkingSpeed && movement.x != 0)
+                    {
+                        character_animations.SetBool("Walking", true);
+                        character_animations.SetBool("Running", false);
+                    }
+                    else
+                    {
+                        character_animations.SetBool("Walking", false);
+                    }
+
+                    if (movement.x < 0)
+                    {
+                        //character is running to the left
+                        transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
+                    }
+                    else if (movement.x > 0)
+                    {
+                        //character is running to the right
+                        transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+                    }
+
+                    character_animations.SetBool("Falling", rb.velocity.y < -0.8f && !dashing);
+                }
                 //-------------------------------------------------------------------------------------- (Animations)
 
                 //detect collisions with enemies (inefficient, might need a fix in the future)
@@ -379,9 +394,12 @@ public class Player : MonoBehaviour
 
             // And then smoothing it out and applying it to the character
             if (!Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1f), transform.right, sideDetectionLength)) //detecting if the player is on a wall or not
-                rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .05f);
+                rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .02f);
             rb.AddForce(Vector2.right * sideJumpVelocity);
 
+            if(isTriangle)
+                rb.AddTorque(spin);
+            
             lastDashDir = new Vector2(0, 1); //when the player starts to dash, they will always start by going up first
 
             //hiding the particles
@@ -416,6 +434,7 @@ public class Player : MonoBehaviour
             targetVelocity = targetVelocity.normalized;
             targetVelocity *= dashSpeed * speedUpgrade; //UPGRADE
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .02f);
+            rb.AddTorque(10);
 
             //putting in the particles
             if (!dash_particles.isPlaying)
@@ -511,8 +530,8 @@ public class Player : MonoBehaviour
     {
         int groundLayerMask = 1 << 8;
 
-        RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.5f, groundLayerMask);
-        RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.5f, groundLayerMask);
+        RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), new Vector2(1, -1), 0.5f, groundLayerMask);
+        RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), new Vector2(-1, -1), 0.5f, groundLayerMask);
 
         bool rightCol = false;
         bool leftCol = false;
@@ -525,9 +544,9 @@ public class Player : MonoBehaviour
                 leftCol = true;
 
         if (checkWall)
-            return Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f, groundLayerMask) || rightCol || leftCol;
+            return Physics2D.Raycast(transform.position, Vector2.down, 1f, groundLayerMask) || rightCol || leftCol;
         else
-            return Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f, groundLayerMask);
+            return Physics2D.Raycast(transform.position, Vector2.down, 1f, groundLayerMask);
     }
 
     /// <summary>
@@ -540,8 +559,8 @@ public class Player : MonoBehaviour
     {
         int groundMask = 1 << 8; //bitmask to only accept the 8th layer (ground)        1 0 0 0 0 0 0 0
 
-        RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(1, -1)), 0.5f, groundMask);
-        RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), transform.TransformDirection(new Vector2(-1, -1)), 0.5f, groundMask);
+        RaycastHit2D right = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), new Vector2(1, -1), 0.5f, groundMask);
+        RaycastHit2D left = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y - feetDistance), new Vector2(-1, -1), 0.5f, groundMask);
 
         rightCol = false;
         leftCol = false;
@@ -553,7 +572,7 @@ public class Player : MonoBehaviour
             if (left.collider.CompareTag("Ground"))
                 leftCol = true;
 
-        RaycastHit2D bottom = Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1f, groundMask);
+        RaycastHit2D bottom = Physics2D.Raycast(transform.position, Vector2.down, 1f, groundMask);
         bool ground = bottom.collider != null && bottom.collider.CompareTag("Ground");
 
         return ground || rightCol || leftCol;

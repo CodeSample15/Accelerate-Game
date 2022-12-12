@@ -11,7 +11,8 @@ public class PlayerFollow : MonoBehaviour
     [SerializeField] public float startSize;
     [SerializeField] public float zoomAmount;
     [SerializeField] public float movementSpeed;
-    [SerializeField] public float zoomSpeed;
+    [SerializeField] public float zoomOutSpeed;
+    [SerializeField] public float zoomInSpeed;
     [SerializeField] public float yOffSet;
 
     public float DashingZoom;
@@ -46,13 +47,18 @@ public class PlayerFollow : MonoBehaviour
             yDistance = 0;
 
         if (playerScript.isDashing)
-            zDistance = zoomAmount - cam.orthographicSize;
+        {
+            zDistance = (zoomAmount - cam.orthographicSize) * zoomOutSpeed;
+        }
         else
-            zDistance = startSize - cam.orthographicSize;
+        {
+            zDistance = (startSize - cam.orthographicSize) * zoomInSpeed;
+        }
+
 
         Vector2 movement = new Vector2(xDistance, yDistance);
         transform.Translate(movement * movementSpeed * Time.deltaTime);
 
-        cam.orthographicSize += zDistance * zoomSpeed;
+        cam.orthographicSize += zDistance * Time.deltaTime;
     }
 }

@@ -6,6 +6,9 @@ using TMPro;
 public class WaveController : MonoBehaviour
 {
     //public
+    [Tooltip("Disable spawning for debugging purposes")]
+    [SerializeField] private bool DebugMode = false;
+
     [SerializeField] public GameObject player;
     [Header("Size of map")]
     [Tooltip("Should be TOP LEFT corner")]
@@ -78,7 +81,8 @@ public class WaveController : MonoBehaviour
         enemyIncreasePerWave = 2;
         enemiesSpawned = 0;
         timeSinceLastEnemySpawn = 0f;
-        wave = 1;
+
+        wave = 10; //should be set to 1 for final release
 
         enemiesToSpawn = startEnemyCount;
 
@@ -104,7 +108,7 @@ public class WaveController : MonoBehaviour
 
     void Update()
     {
-        if (!PauseButton.IsPaused) {
+        if (!PauseButton.IsPaused && !DebugMode) {
             if (player.GetComponent<Player>().isAlive)
             {
                 //looping through the enemies array to see if any of them are dead, and removing the ones that are to save memory
