@@ -11,7 +11,6 @@ public class Player : MonoBehaviour
     #region Public Variables
     [SerializeField] public bool isTriangle; //whether or not the player is using the triangle character (for future updates with character customization)
 
-    public Animator character_animations;
     public WaveController enemy_controller;
     public Joystick joystick;
     public Slider health_bar;
@@ -151,9 +150,6 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
 
-        if (!isTriangle)
-            character_animations = GetComponent<Animator>();
-
         detectingEnemies = false;
 
         //adjustable variables
@@ -279,43 +275,7 @@ public class Player : MonoBehaviour
                 }
 
                 //handle animations--------------------------------------------------------------------- (Animations)
-                if (!isTriangle)
-                {
-                    //set the speed of the running animation
-                    character_animations.SetFloat("RunSpeed", movement.x);
-
-                    //Tell the character to go into dashing animation
-                    character_animations.SetBool("Dashing", dashing);
-
-                    if (Mathf.Abs(movement.x) > 0)
-                        character_animations.SetBool("Running", !character_animations.GetBool("Falling"));
-                    else
-                        character_animations.SetBool("Running", false);
-
-                    //detecting if the player is traveling slow enough to be walking
-                    if (Mathf.Abs(movement.x) <= walkingSpeed && movement.x != 0)
-                    {
-                        character_animations.SetBool("Walking", true);
-                        character_animations.SetBool("Running", false);
-                    }
-                    else
-                    {
-                        character_animations.SetBool("Walking", false);
-                    }
-
-                    if (movement.x < 0)
-                    {
-                        //character is running to the left
-                        transform.rotation = Quaternion.Euler(new Vector3(0, 180, 0));
-                    }
-                    else if (movement.x > 0)
-                    {
-                        //character is running to the right
-                        transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
-                    }
-
-                    character_animations.SetBool("Falling", rb.velocity.y < -0.8f && !dashing);
-                }
+               
                 //-------------------------------------------------------------------------------------- (Animations)
 
                 //detect collisions with enemies (inefficient, might need a fix in the future)

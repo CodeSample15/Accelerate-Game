@@ -18,7 +18,6 @@ public class Enemy : MonoBehaviour
     [SerializeField] public Player player;
     [SerializeField] public BulletController bulletController;
     [SerializeField] public GameObject playerGameObject;
-    //[SerializeField] public Animator PlayerDamageAnimation;
     [SerializeField] private ParticleSystem DeathParticles;
     
     public WaveController enemyController;
@@ -90,7 +89,7 @@ public class Enemy : MonoBehaviour
     private float LaserDamage; //how much damage the laser does to the player
 
     private Vector3 LaserEndPosition = Vector3.zero; //where the laser will point to 
-    Vector3 laserDirection = Vector3.zero; //which way the laser will go
+    Vector2 laserDirection = Vector2.zero; //which way the laser will go
     #endregion
 
     private float AttackSpeed;
@@ -417,16 +416,15 @@ public class Enemy : MonoBehaviour
                             if (!LaserLocationPicked)
                             {
                                 //calculate positions for laser
-                                LayerMask playerLayerMask = 1 << 8; //only hit walls
+                                LayerMask playerLayerMask = 1 << 8; //only hit walls (layer 8)
                                 laserDirection = (playerGameObject.transform.position - transform.position).normalized;
                                 RaycastHit2D hit = Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity, playerLayerMask);
-                                float distance = Vector2.Distance(hit.point, transform.position);
                                 
                                 //spawn the crosshair indicator only if the player is in direct los with the enemy
                                 if (Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity).collider.CompareTag("Player"))
                                     Instantiate(LaserCrossHair, player.transform.position, Quaternion.identity);
 
-                                Vector3 scaledLaserDirection = laserDirection * (distance == 0 ? 1000 : distance);
+                                Vector3 scaledLaserDirection = laserDirection * (hit.distance == 0 ? 1000 : hit.distance);
                                 
                                 LaserEndPosition = scaledLaserDirection + transform.position;
                                 LaserEndPosition.z = transform.position.z;
