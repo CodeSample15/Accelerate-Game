@@ -133,35 +133,6 @@ public class WaveController : MonoBehaviour
                         enemySpawned = false;
                         StartCoroutine(spawnNewEnemy());
                     }
-                    else
-                    {
-                        //wait until the player has killed all of the enemies in the wave
-                        if (Enemies.Count == 0)
-                        {
-                            //start a new wave
-                            enemiesSpawned = 0;
-                            timeSinceLastEnemySpawn = 0; //adding some more wait time when a new wave starts
-                            wave++;
-                            enemiesToSpawn += enemyIncreasePerWave;
-
-                            //increase difficulty by lowering the amount of time it takes an enemy to spawn
-                            if(minTimePerEnemySpawn > 0)
-                            {
-                                minTimePerEnemySpawn -= difficultyIncrease;
-                                maxTimePerEnemySpawn -= difficultyIncrease;
-                            }
-
-                            minTimePerEnemySpawn = Mathf.Max(0, minTimePerEnemySpawn);
-                            nextEnemyWait = Random.Range(minTimePerEnemySpawn, maxTimePerEnemySpawn);
-
-                            //give the player more money for completing a round
-                            player.GetComponent<Player>().earnMoney(5 * (wave-1));
-
-                            //play animations and stuff
-                            waveText.SetText("Next wave: " + wave.ToString());
-                            StartCoroutine(animateWaveText());
-                        }
-                    }
                 }
                 else
                 {
@@ -186,7 +157,7 @@ public class WaveController : MonoBehaviour
 
         Vector2 spawnPosition = new Vector2(x, y);
         transform.position = spawnPosition;
-        int layerMask = 1 << 8;
+        int layerMask = 1 << 8; //ground
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, 0.001f, layerMask);
 
         if (hit.collider == null)
@@ -250,5 +221,36 @@ public class WaveController : MonoBehaviour
     {
         Destroy(Enemies[number].gameObject);
         Enemies.RemoveAt(number);
+    }
+
+    public bool waveOver()
+    {
+        return Enemies.Count == 0;
+    }
+
+    public void startNextWave()
+    {
+        //start a new wave
+        enemiesSpawned = 0;
+        timeSinceLastEnemySpawn = 0; //adding some more wait time when a new wave starts
+        wave++;
+        enemiesToSpawn += enemyIncreasePerWave;
+
+        //increase difficulty by lowering the amount of time it takes an enemy to spawn
+        if (minTimePerEnemySpawn > 0)
+        {
+            minTimePerEnemySpawn -= difficultyIncrease;
+            maxTimePerEnemySpawn -= difficultyIncrease;
+        }
+
+        minTimePerEnemySpawn = Mathf.Max(0, minTimePerEnemySpawn);
+        nextEnemyWait = Random.Range(minTimePerEnemySpawn, maxTimePerEnemySpawn);
+
+        //give the player more money for completing a round
+        player.GetComponent<Player>().earnMoney(5 * (wave - 1));
+
+        //play animations and stuff
+        waveText.SetText("Next wave: " + wave.ToString());
+        StartCoroutine(animateWaveText());
     }
 }
