@@ -26,6 +26,7 @@ public class Enemy : MonoBehaviour
     public List<Color32> Colors;
 
     public int Type;
+    public int wave; //to make sure the enemy is supposed to exist
 
     //Private
     private Rigidbody2D rb;
@@ -169,7 +170,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if (!player.isAlive || player == null)
+        if (!player.isAlive || player == null || WaveController.curWave != wave)
             Destroy(gameObject);
 
         //Controlling the stats and movement of the enemy depending on what type it is---------------------------------------------------------------------------------

@@ -35,6 +35,10 @@ public class Player : MonoBehaviour
     #region Private Variables
     private Rigidbody2D rb;
     private Collider2D col;
+    private LevelController levelController;
+
+    private float x;
+    private float y;
 
     private bool detectingEnemies; //whether the DetectEnemies coroutine is still running
 
@@ -91,6 +95,16 @@ public class Player : MonoBehaviour
     #endregion
 
     #region Public versions of private variables
+    public float X
+    {
+        get { return x; }
+    }
+
+    public float Y
+    {
+        get { return y; }
+    }
+
     public float DashPower
     {
         get { return dashPower; }
@@ -150,6 +164,7 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
+        levelController = FindObjectOfType<LevelController>();
 
         if (!isTriangle)
             character_animations = GetComponent<Animator>();
@@ -387,14 +402,14 @@ public class Player : MonoBehaviour
         {
             //walking code
             sideJumpVelocity *= sideJumpSlowRate;
-            rb.gravityScale = 2;
+            LevelController.gravityScale = 2;
 
             // Move the character by finding the target velocity
             Vector3 targetVelocity = new Vector2((movement.x * movementSpeed) * speedUpgrade, rb.velocity.y); //UPGRADE
 
             // And then smoothing it out and applying it to the character
             if (!Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1f), transform.right, sideDetectionLength)) //detecting if the player is on a wall or not
-                rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .02f);
+                LevelController.velocity = Vector3.SmoothDamp(LevelController.velocity, targetVelocity, ref velocity, .02f);
             rb.AddForce(Vector2.right * sideJumpVelocity);
 
             if(isTriangle)
@@ -416,7 +431,7 @@ public class Player : MonoBehaviour
         else
         {
             //dashing code
-            rb.gravityScale = 0;
+            LevelController.gravityScale = 0;
             sideJumpVelocity = 0;
 
             Vector3 targetVelocity;
@@ -433,7 +448,7 @@ public class Player : MonoBehaviour
 
             targetVelocity = targetVelocity.normalized;
             targetVelocity *= dashSpeed * speedUpgrade; //UPGRADE
-            rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .02f);
+            LevelController.velocity = Vector3.SmoothDamp(LevelController.velocity, targetVelocity, ref velocity, .02f);
             rb.AddTorque(10);
 
             //putting in the particles

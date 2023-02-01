@@ -10,13 +10,6 @@ public class WaveController : MonoBehaviour
     [SerializeField] private bool DebugMode = false;
 
     [SerializeField] public GameObject player;
-    [Header("Size of map")]
-    [Tooltip("Should be TOP LEFT corner")]
-    [SerializeField] public Vector2 PointOne;
-    [Tooltip("Should be BOTTOM RIGHT corner")]
-    [SerializeField] public Vector2 PointTwo;
-    [Tooltip("Spawn radius around player")]
-    [SerializeField] public float SpawnRadius;
 
     public GameObject enemy;
     public ParticleSystem spawnParticles;
@@ -35,7 +28,11 @@ public class WaveController : MonoBehaviour
 
     public bool spawning; //for other scripts to stop or start the spawning process
 
+    public static int curWave;
+
     //private
+    private IEnumerator WaveCoroutine;
+
     private List<GameObject> Enemies; //keeping track of the enemies so that they can be killed at the end of the round
 
     private int startEnemyCount;
@@ -75,7 +72,7 @@ public class WaveController : MonoBehaviour
     void Awake()
     {
         Enemies = new List<GameObject>();
-        spawning = true;
+        spawning = false; //LevelController will be responcible for starting waves
 
         startEnemyCount = 3;
         enemyIncreasePerWave = 2;
@@ -83,6 +80,7 @@ public class WaveController : MonoBehaviour
         timeSinceLastEnemySpawn = 0f;
 
         wave = 1;
+        curWave = wave;
 
         enemiesToSpawn = startEnemyCount;
 
@@ -106,47 +104,54 @@ public class WaveController : MonoBehaviour
         StartCoroutine(animateWaveText());
     }
 
-    void Update()
+    IEnumerator WaveRunner(Vector2 PointOne, Vector2 PointTwo, float SpawnRadius)
     {
-        if (!PauseButton.IsPaused && !DebugMode) {
-            if (player.GetComponent<Player>().isAlive)
+        while (true)
+        {
+            //seperate routine to spawn enemies on a given level
+            if (!PauseButton.IsPaused && !DebugMode)
             {
-                //looping through the enemies array to see if any of them are dead, and removing the ones that are to save memory
-                for (int i = 0; i < Enemies.Count; i++)
+                if (player.GetComponent<Player>().isAlive)
                 {
-                    if (Enemies[i].gameObject == null)
+                    //looping through the enemies array to see if any of them are dead, and removing the ones that are to save memory
+                    for (int i = 0; i < Enemies.Count; i++)
                     {
-                        Enemies.RemoveAt(i);
-                        i--;
+                        if (Enemies[i].gameObject == null)
+                        {
+                            Enemies.RemoveAt(i);
+                            i--;
+                        }
                     }
-                }
 
-                if (!enemySpawned)
-                    timeSinceLastEnemySpawn = nextEnemyWait;
+                    if (!enemySpawned)
+                        timeSinceLastEnemySpawn = nextEnemyWait;
 
-                //detecting if it's time to spawn yet or not
-                if (timeSinceLastEnemySpawn >= nextEnemyWait)
-                {
-                    if (enemiesSpawned < enemiesToSpawn)
+                    //detecting if it's time to spawn yet or not
+                    if (timeSinceLastEnemySpawn >= nextEnemyWait)
                     {
-                        timeSinceLastEnemySpawn = 0;
-                        enemySpawned = false;
-                        StartCoroutine(spawnNewEnemy());
+                        if (enemiesSpawned < enemiesToSpawn)
+                        {
+                            timeSinceLastEnemySpawn = 0;
+                            enemySpawned = false;
+                            StartCoroutine(spawnNewEnemy(PointOne, PointTwo, SpawnRadius));
+                        }
+                    }
+                    else
+                    {
+                        timeSinceLastEnemySpawn += Time.deltaTime;
                     }
                 }
                 else
                 {
-                    timeSinceLastEnemySpawn += Time.deltaTime;
+                    waveText.SetText(""); //clear the text
                 }
             }
-            else
-            {
-                waveText.SetText(""); //clear the text
-            }
+
+            yield return new WaitForEndOfFrame(); //run once per frame, kind of like update
         }
     }
 
-    IEnumerator spawnNewEnemy()
+    IEnumerator spawnNewEnemy(Vector2 PointOne, Vector2 PointTwo, float SpawnRadius)
     {
         //spawning a new enemy in a random position----------------------------------------------------------
         Vector2 topLeftBound = new Vector2(player.transform.position.x - SpawnRadius, player.transform.position.y + SpawnRadius);
@@ -160,6 +165,7 @@ public class WaveController : MonoBehaviour
         int layerMask = 1 << 8; //ground
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, 0.001f, layerMask);
 
+        //checking to make sure the gameobject isn't in the floor
         if (hit.collider == null)
         {
             enemySpawned = true;
@@ -195,6 +201,7 @@ public class WaveController : MonoBehaviour
                 Enemies[Enemies.Count - 1].SetActive(true);
                 Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = t;
                 Enemies[Enemies.Count - 1].GetComponent<Enemy>().Colorize();
+                Enemies[Enemies.Count - 1].GetComponent<Enemy>().wave = wave;
 
                 enemiesSpawned++; //update the wave status
             }
@@ -228,12 +235,25 @@ public class WaveController : MonoBehaviour
         return Enemies.Count == 0;
     }
 
-    public void startNextWave()
+    public void startWave(Vector2 PointOne, Vector2 PointTwo, float SpawnRadius)
     {
+        //end previous wave
+        if (WaveCoroutine != null)
+            StopCoroutine(WaveCoroutine);
+
+        spawning = false;
+
+        //deleting the old enemies and clearing the list
+        foreach (GameObject e in Enemies)
+            Destroy(e);
+
+        Enemies.Clear();
+
         //start a new wave
         enemiesSpawned = 0;
         timeSinceLastEnemySpawn = 0; //adding some more wait time when a new wave starts
         wave++;
+        curWave = wave;
         enemiesToSpawn += enemyIncreasePerWave;
 
         //increase difficulty by lowering the amount of time it takes an enemy to spawn
@@ -252,5 +272,10 @@ public class WaveController : MonoBehaviour
         //play animations and stuff
         waveText.SetText("Next wave: " + wave.ToString());
         StartCoroutine(animateWaveText());
+
+        WaveCoroutine = WaveRunner(PointOne, PointTwo, SpawnRadius);
+        StartCoroutine(WaveCoroutine);
+
+        spawning = true;
     }
 }
