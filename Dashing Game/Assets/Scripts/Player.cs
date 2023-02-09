@@ -402,14 +402,14 @@ public class Player : MonoBehaviour
         {
             //walking code
             sideJumpVelocity *= sideJumpSlowRate;
-            LevelController.gravityScale = 2;
+            rb.gravityScale = 2; //negative becuase the level moves, not the player
 
             // Move the character by finding the target velocity
             Vector3 targetVelocity = new Vector2((movement.x * movementSpeed) * speedUpgrade, rb.velocity.y); //UPGRADE
 
             // And then smoothing it out and applying it to the character
             if (!Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1f), transform.right, sideDetectionLength)) //detecting if the player is on a wall or not
-                LevelController.velocity = Vector3.SmoothDamp(LevelController.velocity, targetVelocity, ref velocity, .02f);
+                rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .02f);
             rb.AddForce(Vector2.right * sideJumpVelocity);
 
             if(isTriangle)
@@ -431,7 +431,7 @@ public class Player : MonoBehaviour
         else
         {
             //dashing code
-            LevelController.gravityScale = 0;
+            rb.gravityScale = 0;
             sideJumpVelocity = 0;
 
             Vector3 targetVelocity;
@@ -448,7 +448,7 @@ public class Player : MonoBehaviour
 
             targetVelocity = targetVelocity.normalized;
             targetVelocity *= dashSpeed * speedUpgrade; //UPGRADE
-            LevelController.velocity = Vector3.SmoothDamp(LevelController.velocity, targetVelocity, ref velocity, .02f);
+            rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .02f);
             rb.AddTorque(10);
 
             //putting in the particles
