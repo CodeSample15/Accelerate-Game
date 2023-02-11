@@ -27,5 +27,8 @@ Material:
     m_Floats:
     - Vector1_5F6F6E67: 2.93
     - Vector1_90B168CA: 5.14
+    - _Intensity: 5
     m_Colors:
+    - Color_: {r: 0, g: 256, b: 253.9922, a: 1}
     - Color_E1FAACE6: {r: 130.4151, g: 1024, b: 996.6292, a: 1}
+    - _Color: {r: 0, g: 191, b: 4, a: 1}
