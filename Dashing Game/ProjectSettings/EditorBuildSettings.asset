@@ -12,18 +12,18 @@ EditorBuildSettings:
     path: Assets/Store.unity
     guid: 4b68022449554b1459f2119780fc42fc
   - enabled: 1
-    path: Assets/Level1.unity
+    path: Assets/Main.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 0
-    path: Assets/Level2.unity
+    path: Assets/Boss Levels/Red Boss.unity
     guid: ffe1eca7a4346d54b97d147c75284cb3
   - enabled: 0
-    path: Assets/Level3.unity
+    path: Assets/Boss Levels/Blue Boss.unity
     guid: 0bf609bac3b063f4293e04ebeb44e2e7
   - enabled: 0
-    path: Assets/Level4.unity
+    path: Assets/Boss Levels/Green Boss.unity
     guid: 7b4b8204084c720498caca188a5bd1d7
   - enabled: 0
-    path: Assets/Level5.unity
+    path: Assets/Boss Levels/Orange Boss.unity
     guid: 131a92170620fe64bbd657ed4790840b
   m_configObjects: {}
