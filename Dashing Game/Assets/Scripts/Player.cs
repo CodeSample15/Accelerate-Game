@@ -409,7 +409,7 @@ public class Player : MonoBehaviour
         if (!PauseButton.IsPaused && SceneManager.GetActiveScene().name == "Main")
             scoreText.text = "Score: " + score.ToString() + "\nWave: " + enemy_controller.getWave;
         else if (SceneManager.GetActiveScene().name != "Main")
-            scoreText.text = "Score: " + score.ToString();
+            scoreText.text = "Score: " + score.ToString() + "\nWave: Boss";
         //--------------------------------------------
     }
 
