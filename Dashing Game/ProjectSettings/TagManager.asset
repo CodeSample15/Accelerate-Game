@@ -10,6 +10,7 @@ TagManager:
   - Bullet
   - Lava
   - JumpPad
+  - WhiteScreenFade
   layers:
   - Default
   - TransparentFX

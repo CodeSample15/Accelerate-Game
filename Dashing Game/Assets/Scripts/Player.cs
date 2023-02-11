@@ -5,6 +5,7 @@ using UnityStandardAssets.CrossPlatformInput;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Experimental.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Player : MonoBehaviour
     [SerializeField] public bool isTriangle; //whether or not the player is using the triangle character (for future updates with character customization)
 
     public Animator character_animations;
+    public Animator white_fade;
     public WaveController enemy_controller;
     public Joystick joystick;
     public Slider health_bar;
@@ -159,7 +161,6 @@ public class Player : MonoBehaviour
     #endregion
 
 
-    // Start is called before the first frame update
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -216,6 +217,18 @@ public class Player : MonoBehaviour
 
         health = 100f + maxHealthUpgrade;
         dashPower = 100f + maxDashUpgrade;
+
+        if (SceneManager.GetActiveScene().name != "Main" && LevelController.saved) //if there are saved settings
+            loadTempState(); //load temp saved data because the level changed
+    }
+
+    void Start()
+    {
+        if(SceneManager.GetActiveScene().name != "Main")
+        {
+            //play the white fade to transition
+            white_fade.SetTrigger("FadeOut");
+        }
     }
 
     // Update is called once per frame
@@ -355,7 +368,9 @@ public class Player : MonoBehaviour
         {
             //If the player is dead:
             Instantiate(death_effect, transform.position, Quaternion.identity);
-            enemy_controller.Spawning = false;
+
+            if(SceneManager.GetActiveScene().name == "Main")
+                enemy_controller.Spawning = false; //enemy controller only exists in main scene
 
             //save data-----------------------------------------
             if (data.HighScore < score)
@@ -391,8 +406,10 @@ public class Player : MonoBehaviour
 
         UpdateScoreSize();
 
-        if (!PauseButton.IsPaused)
+        if (!PauseButton.IsPaused && SceneManager.GetActiveScene().name == "Main")
             scoreText.text = "Score: " + score.ToString() + "\nWave: " + enemy_controller.getWave;
+        else if (SceneManager.GetActiveScene().name != "Main")
+            scoreText.text = "Score: " + score.ToString();
         //--------------------------------------------
     }
 
@@ -593,6 +610,21 @@ public class Player : MonoBehaviour
         return ground || rightCol || leftCol;
     }
 
+    public void saveTempState()
+    {
+        //save the state of the player when transitioning to a new level
+        LevelController.tempScore = score;
+        LevelController.tempHealth = health;
+        LevelController.saved = true;
+    }
+
+    public void loadTempState()
+    {
+        //load saved data after transitioning levels
+        score = LevelController.tempScore;
+        health = LevelController.tempHealth;
+    }
+
     /// <summary>
     /// Detecting if the player is touching any enemies and destroying them if the player is dashing
     /// 
@@ -600,31 +632,34 @@ public class Player : MonoBehaviour
     /// </summary>
     private IEnumerator DetectEnemies()
     {
-        if (dashing)
+        if (SceneManager.GetActiveScene().name == "Main") //only search through the enemy controller if in the main scene where the controller exists
         {
-            detectingEnemies = true;
-
-            Collider2D other;
-
-            //looping through each enemy and checking if it is colliding with the player
-            for (int i = 0; i < enemy_controller.ActiveEnemies.Count; i++)
+            if (dashing)
             {
-                if (enemy_controller.ActiveEnemies[i].gameObject != null)
+                detectingEnemies = true;
+
+                Collider2D other;
+
+                //looping through each enemy and checking if it is colliding with the player
+                for (int i = 0; i < enemy_controller.ActiveEnemies.Count; i++)
                 {
-                    other = enemy_controller.ActiveEnemies[i].GetComponent<Collider2D>();
-                    if (other.IsTouching(col))
+                    if (enemy_controller.ActiveEnemies[i].gameObject != null)
                     {
-                        //particle effect
-                        int enemyType = other.gameObject.GetComponent<Enemy>().Type;
+                        other = enemy_controller.ActiveEnemies[i].GetComponent<Collider2D>();
+                        if (other.IsTouching(col))
+                        {
+                            //particle effect
+                            int enemyType = other.gameObject.GetComponent<Enemy>().Type;
 
-                        //updating stats
-                        StartCoroutine(animateScore(score + pointsPerKill));
+                            //updating stats
+                            StartCoroutine(animateScore(score + pointsPerKill));
 
-                        //giving the player some money
-                        givePlayerMoneyForKill(enemyType);
+                            //giving the player some money
+                            givePlayerMoneyForKill(enemyType);
 
-                        enemy_controller.clearEnemy(i); //clear out the dead enemy from the list
-                        i--;
+                            enemy_controller.clearEnemy(i); //clear out the dead enemy from the list
+                            i--;
+                        }
                     }
                 }
             }

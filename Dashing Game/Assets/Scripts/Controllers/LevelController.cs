@@ -7,6 +7,11 @@ using UnityEngine;
  */
 public class LevelController : MonoBehaviour
 {
+    //temp variables for level transitioning
+    public static int tempScore;
+    public static float tempHealth;
+    public static bool saved;
+
     private Rigidbody2D rb;
     private GameObject playerGameObject;
     private WaveController waveController;
@@ -16,6 +21,10 @@ public class LevelController : MonoBehaviour
 
     void Awake()
     {
+        tempScore = 0;
+        tempHealth = 100;
+        saved = false;
+
         player = FindObjectOfType<Player>();
         playerGameObject = player.gameObject;
         waveController = FindObjectOfType<WaveController>();

@@ -14481,13 +14481,15 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 280236c20673fa845b72b2d4506f336c, type: 3}
   - {fileID: 21300000, guid: df174ea6ad6f70c4aa7aa08e9d0fde38, type: 3}
   - {fileID: 21300000, guid: 066ec0467e711d24bbdff7ad99cbf242, type: 3}
+  maxHits: 5
+  playerBounceBack: 10
   colliderSize: 0.7
   bobbleAmount: 0.3
   bobbleSpeed: 5
   particleEmissionStrength: 5
   lightningEmissionStrength: 1
   scale: 0.3
-  crystalType: 1
+  crystalType: 0
 --- !u!61 &2670810314472118986
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Wave: 1'
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 24975338837761246962a117fa873a05, type: 2}
   m_sharedMaterial: {fileID: 4780897712505528763, guid: 24975338837761246962a117fa873a05,
@@ -3090,7 +3090,7 @@ GameObject:
   - component: {fileID: 207800253736521327}
   - component: {fileID: 6623370850083432211}
   - component: {fileID: 4511789223607908654}
-  - component: {fileID: 8824425437140977292}
+  - component: {fileID: 3835312003959822483}
   m_Layer: 5
   m_Name: White Fade
   m_TagString: Untagged
@@ -3166,7 +3166,7 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
---- !u!95 &8824425437140977292
+--- !u!95 &3835312003959822483
 Animator:
   serializedVersion: 3
   m_ObjectHideFlags: 0
@@ -3176,7 +3176,7 @@ Animator:
   m_GameObject: {fileID: 4995176189942681681}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 61e94a7fcd2e51f43973bd9ced457d76, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5c19e15dcaf15df448ccd93ce43706c0, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -3645,12 +3645,12 @@ PrefabInstance:
     - target: {fileID: 2929252283123773938, guid: aaa2c939c0359ac4dbce3f49e8b90252,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 125
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 2929252283123773938, guid: aaa2c939c0359ac4dbce3f49e8b90252,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 124.92999
+      value: 113.76001
       objectReference: {fileID: 0}
     - target: {fileID: 2929252283123773938, guid: aaa2c939c0359ac4dbce3f49e8b90252,
         type: 3}

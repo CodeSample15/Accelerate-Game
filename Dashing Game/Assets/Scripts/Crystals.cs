@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //This script is in charge of the animations and behaviours of all crystals. This script will be used in a prefab to make the creation of crystals easy
 public class Crystals : MonoBehaviour
 {
     [SerializeField] private List<Sprite> sprites;
+    [SerializeField] private int maxHits;
     [SerializeField] private float playerBounceBack;
     [SerializeField] private float colliderSize;
     [SerializeField] private float bobbleAmount;
@@ -20,26 +22,40 @@ public class Crystals : MonoBehaviour
     private ParticleSystem lightning_effect; //plays in bursts
     private ParticleSystem lightning_constant_effect; //plays constantly when crystal is activated
 
+    private Animator whiteScreenFade;
+
     private Vector3 spin;
     private Vector3 targetSpin;
     private Vector3 spinVelocity; //for the smoothdamp to work with
     private Vector3 targetSpinVelocity; //for slowing down the target spin
+
+    private Vector3 startLocation;
 
     private float speedIncrease;
 
     private float lightningAmount;
     private float lastHitTime;
 
+    private float elapsedTime; //for the bobble
+
+    private bool transitionStarted;
+
     void Awake()
     {
         lightning_effect = transform.GetChild(1).GetComponent<ParticleSystem>();
         lightning_constant_effect = transform.GetChild(2).GetComponent<ParticleSystem>();
 
+        whiteScreenFade = FindObjectOfType<Player>().white_fade;
+
         var emission = lightning_constant_effect.emission;
         emission.rateOverTime = 0;
         lightningAmount = 0;
 
+        elapsedTime = 0;
+
         lastHitTime = Time.time;
+
+        transitionStarted = false;
 
         ParticleSystemRenderer sparkle = transform.GetChild(0).GetComponent<ParticleSystemRenderer>();
         ParticleSystemRenderer lightning = lightning_effect.gameObject.GetComponent<ParticleSystemRenderer>();
@@ -47,6 +63,8 @@ public class Crystals : MonoBehaviour
 
         transform.position = new Vector3(transform.position.x, transform.position.y, 5);
         transform.localScale = new Vector3(scale, scale, scale);
+        startLocation = transform.position;
+
         sparkle.gameObject.transform.localScale = transform.localScale;
         lightning.gameObject.transform.localScale = transform.localScale;
         lightning_constant.gameObject.transform.localScale = transform.localScale;
@@ -98,27 +116,51 @@ public class Crystals : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector2.up * Mathf.Sin(Time.time * bobbleSpeed) * bobbleAmount * Time.deltaTime);
-
-        spin = Vector3.SmoothDamp(spin, targetSpin, ref spinVelocity, 0.5f); //update the current speed
-        transform.Rotate(spin);
-
-        targetSpin = Vector3.SmoothDamp(targetSpin, Vector3.zero, ref targetSpinVelocity, 0.6f); //update the target speed to slowly reset it to zero
-
-        if(Mathf.Abs(targetSpin.z) < 1.5f)
+        if (lightningAmount == maxHits)
         {
-            float difference = transform.rotation.z;
-            targetSpin = new Vector3(0, 0, difference);
-        }
+            //play lightning particles
+            lightning_effect.Play();
 
-        if (lastHitTime > 0 && Time.time - lastHitTime > 2)
+            //start transition coroutine
+            if(!transitionStarted)
+            {
+                StartCoroutine(transition());
+                transitionStarted = true;
+            }
+        }
+        else
         {
-            lightningAmount--;
-            lastHitTime = Time.time;
-        }
+            spin = Vector3.SmoothDamp(spin, targetSpin, ref spinVelocity, 0.5f); //update the current speed
+            transform.Rotate(spin);
 
-        var emission = lightning_constant_effect.emission;
-        emission.rateOverTime = lightningAmount;
+            targetSpin = Vector3.SmoothDamp(targetSpin, Vector3.zero, ref targetSpinVelocity, 0.7f); //update the target speed to slowly reset it to zero
+
+            if (Mathf.Abs(targetSpin.z) < 1.5f)
+            {
+                float difference = transform.rotation.z;
+                targetSpin = new Vector3(0, 0, difference);
+
+                if (Mathf.Abs(difference) < 0.02)
+                {
+                    //bobble the crystal up and down
+                    transform.Translate(Vector2.up * Mathf.Sin(elapsedTime * bobbleSpeed) * bobbleAmount * Time.deltaTime);
+                    elapsedTime += Time.deltaTime;
+                }
+            }
+            else
+            {
+                transform.position = startLocation;
+            }
+
+            if (lastHitTime > 0 && Time.time - lastHitTime > 2.5f) //decrease the amount of lightning every 2.5 seconds when left alone
+            {
+                lightningAmount--;
+                lastHitTime = Time.time;
+            }
+
+            var emission = lightning_constant_effect.emission;
+            emission.rateOverTime = lightningAmount;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -128,16 +170,50 @@ public class Crystals : MonoBehaviour
             if (other.gameObject.GetComponent<Player>().isDashing)
             {
                 other.gameObject.transform.position = transform.position;
-                other.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)).normalized * playerBounceBack;
+                other.gameObject.GetComponent<Rigidbody2D>().velocity = -other.gameObject.GetComponent<Rigidbody2D>().velocity * playerBounceBack;
 
                 lightning_effect.Play();
 
                 targetSpin = new Vector3(0, 0, spin.z + speedIncrease); //increase with respect to the current speed, not the target speed
-                if(lightningAmount < 4)
+                if(lightningAmount < maxHits)
                     lightningAmount++;
 
                 lastHitTime = Time.time;
             }
+        }
+    }
+
+    IEnumerator transition()
+    {
+        //transition to appropriate boss level
+        whiteScreenFade.SetTrigger("FadeIn");
+
+        //save player data to temporary object
+        FindObjectOfType<Player>().saveTempState();
+
+        yield return new WaitForSeconds(0.5f);
+
+        switch (crystalType)
+        {
+            case Type.blue:
+                SceneManager.LoadSceneAsync(3);
+                break;
+
+            case Type.green:
+                SceneManager.LoadSceneAsync(4);
+                break;
+
+            case Type.orange:
+                SceneManager.LoadSceneAsync(5);
+                break;
+
+            case Type.pink:
+                SceneManager.LoadSceneAsync(6);
+                break;
+
+            case Type.red:
+                SceneManager.LoadSceneAsync(7);
+                break;
         }
     }
 }
