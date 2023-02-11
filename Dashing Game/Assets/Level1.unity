@@ -17255,6 +17255,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Crystal
       objectReference: {fileID: 0}
+    - target: {fileID: 2670810314472118991, guid: abbff8d7a7924e041b555e5d7d1d9276,
+        type: 3}
+      propertyPath: playerBounceBack
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abbff8d7a7924e041b555e5d7d1d9276, type: 3}
 --- !u!212 &2712015854388126973

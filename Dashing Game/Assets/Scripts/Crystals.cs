@@ -6,6 +6,7 @@ using UnityEngine;
 public class Crystals : MonoBehaviour
 {
     [SerializeField] private List<Sprite> sprites;
+    [SerializeField] private float playerBounceBack;
     [SerializeField] private float colliderSize;
     [SerializeField] private float bobbleAmount;
     [SerializeField] private float bobbleSpeed;
@@ -126,10 +127,14 @@ public class Crystals : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Player>().isDashing)
             {
+                other.gameObject.transform.position = transform.position;
+                other.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f)).normalized * playerBounceBack;
+
                 lightning_effect.Play();
 
                 targetSpin = new Vector3(0, 0, spin.z + speedIncrease); //increase with respect to the current speed, not the target speed
-                lightningAmount++;
+                if(lightningAmount < 4)
+                    lightningAmount++;
 
                 lastHitTime = Time.time;
             }
