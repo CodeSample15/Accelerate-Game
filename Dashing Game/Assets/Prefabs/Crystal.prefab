@@ -14481,6 +14481,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 280236c20673fa845b72b2d4506f336c, type: 3}
   - {fileID: 21300000, guid: df174ea6ad6f70c4aa7aa08e9d0fde38, type: 3}
   - {fileID: 21300000, guid: 066ec0467e711d24bbdff7ad99cbf242, type: 3}
+  lightning_mat: {fileID: 2100000, guid: a0c68288c74f06f4585d4666764ed56a, type: 2}
   maxHits: 5
   playerBounceBack: 10
   colliderSize: 0.7

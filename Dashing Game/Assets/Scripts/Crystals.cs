@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class Crystals : MonoBehaviour
 {
     [SerializeField] private List<Sprite> sprites;
+    [SerializeField] private Material lightning_mat;
     [SerializeField] private int maxHits;
     [SerializeField] private float playerBounceBack;
     [SerializeField] private float colliderSize;
@@ -60,6 +61,10 @@ public class Crystals : MonoBehaviour
         ParticleSystemRenderer sparkle = transform.GetChild(0).GetComponent<ParticleSystemRenderer>();
         ParticleSystemRenderer lightning = lightning_effect.gameObject.GetComponent<ParticleSystemRenderer>();
         ParticleSystemRenderer lightning_constant = lightning_constant_effect.gameObject.GetComponent<ParticleSystemRenderer>();
+
+        //create new instances of the lightning shader for the two effects
+        lightning.trailMaterial = Instantiate(lightning_mat);
+        lightning_constant.trailMaterial = Instantiate(lightning_mat);
 
         transform.position = new Vector3(transform.position.x, transform.position.y, 5);
         transform.localScale = new Vector3(scale, scale, scale);
