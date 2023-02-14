@@ -77,7 +77,7 @@ public class WaveController : MonoBehaviour
         spawning = false; //LevelController will be responcible for starting waves
 
         startEnemyCount = 3;
-        enemyIncreasePerWave = 2;
+        enemyIncreasePerWave = 1;
         enemiesSpawned = 0;
         timeSinceLastEnemySpawn = 0f;
 
@@ -86,15 +86,15 @@ public class WaveController : MonoBehaviour
 
         enemiesToSpawn = startEnemyCount;
 
-        minTimePerEnemySpawn = 1.5f;
-        maxTimePerEnemySpawn = 2.5f;
+        minTimePerEnemySpawn = 2.5f;
+        maxTimePerEnemySpawn = 4.5f;
         nextEnemyWait = Random.Range(minTimePerEnemySpawn, maxTimePerEnemySpawn);
 
-        GreenEnemyWave = 2;
-        BlueEnemyWave = 4;
-        YellowEnemyWave = 7;
+        GreenEnemyWave = 3;
+        BlueEnemyWave = 5;
+        YellowEnemyWave = 8;
 
-        difficultyIncrease = 0.1f;
+        difficultyIncrease = 0.05f;
 
         enemySpawned = true;
         waveActive = false;

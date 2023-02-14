@@ -505,16 +505,13 @@ public class Enemy : MonoBehaviour
         if (LaserHolder != null)
             Destroy(LaserHolder.gameObject);
 
-        if (Type != 2) //if the enemy isn't a bomber type
+        //play death particles
+        if (deathParticlesInstance != null)
         {
-            //play death particles
-            if (deathParticlesInstance != null)
-            {
-                deathParticlesInstance.transform.position = transform.position;
-                ParticleSystem.MainModule settings = deathParticlesInstance.main;
-                settings.startColor = (Color)Colors[Type];
-                deathParticlesInstance.Play();
-            }
+            deathParticlesInstance.transform.position = transform.position;
+            ParticleSystem.MainModule settings = deathParticlesInstance.main;
+            settings.startColor = (Color)Colors[Type];
+            deathParticlesInstance.Play();
         }
     }
 }

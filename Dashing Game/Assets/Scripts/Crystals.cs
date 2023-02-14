@@ -39,6 +39,8 @@ public class Crystals : MonoBehaviour
 
     private float elapsedTime; //for the bobble
 
+    private float hitCooldown; //minimum amount of time before crystal can be hit again
+
     private bool transitionStarted;
 
     void Awake()
@@ -53,6 +55,8 @@ public class Crystals : MonoBehaviour
         lightningAmount = 0;
 
         elapsedTime = 0;
+
+        hitCooldown = 0.02f;
 
         lastHitTime = Time.time;
 
@@ -74,7 +78,7 @@ public class Crystals : MonoBehaviour
         lightning.gameObject.transform.localScale = transform.localScale;
         lightning_constant.gameObject.transform.localScale = transform.localScale;
 
-        speedIncrease = 5f;
+        speedIncrease = 10f;
 
         switch (crystalType)
         {
@@ -121,7 +125,7 @@ public class Crystals : MonoBehaviour
 
     void Update()
     {
-        if (lightningAmount == maxHits)
+        if (lightningAmount == maxHits) //crystal has been hit enough times
         {
             //play lightning particles
             lightning_effect.Play();
@@ -133,7 +137,7 @@ public class Crystals : MonoBehaviour
                 transitionStarted = true;
             }
         }
-        else
+        else //crystal is still noraml (not hit enough)
         {
             spin = Vector3.SmoothDamp(spin, targetSpin, ref spinVelocity, 0.5f); //update the current speed
             transform.Rotate(spin);
@@ -174,13 +178,13 @@ public class Crystals : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Player>().isDashing)
             {
-                other.gameObject.transform.position = transform.position;
+                other.gameObject.transform.position = (Vector2)transform.position;
                 other.gameObject.GetComponent<Rigidbody2D>().velocity = -other.gameObject.GetComponent<Rigidbody2D>().velocity * playerBounceBack;
 
                 lightning_effect.Play();
 
                 targetSpin = new Vector3(0, 0, spin.z + speedIncrease); //increase with respect to the current speed, not the target speed
-                if(lightningAmount < maxHits)
+                if(lightningAmount < maxHits && Time.time - lastHitTime > hitCooldown)
                     lightningAmount++;
 
                 lastHitTime = Time.time;

@@ -183,7 +183,7 @@ public class Player : MonoBehaviour
         minDashPower = 20;
         dashRechargeRate = 3.2f;
         dashDischargeRate = 35f;
-        sideDetectionLength = 0.4f;
+        sideDetectionLength = 0.35f;
 
         scoreAnimationSpeed = 0.04f;
         scoreNormalSize = score_gameobject.transform.localScale.x;
@@ -425,7 +425,8 @@ public class Player : MonoBehaviour
             Vector3 targetVelocity = new Vector2((movement.x * movementSpeed) * speedUpgrade, rb.velocity.y); //UPGRADE
 
             // And then smoothing it out and applying it to the character
-            if (!Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1f), transform.right, sideDetectionLength)) //detecting if the player is on a wall or not
+            int mask = 1 << 8;
+            if (!Physics2D.Raycast(transform.position, Vector2.right * movement.x, sideDetectionLength, mask)) //detecting if the player is on a wall or not
                 rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .02f);
             rb.AddForce(Vector2.right * sideJumpVelocity);
 
