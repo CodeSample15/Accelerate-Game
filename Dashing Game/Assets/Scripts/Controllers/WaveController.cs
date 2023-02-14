@@ -53,6 +53,8 @@ public class WaveController : MonoBehaviour
 
     private int wave; //current wave
 
+    private bool waveActive;
+
     public List<GameObject> ActiveEnemies
     {
         get { return Enemies; }
@@ -79,7 +81,7 @@ public class WaveController : MonoBehaviour
         enemiesSpawned = 0;
         timeSinceLastEnemySpawn = 0f;
 
-        wave = 1;
+        wave = 0;
         curWave = wave;
 
         enemiesToSpawn = startEnemyCount;
@@ -95,6 +97,7 @@ public class WaveController : MonoBehaviour
         difficultyIncrease = 0.1f;
 
         enemySpawned = true;
+        waveActive = false;
     }
 
     void Start()
@@ -102,6 +105,19 @@ public class WaveController : MonoBehaviour
         //play wave animation
         waveText.SetText("Wave: " + wave.ToString());
         StartCoroutine(animateWaveText());
+    }
+
+    void Update()
+    {
+        //looping through the enemies array to see if any of them are dead, and removing the ones that are to save memory
+        for (int i = 0; i < Enemies.Count; i++)
+        {
+            if (Enemies[i].gameObject == null)
+            {
+                Enemies.RemoveAt(i);
+                i--;
+            }
+        }
     }
 
     IEnumerator WaveRunner(Vector2 PointOne, Vector2 PointTwo, float SpawnRadius)
@@ -113,18 +129,8 @@ public class WaveController : MonoBehaviour
             {
                 if (player.GetComponent<Player>().isAlive)
                 {
-                    //looping through the enemies array to see if any of them are dead, and removing the ones that are to save memory
-                    for (int i = 0; i < Enemies.Count; i++)
-                    {
-                        if (Enemies[i].gameObject == null)
-                        {
-                            Enemies.RemoveAt(i);
-                            i--;
-                        }
-                    }
-
-                    if (!enemySpawned)
-                        timeSinceLastEnemySpawn = nextEnemyWait;
+                    //if (!enemySpawned)
+                        //timeSinceLastEnemySpawn = nextEnemyWait;
 
                     //detecting if it's time to spawn yet or not
                     if (timeSinceLastEnemySpawn >= nextEnemyWait)
@@ -134,6 +140,12 @@ public class WaveController : MonoBehaviour
                             timeSinceLastEnemySpawn = 0;
                             enemySpawned = false;
                             StartCoroutine(spawnNewEnemy(PointOne, PointTwo, SpawnRadius));
+                            nextEnemyWait = Random.Range(minTimePerEnemySpawn, maxTimePerEnemySpawn);
+                            enemiesSpawned++;
+                        }
+                        else
+                        {
+                            waveActive = false;
                         }
                     }
                     else
@@ -162,11 +174,15 @@ public class WaveController : MonoBehaviour
 
         Vector2 spawnPosition = new Vector2(x, y);
         transform.position = spawnPosition;
+
         int layerMask = 1 << 8; //ground
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.right, 0.001f, layerMask);
 
-        //checking to make sure the gameobject isn't in the floor
-        if (hit.collider == null)
+        if (hit.collider != null)
+        {
+            enemiesSpawned--;
+        }
+        else
         {
             enemySpawned = true;
 
@@ -178,14 +194,16 @@ public class WaveController : MonoBehaviour
                 maxEnemy++;
             if (wave >= YellowEnemyWave)
                 maxEnemy++;
-            
+
             int t = Random.Range(0, maxEnemy); //getting a random enemy type to spawn
 
-            Enemies.Add(Instantiate(enemy, spawnPosition, Quaternion.identity)); //create the enemy object
+            GameObject enemyObj = Instantiate(enemy, spawnPosition, Quaternion.identity);
+            Enemies.Add(enemyObj); //create the enemy object
+
             ParticleSystem particleHolder = Instantiate(spawnParticles, Enemies[Enemies.Count - 1].transform.position, Quaternion.identity); //create a temp holder
 
             //converting the color32 of the enemy color to regular color
-            Color enemyColor = Enemies[Enemies.Count - 1].GetComponent<Enemy>().getColor(t);
+            Color enemyColor = enemyObj.GetComponent<Enemy>().getColor(t);
             ParticleSystem.MainModule settings = particleHolder.main;
             settings.startColor = enemyColor;
 
@@ -198,12 +216,12 @@ public class WaveController : MonoBehaviour
 
             if (spawning)
             {
-                Enemies[Enemies.Count - 1].SetActive(true);
-                Enemies[Enemies.Count - 1].GetComponent<Enemy>().Type = t;
-                Enemies[Enemies.Count - 1].GetComponent<Enemy>().Colorize();
-                Enemies[Enemies.Count - 1].GetComponent<Enemy>().wave = wave;
+                enemyObj.SetActive(true);
+                enemyObj.GetComponent<Enemy>().Type = t;
+                enemyObj.GetComponent<Enemy>().Colorize();
+                enemyObj.GetComponent<Enemy>().wave = wave;
 
-                enemiesSpawned++; //update the wave status
+                //enemiesSpawned++; //update the wave status
             }
         }
     }
@@ -232,29 +250,21 @@ public class WaveController : MonoBehaviour
 
     public bool waveOver()
     {
-        return Enemies.Count == 0;
+        return !waveActive && Enemies.Count == 0;
     }
 
     public void startWave(Vector2 PointOne, Vector2 PointTwo, float SpawnRadius)
     {
-        //end previous wave
-        if (WaveCoroutine != null)
-            StopCoroutine(WaveCoroutine);
-
-        spawning = false;
-
-        //deleting the old enemies and clearing the list
-        foreach (GameObject e in Enemies)
-            Destroy(e);
-
-        Enemies.Clear();
-
         //start a new wave
+        waveActive = true;
+
         enemiesSpawned = 0;
         timeSinceLastEnemySpawn = 0; //adding some more wait time when a new wave starts
+
+        if (wave != 0)
+            enemiesToSpawn += enemyIncreasePerWave;
         wave++;
         curWave = wave;
-        enemiesToSpawn += enemyIncreasePerWave;
 
         //increase difficulty by lowering the amount of time it takes an enemy to spawn
         if (minTimePerEnemySpawn > 0)

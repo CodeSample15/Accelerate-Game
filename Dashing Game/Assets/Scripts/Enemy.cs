@@ -170,7 +170,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if (!player.isAlive || player == null || WaveController.curWave != wave)
+        if (!player.isAlive || player == null)
             Destroy(gameObject);
 
         //Controlling the stats and movement of the enemy depending on what type it is---------------------------------------------------------------------------------
@@ -502,16 +502,19 @@ public class Enemy : MonoBehaviour
     void OnDestroy()
     {
         //get rid of objects that are no longer needed
-        if(LaserHolder != null)
+        if (LaserHolder != null)
             Destroy(LaserHolder.gameObject);
 
-        //play death particles
-        if (deathParticlesInstance != null)
+        if (Type != 2) //if the enemy isn't a bomber type
         {
-            deathParticlesInstance.transform.position = transform.position;
-            ParticleSystem.MainModule settings = deathParticlesInstance.main;
-            settings.startColor = (Color)Colors[Type];
-            deathParticlesInstance.Play();
+            //play death particles
+            if (deathParticlesInstance != null)
+            {
+                deathParticlesInstance.transform.position = transform.position;
+                ParticleSystem.MainModule settings = deathParticlesInstance.main;
+                settings.startColor = (Color)Colors[Type];
+                deathParticlesInstance.Play();
+            }
         }
     }
 }
