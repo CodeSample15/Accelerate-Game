@@ -179,7 +179,7 @@ public class Crystals : MonoBehaviour
             if (other.gameObject.GetComponent<Player>().isDashing)
             {
                 other.gameObject.transform.position = (Vector2)transform.position;
-                other.gameObject.GetComponent<Rigidbody2D>().velocity = -other.gameObject.GetComponent<Rigidbody2D>().velocity * playerBounceBack;
+                other.gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.ClampMagnitude(-other.gameObject.GetComponent<Rigidbody2D>().velocity * playerBounceBack, 200);
 
                 lightning_effect.Play();
 
