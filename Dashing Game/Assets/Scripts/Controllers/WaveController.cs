@@ -195,7 +195,8 @@ public class WaveController : MonoBehaviour
             if (wave >= YellowEnemyWave)
                 maxEnemy++;
 
-            int t = Random.Range(0, maxEnemy); //getting a random enemy type to spawn
+            //int t = Random.Range(0, maxEnemy); //getting a random enemy type to spawn
+            int t = 3;
 
             GameObject enemyObj = Instantiate(enemy, spawnPosition, Quaternion.identity);
             Enemies.Add(enemyObj); //create the enemy object

@@ -6,10 +6,10 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 /*
  * Types of enemies:
- * 0: Melee (red)
- * 1: Shooter (green)
- * 2: Bomber (blue)
- * 3: Laser (yellow)
+ * 0: Melee    (red)
+ * 1: Shooter  (green)
+ * 2: Bomber   (blue)
+ * 3: Laser    (yellow)
  */
 
 public class Enemy : MonoBehaviour
@@ -418,15 +418,15 @@ public class Enemy : MonoBehaviour
                             if (!LaserLocationPicked)
                             {
                                 //calculate positions for laser
-                                LayerMask playerLayerMask = 1 << 8; //only hit walls
+                                int playerLayerMask = 1 << 8; //only hit walls
                                 laserDirection = (playerGameObject.transform.position - transform.position).normalized;
                                 RaycastHit2D hit = Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity, playerLayerMask);
-                                float distance = Vector2.Distance(hit.point, transform.position);
+                                float distance = hit.distance;
                                 
                                 //spawn the crosshair indicator only if the player is in direct los with the enemy
                                 if (Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity).collider.CompareTag("Player"))
                                     Instantiate(LaserCrossHair, player.transform.position, Quaternion.identity);
-
+                                
                                 Vector3 scaledLaserDirection = laserDirection * (distance == 0 ? 1000 : distance);
                                 
                                 LaserEndPosition = scaledLaserDirection + transform.position;

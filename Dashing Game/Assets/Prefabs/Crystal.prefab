@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 127252060}
   - component: {fileID: 127252062}
   - component: {fileID: 127252061}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Lightning Constant
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4823,7 +4823,7 @@ GameObject:
   - component: {fileID: 785103576}
   - component: {fileID: 785103578}
   - component: {fileID: 785103577}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Lightning Burst
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9635,7 +9635,7 @@ GameObject:
   - component: {fileID: 2670810314305944989}
   - component: {fileID: 2670810314305944988}
   - component: {fileID: 2670810314305944995}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sparkle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14389,7 +14389,7 @@ GameObject:
   - component: {fileID: 2670810314472118985}
   - component: {fileID: 2670810314472118991}
   - component: {fileID: 2670810314472118986}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Crystal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
