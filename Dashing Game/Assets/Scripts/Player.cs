@@ -71,6 +71,8 @@ public class Player : MonoBehaviour
     //movement variables
     private Vector2 movement; //for walking / dashing movement
     private Vector2 lastDashDir; //for dashing
+    private Vector3 knockBackVel; //for when scripts knock back the player
+    private Vector3 knockBackVelRef; //for smoothdamp to work with
 
     private float feetDistance; //for casting rays from the player's feet rather than the center of the sprite
 
@@ -137,6 +139,12 @@ public class Player : MonoBehaviour
     public float MaxDash
     {
         get { return maxDashUpgrade + 100; }
+    }
+
+    public Vector3 KnockBack
+    {
+        get { return knockBackVel; }
+        set { knockBackVel = value; }
     }
     #endregion
 
@@ -415,6 +423,8 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+        knockBackVel = Vector3.SmoothDamp(knockBackVel, Vector2.zero, ref knockBackVelRef, 0.05f); //slowly reset the knockback velocity back to zero
+
         if (!dashing)
         {
             //walking code
@@ -423,6 +433,7 @@ public class Player : MonoBehaviour
 
             // Move the character by finding the target velocity
             Vector3 targetVelocity = new Vector2((movement.x * movementSpeed) * speedUpgrade, rb.velocity.y); //UPGRADE
+            targetVelocity += knockBackVel;
 
             // And then smoothing it out and applying it to the character
             int mask = 1 << 8;
@@ -466,6 +477,7 @@ public class Player : MonoBehaviour
 
             targetVelocity = targetVelocity.normalized;
             targetVelocity *= dashSpeed * speedUpgrade; //UPGRADE
+            targetVelocity += knockBackVel*3;
             rb.velocity = Vector3.SmoothDamp(rb.velocity, targetVelocity, ref velocity, .02f);
             rb.AddTorque(10);
 
