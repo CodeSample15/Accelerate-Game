@@ -3524,7 +3524,7 @@ MonoBehaviour:
   FadeAnimation: {fileID: 1235849335344301659}
   PlayerMovePosition: {x: -129, y: 100}
   AnimationDelay: 0.5
-  NumberOfStages: 5
+  NumberOfStages: 1
 --- !u!1001 &1253614026714196489
 PrefabInstance:
   m_ObjectHideFlags: 0

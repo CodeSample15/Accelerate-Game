@@ -56,7 +56,7 @@ public class Crystals : MonoBehaviour
 
         elapsedTime = 0;
 
-        hitCooldown = 0.02f;
+        hitCooldown = 0.012f;
 
         lastHitTime = Time.time;
 

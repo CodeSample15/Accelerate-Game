@@ -726,19 +726,4 @@ public class Player : MonoBehaviour
         if (other.gameObject.CompareTag("Lava"))
             health = 0; //kill the player
     }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.gameObject.CompareTag("JumpPad"))
-        {
-            float jumpBoost = other.gameObject.GetComponent<JumpPadLogic>().Boost;
-
-            //Boosting the player upwards if they are not dashing
-            if (!dashing)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, 0);
-                rb.AddForce(transform.up * jumpBoost, ForceMode2D.Impulse);
-            }
-        }
-    }
 }
