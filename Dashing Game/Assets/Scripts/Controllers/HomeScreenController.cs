@@ -62,11 +62,12 @@ public class HomeScreenController : MonoBehaviour
 
         //fetch player data and create file if there isn't any
         Debug.Log("Fetching player data...");
-        if (Saver.loadData() == null || false)
+        if (Saver.loadData() == null || false) //the || false/true is for debugging purposes
         {
             //new player, create new player data file
             PlayerData newPlayerData = new PlayerData(true, 0, 0,    //new player, money, and highscore
                                                      0, 0, 0, 0, 0,  //upgrades (reset all to zero)
+                                                     0,              //number of crystals unlocked (set to zero)
                                                      0, true);       //sound (medium volume, music turned on)
 
             Debug.Log("New player, creating player data file");

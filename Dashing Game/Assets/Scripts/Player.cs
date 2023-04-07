@@ -82,6 +82,9 @@ public class Player : MonoBehaviour
 
     private float spin;
 
+    private Vector3 externalXPush; //for when other scripts want to knock the player around
+    private Vector3 xPushVel; //for smoothdamp to use
+
     [Tooltip("How fast the player spins to the side when moving in that direction")]
     [SerializeField] private float spinModifier = 1f;
 
@@ -423,8 +426,9 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        knockBackVel = Vector3.SmoothDamp(knockBackVel, Vector2.zero, ref knockBackVelRef, 0.05f); //slowly reset the knockback velocity back to zero
-
+        knockBackVel = Vector3.SmoothDamp(knockBackVel, Vector3.zero, ref knockBackVelRef, 0.05f); //slowly reset the knockback velocity back to zero
+        externalXPush = Vector3.SmoothDamp(externalXPush, Vector3.zero, ref xPushVel, 0.7f); //if another script wishes to push the character, that force is applied using this vector2. the vector is slowly brought down to 0 through this line
+        
         if (!dashing)
         {
             //walking code
@@ -434,6 +438,7 @@ public class Player : MonoBehaviour
             // Move the character by finding the target velocity
             Vector3 targetVelocity = new Vector2((movement.x * movementSpeed) * speedUpgrade, rb.velocity.y); //UPGRADE
             targetVelocity += knockBackVel;
+            targetVelocity += externalXPush;
 
             // And then smoothing it out and applying it to the character
             int mask = 1 << 8;
@@ -636,6 +641,11 @@ public class Player : MonoBehaviour
         //load saved data after transitioning levels
         score = LevelController.tempScore;
         health = LevelController.tempHealth;
+    }
+
+    public void KnockBackPlayer(float intensity)
+    {
+        externalXPush.x += intensity;
     }
 
     /// <summary>

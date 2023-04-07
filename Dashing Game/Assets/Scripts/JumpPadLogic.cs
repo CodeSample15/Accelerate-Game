@@ -20,9 +20,11 @@ public class JumpPadLogic : MonoBehaviour
             Rigidbody2D playerRB = player.GetComponent<Rigidbody2D>();
 
             playerRB.velocity = new Vector2(0, 0);
-            Vector2 force = Quaternion.Euler(0, 0, transform.rotation.eulerAngles.z) * Vector2.up;
+            Vector2 force = Quaternion.AngleAxis(transform.rotation.eulerAngles.z, Vector3.forward) * Vector2.up;
+            force *= boostStrength;
 
-            playerRB.AddForce(force * boostStrength, ForceMode2D.Impulse);
+            playerRB.AddForce(force, ForceMode2D.Impulse);
+            player.KnockBackPlayer(force.x);
         }
     }
 }

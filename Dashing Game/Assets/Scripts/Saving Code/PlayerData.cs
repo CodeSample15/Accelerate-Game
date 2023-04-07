@@ -17,6 +17,9 @@ public class PlayerData
     private int DashRecharge;
     private int JumpHeight;
 
+    //Crystals unlocked
+    private int crystalsUnlocked;
+
     //Sound data
     private int Volume;
     private bool Music;
@@ -66,6 +69,12 @@ public class PlayerData
         get { return JumpHeight; }
         set { JumpHeight = Mathf.Min(Mathf.Max(value, 0), 5); } //making sure the number is between 0 and 5
     }
+
+    public int CrystalsUnlocked
+    {
+        get { return crystalsUnlocked; }
+        set { crystalsUnlocked = Mathf.Min(Mathf.Max(value, 0), 5); }
+    }
     
     //sound
     public int VolumeLevel
@@ -80,7 +89,8 @@ public class PlayerData
     }
 
     public PlayerData(bool newPlayer, int money, int highScore, 
-        int Speed, int MaxHealth, int MaxDash, int DashRecharge, int JumpHeight,  //upgrades
+        int Speed, int MaxHealth, int MaxDash, int DashRecharge, int JumpHeight, //upgrades
+        int crystalsUnlocked,
         int Volume, bool Music) //sound
     {
         this.newPlayer = newPlayer;
@@ -92,6 +102,8 @@ public class PlayerData
         this.MaxDash = MaxDash;
         this.DashRecharge = DashRecharge;
         this.JumpHeight = JumpHeight;
+
+        this.crystalsUnlocked = crystalsUnlocked;
 
         this.Volume = Volume;
         this.Music = Music;
