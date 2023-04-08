@@ -534,17 +534,6 @@ public class Player : MonoBehaviour
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce + jumpHeightUpgrade); //UPGRADE
                 Instantiate(jump_particles, new Vector3(transform.position.x, transform.position.y - feetDistance, 100f), Quaternion.identity);
             }
-
-            /* // Other animation code for side jumps:
-            else if (right.collider != null || left.collider != null)
-            {
-                if(right.collider.CompareTag("Ground") || left.collider.CompareTag("Ground"))
-                //player is on a slope, do a different animation
-                character_animations.SetTrigger("Flip");
-
-                rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-            }
-            */
         }
     }
 
