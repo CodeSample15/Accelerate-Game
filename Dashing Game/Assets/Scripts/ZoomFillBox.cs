@@ -11,6 +11,8 @@ public class ZoomFillBox : MonoBehaviour
     private ParticleSystem particles;
     private Light2D lights;
 
+    private TextMeshProUGUI display;
+
     private bool refilled;
     private float timeSinceLastRefill;
 
@@ -40,6 +42,8 @@ public class ZoomFillBox : MonoBehaviour
     {
         particles = GetComponentInChildren<ParticleSystem>();
         lights = GetComponentInChildren<Light2D>();
+
+        display = GetComponentInChildren<Canvas>().gameObject.GetComponentInChildren<TextMeshProUGUI>();
 
         //start out with the boxes being filled
         refilled = true;
@@ -90,6 +94,17 @@ public class ZoomFillBox : MonoBehaviour
             Color temp = GetComponentInChildren<SpriteRenderer>().color;
             temp.a = tintAmount;
             GetComponentInChildren<SpriteRenderer>().color = temp;
+        }
+
+        //update text display
+        if (TimeSinceLastRefill == refillTime || !ActivatedBoxes[boxID])
+        {
+            display.SetText("");
+        }
+        else
+        {
+            int timeLeft = (int)refillTime - TimeSinceLastRefill;
+            display.SetText(timeLeft.ToString());
         }
     }
 

@@ -103,6 +103,8 @@ public class Enemy : MonoBehaviour
 
     //Movement Data
     private float speed;
+    private float superSpeed; //when the player gets far enough from the enemy, increase their speed
+    private float superSpeedDistance;
 
     void Awake()
     {
@@ -162,6 +164,8 @@ public class Enemy : MonoBehaviour
         #endregion
 
         speed = 9;
+        superSpeed = 20;
+        superSpeedDistance = 50;
 
         initColors();
 
@@ -176,8 +180,8 @@ public class Enemy : MonoBehaviour
         //Controlling the stats and movement of the enemy depending on what type it is---------------------------------------------------------------------------------
         if (!PauseButton.IsPaused) //will only move if the game is unpaused
         {
-            //setting the speed of the enemy back to normal (if it was paused)
-            path.maxSpeed = speed;
+            //setting the speed of the enemy back to normal (if it was changed for various reasons)
+            path.maxSpeed = distanceTo(playerGameObject) < superSpeedDistance ? speed : superSpeed;
 
             switch (Type)
             {

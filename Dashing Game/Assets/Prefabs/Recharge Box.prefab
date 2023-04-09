@@ -165,7 +165,6 @@ GameObject:
   - component: {fileID: 8115546959135192667}
   - component: {fileID: 8115546959135192665}
   - component: {fileID: 8115546959135192664}
-  - component: {fileID: 8115546959135192670}
   m_Layer: 2
   m_Name: Recharge Time Left
   m_TagString: Untagged
@@ -289,18 +288,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &8115546959135192670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8115546959135192666}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9827233863f1db04a86f72267cab5020, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &8115546959946374833
 GameObject:
   m_ObjectHideFlags: 0
@@ -414,7 +401,7 @@ GameObject:
   m_Layer: 2
   m_Name: Recharge Box
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -447,7 +434,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e80f5b27c81c5146879a076b773cf40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   refillTime: 10
 --- !u!61 &8115546960756809699
 BoxCollider2D:
