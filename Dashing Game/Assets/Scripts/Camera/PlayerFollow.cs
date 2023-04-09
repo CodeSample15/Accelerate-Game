@@ -26,6 +26,8 @@ public class PlayerFollow : MonoBehaviour
         cam = GetComponent<Camera>();
         cam.orthographicSize = startSize;
 
+        zoomAmount += startSize;
+
         playerScript = player.GetComponent<Player>();
     }
 
