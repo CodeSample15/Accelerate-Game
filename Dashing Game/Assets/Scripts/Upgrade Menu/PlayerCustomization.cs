@@ -20,7 +20,7 @@ public class PlayerCustomization : MonoBehaviour
 
     void Awake()
     {
-        playerPrev = transform.Find("").gameObject;
+        playerPrev = transform.Find("Player Preview").gameObject;
 
         curSpeed = 0;
         targetSpeed = TurnSpeedNormal;
@@ -32,10 +32,10 @@ public class PlayerCustomization : MonoBehaviour
     void Update()
     {
         //updating the player preview with a spin animation
-        curSpeed = Mathf.SmoothDamp(curSpeed, targetSpeed, ref curVel, 0.1f);
+        curSpeed = Mathf.SmoothDamp(curSpeed, targetSpeed, ref curVel, 0.5f);
         targetSpeed = Mathf.SmoothDamp(targetSpeed, TurnSpeedNormal, ref targetVel, TurnSpeedDecay);
 
-        transform.Rotate(new Vector3(0, 0, curSpeed));
+        playerPrev.transform.Rotate(new Vector3(0, 0, curSpeed) * Time.deltaTime);
     }
 
     public void Spin()
