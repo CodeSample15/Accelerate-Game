@@ -24,32 +24,35 @@ public class SpinningLaser : MonoBehaviour
 
     void Update()
     {
-        angle += TurnSpeed * Time.deltaTime;
-
-        //update each laser's angle
-        float offset = 0;
-        foreach(LineRenderer r in lasers)
+        if (!PauseButton.IsPaused)
         {
-            Vector2 raycastDir = Quaternion.AngleAxis(angle + offset, Vector3.forward) * Vector2.up;
-            int mask = 1 << 8; //only hit the ground layer
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, raycastDir, Mathf.Infinity, mask);
+            angle += TurnSpeed * Time.deltaTime;
 
-            Vector2 endLoc = transform.position;
-            if (hit.collider != null)
+            //update each laser's angle
+            float offset = 0;
+            foreach (LineRenderer r in lasers)
             {
-                endLoc = (Vector2)transform.position + (raycastDir * hit.distance);
+                Vector2 raycastDir = Quaternion.AngleAxis(angle + offset, Vector3.forward) * Vector2.up;
+                int mask = 1 << 8; //only hit the ground layer
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, raycastDir, Mathf.Infinity, mask);
 
-                //check for collisions with player with another raycast
-                mask = 1 << 8 | 1 << 12;
-                hit = Physics2D.Raycast(transform.position, raycastDir, Mathf.Infinity, mask);
-                if (hit.collider != null && hit.collider.CompareTag("Player"))
-                    player.Health -= DamagePerSecond * Time.deltaTime;
+                Vector2 endLoc = transform.position;
+                if (hit.collider != null)
+                {
+                    endLoc = (Vector2)transform.position + (raycastDir * hit.distance);
+
+                    //check for collisions with player with another raycast
+                    mask = 1 << 8 | 1 << 12;
+                    hit = Physics2D.Raycast(transform.position, raycastDir, Mathf.Infinity, mask);
+                    if (hit.collider != null && hit.collider.CompareTag("Player"))
+                        player.Health -= DamagePerSecond * Time.deltaTime;
+                }
+
+                r.SetPosition(0, transform.position);
+                r.SetPosition(1, endLoc);
+
+                offset += 90;
             }
-
-            r.SetPosition(0, transform.position);
-            r.SetPosition(1, endLoc);
-
-            offset += 90;
         }
     }
 }
