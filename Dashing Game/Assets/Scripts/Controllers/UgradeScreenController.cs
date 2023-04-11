@@ -42,9 +42,7 @@ public class UgradeScreenController : MonoBehaviour
     [SerializeField] private GameObject CrystalBuyButton;
 
     [Space]
-
-    [Header("Character customization colors")]
-    [SerializeField] private Color[] PlayerColors;
+    [SerializeField] private PlayerCustomization playerCustomization;
 
     //private fields
     private PlayerData data;
@@ -59,13 +57,18 @@ public class UgradeScreenController : MonoBehaviour
     //amount the prices are multiplied by each time the player buys
     private double increaseRate;
 
+    //for the seperate screens
     private Animator screen1Anims;
     private Animator screen2Anims;
 
+    //for buying crystals
     private int curCrystal;
 
     private int CrystalBaseCost;
     private int CrystalCostMultiplier;
+
+    //for buying player customizations
+    private int curColor;
 
     void Awake()
     {
@@ -93,7 +96,10 @@ public class UgradeScreenController : MonoBehaviour
         CrystalBaseCost = 100;
         CrystalCostMultiplier = 5;
 
-        updateSprite();
+        updateCrystalSprite();
+
+        curColor = 0;
+        playerCustomization.setColor(curColor);
     }
 
     //private methods
@@ -144,6 +150,8 @@ public class UgradeScreenController : MonoBehaviour
             //spawn particles
             data.Money -= price;
             data.SpeedUpgrade += 1;
+
+            playerCustomization.Spin();
         }
 
         //save
@@ -162,6 +170,8 @@ public class UgradeScreenController : MonoBehaviour
             //spawn particles
             data.Money -= price;
             data.MaxHealthUpgrade += 1;
+
+            playerCustomization.Spin();
         }
 
         //save
@@ -180,6 +190,8 @@ public class UgradeScreenController : MonoBehaviour
             //spawn particles
             data.Money -= price;
             data.MaxDashUpgrade += 1;
+
+            playerCustomization.Spin();
         }
 
         //save
@@ -198,6 +210,8 @@ public class UgradeScreenController : MonoBehaviour
             //spawn particles
             data.Money -= price;
             data.DashRechargeUpgrade += 1;
+
+            playerCustomization.Spin();
         }
 
         //save
@@ -216,6 +230,8 @@ public class UgradeScreenController : MonoBehaviour
             //spawn particles
             data.Money -= price;
             data.JumpHeightUpgrade += 1;
+
+            playerCustomization.Spin();
         }
 
         //save
@@ -248,7 +264,7 @@ public class UgradeScreenController : MonoBehaviour
         if (curCrystal == 5)
             curCrystal = 0;
 
-        updateSprite();
+        updateCrystalSprite();
     }
 
     public void LastCrystal()
@@ -258,7 +274,7 @@ public class UgradeScreenController : MonoBehaviour
         if (curCrystal == -1)
             curCrystal = 4;
 
-        updateSprite();
+        updateCrystalSprite();
     }
 
     public void BuyCrystal()
@@ -269,7 +285,7 @@ public class UgradeScreenController : MonoBehaviour
             data.Money -= CalcCrystalPrice();
             Saver.SavePlayer(data);
 
-            updateSprite();
+            updateCrystalSprite();
         }
     }
 
@@ -278,20 +294,42 @@ public class UgradeScreenController : MonoBehaviour
         return (CrystalBaseCost * CrystalCostMultiplier * (curCrystal + 1));
     }
 
-    private void updateSprite()
+    private void updateCrystalSprite()
     {
         CrystalImage.sprite = CrystalSprites[curCrystal];
         CrystalCostDisplay.SetText("$" + CalcCrystalPrice());
 
         //also update the buy button
-        if (data.CrystalsUnlocked == curCrystal)
+        if (data.CrystalsUnlocked >= curCrystal)
+        {
             CrystalBuyButton.SetActive(true);
-        else 
+            CrystalBuyButton.GetComponentInChildren<TextMeshProUGUI>().SetText(data.CrystalsUnlocked == curCrystal ? "Buy" : "Purchased");
+            CrystalBuyButton.GetComponent<Button>().interactable = data.CrystalsUnlocked == curCrystal;
+        }
+        else
             CrystalBuyButton.SetActive(false);
     }
     #endregion
 
     #region Methods for character customization
-    
+    public void NextColor()
+    {
+        //right button pressed
+        curColor++;
+        if (curColor == playerCustomization.PlayerColors.Length)
+            curColor = 0;
+
+        playerCustomization.setColor(curColor);
+    }
+
+    public void LastColor()
+    {
+        //left button pressed
+        curColor--;
+        if (curColor == -1)
+            curColor = playerCustomization.PlayerColors.Length - 1;
+
+        playerCustomization.setColor(curColor);
+    }
     #endregion
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerCustomization : MonoBehaviour
 {
@@ -8,6 +9,11 @@ public class PlayerCustomization : MonoBehaviour
     [SerializeField] private float TurnSpeedNormal;
     [SerializeField] private float TurnSpeedMax;
     [SerializeField] private float TurnSpeedDecay;
+
+    [Space]
+
+    [Header("Character customization colors")]
+    [SerializeField] public Color[] PlayerColors;
 
     //for the animation
     private GameObject playerPrev;
@@ -41,5 +47,13 @@ public class PlayerCustomization : MonoBehaviour
     public void Spin()
     {
         curSpeed = TurnSpeedMax;
+    }
+
+    public void setColor(int col)
+    {
+        if (col < 0 || col >= PlayerColors.Length)
+            return;
+
+        playerPrev.GetComponent<Image>().color = PlayerColors[col];
     }
 }
