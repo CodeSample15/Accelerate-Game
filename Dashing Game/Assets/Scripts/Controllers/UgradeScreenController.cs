@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class UgradeScreenController : MonoBehaviour
 {
@@ -23,6 +24,28 @@ public class UgradeScreenController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI DashRechargePrice;
     [SerializeField] private TextMeshProUGUI JumpHeightPrice;
 
+    [Space]
+
+    [Header("Screens")]
+    [SerializeField] private GameObject Screen1;
+    [SerializeField] private GameObject Screen2;
+
+    [Space]
+
+    [Header("Crystal sprites")]
+    [SerializeField] private Sprite[] CrystalSprites;
+    [SerializeField] private Image CrystalImage;
+
+    [Space]
+
+    [SerializeField] private TextMeshProUGUI CrystalCostDisplay;
+    [SerializeField] private GameObject CrystalBuyButton;
+
+    [Space]
+
+    [Header("Character customization colors")]
+    [SerializeField] private Color[] PlayerColors;
+
     //private fields
     private PlayerData data;
 
@@ -36,6 +59,14 @@ public class UgradeScreenController : MonoBehaviour
     //amount the prices are multiplied by each time the player buys
     private double increaseRate;
 
+    private Animator screen1Anims;
+    private Animator screen2Anims;
+
+    private int curCrystal;
+
+    private int CrystalBaseCost;
+    private int CrystalCostMultiplier;
+
     void Awake()
     {
         //load player data from file
@@ -48,6 +79,21 @@ public class UgradeScreenController : MonoBehaviour
         JumpHeightStartPrice = 30;
 
         increaseRate = 1.8f;
+
+        screen1Anims = Screen1.GetComponent<Animator>();
+        screen2Anims = Screen2.GetComponent<Animator>();
+
+        Screen1.SetActive(true); //make sure screen is showing in case it was hidden during editing
+        Screen2.SetActive(true); 
+
+        screen1Anims.SetTrigger("Show");
+
+        curCrystal = 0;
+
+        CrystalBaseCost = 100;
+        CrystalCostMultiplier = 5;
+
+        updateSprite();
     }
 
     //private methods
@@ -176,5 +222,76 @@ public class UgradeScreenController : MonoBehaviour
         Saver.SavePlayer(data);
         updateAllBars();
     }
+    #endregion
+
+    #region Button methods for changing screens
+    public void ToScreen1()
+    {
+        curCrystal = 0;
+
+        screen1Anims.SetTrigger("SlideInRight");
+        screen2Anims.SetTrigger("SlideOutRight");
+    }
+
+    public void ToScreen2()
+    {
+        screen1Anims.SetTrigger("SlideOutLeft");
+        screen2Anims.SetTrigger("SlideInLeft");
+    }
+    #endregion
+
+    #region Methods for crystals
+    public void NextCrystal()
+    {
+        //right arrow pressed
+        curCrystal++;
+        if (curCrystal == 5)
+            curCrystal = 0;
+
+        updateSprite();
+    }
+
+    public void LastCrystal()
+    {
+        //left arrow pressed
+        curCrystal--;
+        if (curCrystal == -1)
+            curCrystal = 4;
+
+        updateSprite();
+    }
+
+    public void BuyCrystal()
+    {
+        if(data.CrystalsUnlocked == curCrystal && data.Money >= CalcCrystalPrice())
+        {
+            data.CrystalsUnlocked++;
+            data.Money -= CalcCrystalPrice();
+            Saver.SavePlayer(data);
+
+            updateSprite();
+        }
+    }
+
+    private int CalcCrystalPrice()
+    {
+        return (CrystalBaseCost * CrystalCostMultiplier * (curCrystal + 1));
+    }
+
+    private void updateSprite()
+    {
+        CrystalImage.sprite = CrystalSprites[curCrystal];
+        CrystalCostDisplay.SetText("$" + CalcCrystalPrice());
+
+        //also update the buy button
+        if (data.CrystalsUnlocked == curCrystal)
+            CrystalBuyButton.SetActive(true);
+        else 
+            CrystalBuyButton.SetActive(false);
+    }
+    #endregion
+
+    #region Methods for character customization
+    
     #endregion
 }
