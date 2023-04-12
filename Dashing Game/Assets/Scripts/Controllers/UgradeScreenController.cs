@@ -100,6 +100,7 @@ public class UgradeScreenController : MonoBehaviour
 
         curColor = 0;
         playerCustomization.setColor(curColor);
+        playerCustomization.SkinCost = 300; //keeping all the set prices in this file for organization
     }
 
     //private methods
@@ -330,6 +331,11 @@ public class UgradeScreenController : MonoBehaviour
             curColor = playerCustomization.PlayerColors.Length - 1;
 
         playerCustomization.setColor(curColor);
+    }
+
+    public void BuySkin()
+    {
+        
     }
     #endregion
 }

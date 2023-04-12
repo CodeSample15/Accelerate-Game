@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
+/*
+ * This script handles the visuals of the player customization page, while the UpgradeScreenController handles all of the data related to this page
+ */
 
 public class PlayerCustomization : MonoBehaviour
 {
@@ -24,15 +29,32 @@ public class PlayerCustomization : MonoBehaviour
     private float curVel;
     private float targetVel;
 
+    //for the text display
+    private TextMeshProUGUI priceText;
+
+    private int skinCost;
+
+    public int SkinCost
+    {
+        get { return skinCost; }
+        set { skinCost = Mathf.Max(0, value); }
+    }
+
     void Awake()
     {
         playerPrev = transform.Find("Player Preview").gameObject;
+        priceText = transform.Find("Price Text").GetComponent<TextMeshProUGUI>();
 
         curSpeed = 0;
         targetSpeed = TurnSpeedNormal;
 
         curVel = 0;
         targetVel = 0;
+    }
+
+    void Start()
+    {
+        priceText.SetText("$" + skinCost);
     }
 
     void Update()
@@ -55,5 +77,6 @@ public class PlayerCustomization : MonoBehaviour
             return;
 
         playerPrev.GetComponent<Image>().color = PlayerColors[col];
+        priceText.color = PlayerColors[col];
     }
 }
