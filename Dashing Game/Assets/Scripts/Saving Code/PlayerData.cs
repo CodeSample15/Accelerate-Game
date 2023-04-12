@@ -20,6 +20,10 @@ public class PlayerData
     //Crystals unlocked
     private int crystalsUnlocked;
 
+    //Skins unlocked
+    private List<int> skinsUnlocked;
+    private int selectedSkin; //ID of the currently selected skin
+
     //Sound data
     private int Volume;
     private bool Music;
@@ -75,6 +79,18 @@ public class PlayerData
         get { return crystalsUnlocked; }
         set { crystalsUnlocked = Mathf.Min(Mathf.Max(value, 0), 5); }
     }
+
+    public List<int> SkinsUnlocked
+    {
+        get { return skinsUnlocked; }
+        set { skinsUnlocked = value; }
+    }
+
+    public int SelectedSkin
+    {
+        get { return selectedSkin; }
+        set { selectedSkin = Mathf.Min(value, HomeScreenController.PlayerColors.Length); }
+    }
     
     //sound
     public int VolumeLevel
@@ -88,9 +104,10 @@ public class PlayerData
         set { Music = value; }
     }
 
-    public PlayerData(bool newPlayer, int money, int highScore, 
+    public PlayerData(bool newPlayer, int money, int highScore, //basic stats
         int Speed, int MaxHealth, int MaxDash, int DashRecharge, int JumpHeight, //upgrades
         int crystalsUnlocked,
+        List<int> skinsUnlocked, int selectedSkin,
         int Volume, bool Music) //sound
     {
         this.newPlayer = newPlayer;
@@ -104,6 +121,9 @@ public class PlayerData
         this.JumpHeight = JumpHeight;
 
         this.crystalsUnlocked = crystalsUnlocked;
+
+        this.skinsUnlocked = skinsUnlocked;
+        this.selectedSkin = selectedSkin;
 
         this.Volume = Volume;
         this.Music = Music;

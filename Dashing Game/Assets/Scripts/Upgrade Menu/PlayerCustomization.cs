@@ -17,8 +17,7 @@ public class PlayerCustomization : MonoBehaviour
 
     [Space]
 
-    [Header("Character customization colors")]
-    [SerializeField] public Color[] PlayerColors;
+    private Color[] colors;
 
     //for the animation
     private GameObject playerPrev;
@@ -31,6 +30,7 @@ public class PlayerCustomization : MonoBehaviour
 
     //for the text display
     private TextMeshProUGUI priceText;
+    private TextMeshProUGUI buttonText;
 
     private int skinCost;
 
@@ -40,16 +40,27 @@ public class PlayerCustomization : MonoBehaviour
         set { skinCost = Mathf.Max(0, value); }
     }
 
+    public Color[] PlayerColors
+    {
+        get { return colors; }
+    }
+
     void Awake()
     {
         playerPrev = transform.Find("Player Preview").gameObject;
         priceText = transform.Find("Price Text").GetComponent<TextMeshProUGUI>();
+        buttonText = transform.Find("Buy Button").GetComponentInChildren<TextMeshProUGUI>();
 
         curSpeed = 0;
         targetSpeed = TurnSpeedNormal;
 
         curVel = 0;
         targetVel = 0;
+
+        if (HomeScreenController.PlayerColors != null)
+            colors = HomeScreenController.PlayerColors;
+        else
+            colors = HomeScreenController.TempColors(); //temporarily create some testing colors for when the main screen hasn't been run yet
     }
 
     void Start()
@@ -71,12 +82,19 @@ public class PlayerCustomization : MonoBehaviour
         curSpeed = TurnSpeedMax;
     }
 
-    public void setColor(int col)
+    public void setColor(int col, bool purchased, bool selected)
     {
-        if (col < 0 || col >= PlayerColors.Length)
+        if (col < 0 || col >= colors.Length)
             return;
 
-        playerPrev.GetComponent<Image>().color = PlayerColors[col];
-        priceText.color = PlayerColors[col];
+        playerPrev.GetComponent<Image>().color = colors[col];
+
+        priceText.SetText(purchased ? "" : skinCost.ToString());
+        priceText.color = colors[col];
+
+        if (!purchased)
+            buttonText.SetText("Buy");
+        else
+            buttonText.SetText(selected ? "Selected" : "Select");
     }
 }

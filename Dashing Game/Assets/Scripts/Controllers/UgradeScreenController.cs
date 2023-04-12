@@ -99,7 +99,7 @@ public class UgradeScreenController : MonoBehaviour
         updateCrystalSprite();
 
         curColor = 0;
-        playerCustomization.setColor(curColor);
+        playerCustomization.setColor(curColor, true, true);
         playerCustomization.SkinCost = 300; //keeping all the set prices in this file for organization
     }
 
@@ -320,7 +320,7 @@ public class UgradeScreenController : MonoBehaviour
         if (curColor == playerCustomization.PlayerColors.Length)
             curColor = 0;
 
-        playerCustomization.setColor(curColor);
+        playerCustomization.setColor(curColor, data.SkinsUnlocked.Contains(curColor), data.SelectedSkin == curColor);
     }
 
     public void LastColor()
@@ -330,12 +330,25 @@ public class UgradeScreenController : MonoBehaviour
         if (curColor == -1)
             curColor = playerCustomization.PlayerColors.Length - 1;
 
-        playerCustomization.setColor(curColor);
+        playerCustomization.setColor(curColor, data.SkinsUnlocked.Contains(curColor), data.SelectedSkin == curColor);
     }
 
     public void BuySkin()
     {
-        
+        if (!data.SkinsUnlocked.Contains(curColor) && data.Money >= playerCustomization.SkinCost)
+        {
+            data.SkinsUnlocked.Add(curColor);
+            data.Money -= playerCustomization.SkinCost;
+
+            data.SelectedSkin = curColor;
+
+            Saver.SavePlayer(data);
+        }
+        else if (data.SkinsUnlocked.Contains(curColor) && data.SelectedSkin != curColor)
+        {
+            data.SelectedSkin = curColor;
+            Saver.SavePlayer(data);
+        }
     }
     #endregion
 }

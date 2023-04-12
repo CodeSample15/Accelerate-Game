@@ -7,6 +7,10 @@ using TMPro;
 public class HomeScreenController : MonoBehaviour
 {
     //All of the code for the buttons on home screen (other than the play button)
+    [Header("Possible colors for player customization")]
+    [SerializeField] public Color[] playerColors;
+    public static Color[] PlayerColors;
+
     [Header("Volume Button")]
     public GameObject VolumeButton;
     public Sprite[] VolumeSprites;
@@ -53,6 +57,9 @@ public class HomeScreenController : MonoBehaviour
 
     void Awake()
     {
+        //load colors for player skins
+        PlayerColors = playerColors;
+
         MenuShowing = false;
         MenuSpeed = 6f;
 
@@ -65,10 +72,11 @@ public class HomeScreenController : MonoBehaviour
         if (Saver.loadData() == null || false) //the || false/true is for debugging purposes
         {
             //new player, create new player data file
-            PlayerData newPlayerData = new PlayerData(true, 0, 0,    //new player, money, and highscore
-                                                     0, 0, 0, 0, 0,  //upgrades (reset all to zero)
-                                                     0,              //number of crystals unlocked (set to zero)
-                                                     0, true);       //sound (medium volume, music turned on)
+            PlayerData newPlayerData = new PlayerData(true, 0, 0,        //new player, money, and highscore
+                                                     0, 0, 0, 0, 0,      //upgrades (reset all to zero)
+                                                     0,                  //number of crystals unlocked (set to zero)
+                                                     new List<int>(), 0, //IDs of currently unlocked skins 
+                                                     0, true);           //sound (medium volume, music turned on)
 
             Debug.Log("New player, creating player data file");
             Saver.SavePlayer(newPlayerData);
@@ -198,5 +206,17 @@ public class HomeScreenController : MonoBehaviour
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    public static Color[] TempColors()
+    {
+        //for debugging the shop screen
+        Color[] temp = new Color[4];
+        temp[0] = Color.white;
+        temp[1] = Color.yellow;
+        temp[2] = Color.blue;
+        temp[3] = Color.red;
+
+        return temp;
     }
 }
