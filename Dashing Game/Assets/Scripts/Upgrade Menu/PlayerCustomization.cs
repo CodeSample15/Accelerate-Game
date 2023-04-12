@@ -65,7 +65,10 @@ public class PlayerCustomization : MonoBehaviour
 
     void Start()
     {
+        PlayerData data = Saver.loadData();
+
         priceText.SetText("$" + skinCost);
+        setColor(0, true, data.SelectedSkin == 0);
     }
 
     void Update()

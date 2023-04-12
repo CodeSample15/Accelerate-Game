@@ -99,7 +99,6 @@ public class UgradeScreenController : MonoBehaviour
         updateCrystalSprite();
 
         curColor = 0;
-        playerCustomization.setColor(curColor, true, true);
         playerCustomization.SkinCost = 300; //keeping all the set prices in this file for organization
     }
 
@@ -349,6 +348,8 @@ public class UgradeScreenController : MonoBehaviour
             data.SelectedSkin = curColor;
             Saver.SavePlayer(data);
         }
+
+        playerCustomization.setColor(curColor, data.SkinsUnlocked.Contains(curColor), data.SelectedSkin == curColor);
     }
     #endregion
 }

@@ -231,6 +231,24 @@ public class Player : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name != "Main" && LevelController.saved) //if there are saved settings
             loadTempState(); //load temp saved data because the level changed
+
+        //set the player's color
+        if (HomeScreenController.PlayerColors != null && data.SelectedSkin != 0)
+        {
+            Color selectedSkin = HomeScreenController.PlayerColors[data.SelectedSkin];
+
+            GetComponent<SpriteRenderer>().color = selectedSkin;
+            dash_light.color = selectedSkin;
+            ParticleSystem.MainModule p_settings = dash_particles.main;
+
+            //create a slightly brighter color for the second particle color
+            Color secondColor = selectedSkin;
+            secondColor.r = Mathf.Max(0, secondColor.r - 0.2f);
+            secondColor.g = Mathf.Max(0, secondColor.g - 0.2f);
+            secondColor.b = Mathf.Max(0, secondColor.b - 0.2f);
+
+            p_settings.startColor = new ParticleSystem.MinMaxGradient(selectedSkin, secondColor);
+        }
     }
 
     void Start()

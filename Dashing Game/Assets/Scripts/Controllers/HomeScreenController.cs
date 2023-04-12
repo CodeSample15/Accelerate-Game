@@ -72,19 +72,34 @@ public class HomeScreenController : MonoBehaviour
         if (Saver.loadData() == null || false) //the || false/true is for debugging purposes
         {
             //new player, create new player data file
+            List<int> skins = new List<int>();
+            skins.Add(0);
+
             PlayerData newPlayerData = new PlayerData(true, 0, 0,        //new player, money, and highscore
                                                      0, 0, 0, 0, 0,      //upgrades (reset all to zero)
                                                      0,                  //number of crystals unlocked (set to zero)
-                                                     new List<int>(), 0, //IDs of currently unlocked skins 
+                                                     skins, 0,           //IDs of currently unlocked skins 
                                                      0, true);           //sound (medium volume, music turned on)
 
             Debug.Log("New player, creating player data file");
             Saver.SavePlayer(newPlayerData);
         }
 
-        //load data
         data = Saver.loadData();
 
+        #region Upgrading player data files if necessary
+        if (data.SkinsUnlocked == null)
+        {
+            List<int> skins = new List<int>();
+            skins.Add(0);
+            data.SkinsUnlocked = skins;
+            data.SelectedSkin = 0;
+
+            Saver.SavePlayer(data);
+        }
+        #endregion
+
+        //load data
         money = data.Money;
         highScore = data.HighScore;
 
