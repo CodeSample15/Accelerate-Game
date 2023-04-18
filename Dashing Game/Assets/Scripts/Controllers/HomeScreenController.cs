@@ -79,6 +79,7 @@ public class HomeScreenController : MonoBehaviour
                                                      0, 0, 0, 0, 0,      //upgrades (reset all to zero)
                                                      0,                  //number of crystals unlocked (set to zero)
                                                      skins, 0,           //IDs of currently unlocked skins 
+                                                     false, false, false, false, false, //none of the bosses have been defeated yet
                                                      0, true);           //sound (medium volume, music turned on)
 
             Debug.Log("New player, creating player data file");

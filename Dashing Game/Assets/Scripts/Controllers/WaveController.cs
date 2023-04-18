@@ -94,7 +94,7 @@ public class WaveController : MonoBehaviour
         BlueEnemyWave = 5;
         YellowEnemyWave = 8;
 
-        difficultyIncrease = 0.05f;
+        difficultyIncrease = 0.1f;
 
         enemySpawned = true;
         waveActive = false;
@@ -266,12 +266,9 @@ public class WaveController : MonoBehaviour
         wave++;
         curWave = wave;
 
-        //increase difficulty by lowering the amount of time it takes an enemy to spawn
-        if (minTimePerEnemySpawn > 0)
-        {
-            minTimePerEnemySpawn -= difficultyIncrease;
-            maxTimePerEnemySpawn -= difficultyIncrease;
-        }
+        //raising the time for spawning to make waves last longer as the game continues
+        minTimePerEnemySpawn += difficultyIncrease;
+        maxTimePerEnemySpawn += difficultyIncrease;
 
         minTimePerEnemySpawn = Mathf.Max(0, minTimePerEnemySpawn);
         nextEnemyWait = Random.Range(minTimePerEnemySpawn, maxTimePerEnemySpawn);

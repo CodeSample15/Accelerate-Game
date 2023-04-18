@@ -24,6 +24,13 @@ public class PlayerData
     private List<int> skinsUnlocked;
     private int selectedSkin; //ID of the currently selected skin
 
+    //Bosses defeated
+    private bool blueBossDefeated;
+    private bool greenBossDefeated;
+    private bool orangeBossDefeated;
+    private bool pinkBossDefeated;
+    private bool redBossDefeated;
+
     //Sound data
     private int Volume;
     private bool Music;
@@ -92,6 +99,37 @@ public class PlayerData
         set { selectedSkin = Mathf.Min(value, HomeScreenController.PlayerColors.Length); }
     }
     
+    //defeated bosses
+    public bool BlueBossDefeated
+    {
+        get { return blueBossDefeated; }
+        set { blueBossDefeated = value; }
+    }
+
+    public bool GreenBossDefeated
+    {
+        get { return greenBossDefeated; }
+        set { greenBossDefeated = value; }
+    }
+
+    public bool OrangeBossDefeated
+    {
+        get { return orangeBossDefeated; }
+        set { orangeBossDefeated = value; }
+    }
+
+    public bool PinkBossDefeated
+    {
+        get { return pinkBossDefeated; }
+        set { pinkBossDefeated = value; }
+    }
+
+    public bool RedBossDefeated
+    {
+        get { return redBossDefeated; }
+        set { redBossDefeated = value; }
+    }
+
     //sound
     public int VolumeLevel
     {
@@ -108,6 +146,7 @@ public class PlayerData
         int Speed, int MaxHealth, int MaxDash, int DashRecharge, int JumpHeight, //upgrades
         int crystalsUnlocked,
         List<int> skinsUnlocked, int selectedSkin,
+        bool blueBossDefeated, bool greenBossDefeated, bool orangeBossDefeated, bool pinkBossDefeated, bool redBossDefeated,
         int Volume, bool Music) //sound
     {
         this.newPlayer = newPlayer;
@@ -124,6 +163,12 @@ public class PlayerData
 
         this.skinsUnlocked = skinsUnlocked;
         this.selectedSkin = selectedSkin;
+
+        this.blueBossDefeated = blueBossDefeated;
+        this.greenBossDefeated = greenBossDefeated;
+        this.orangeBossDefeated = orangeBossDefeated;
+        this.pinkBossDefeated = pinkBossDefeated;
+        this.redBossDefeated = redBossDefeated;
 
         this.Volume = Volume;
         this.Music = Music;
