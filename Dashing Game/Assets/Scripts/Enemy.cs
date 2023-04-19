@@ -164,8 +164,8 @@ public class Enemy : MonoBehaviour
         #endregion
 
         speed = 9;
-        superSpeed = 20;
-        superSpeedDistance = 50;
+        superSpeed = 30;
+        superSpeedDistance = 45;
 
         initColors();
 

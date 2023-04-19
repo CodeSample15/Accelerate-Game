@@ -47,7 +47,7 @@ public class MenuLogic : MonoBehaviour
             ExitButton.SetActive(buttonsActive);
         }
 
-        if(buttonsActive && PauseButton.IsPaused)
+        if(RestartButton!=null && buttonsActive && PauseButton.IsPaused)
         {
             //restart button becomes resume (prevents people from accidentally restarting their game)
             RestartButton.GetComponentInChildren<TextMeshProUGUI>().SetText("Resume");

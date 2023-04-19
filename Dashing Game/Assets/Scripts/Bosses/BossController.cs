@@ -5,33 +5,34 @@ using UnityEngine.SceneManagement;
 
 public class BossController : MonoBehaviour
 {
+    [Header("The actual boss in the level")]
+    [SerializeField] private GameObject boss;
+
     [Header("Boss stats (change these per boss)")]
     [SerializeField] private float minAttackDelay;
     [SerializeField] private float maxAttackDelay;
     [SerializeField] private float startHealth;
 
-    [Header("Boss attack gameobjects (DONT CHANGE)")]
-    [SerializeField] private GameObject[] BlueBossAttacks;
-    [SerializeField] private GameObject[] GreenBossAttacks;
-    [SerializeField] private GameObject[] OrangeBossAttacks;
-    [SerializeField] private GameObject[] PinkBossAttacks;
-    [SerializeField] private GameObject[] RedBossAttacks;
+    [Space]
 
-    private GameObject[][] attacks;
+    [SerializeField] private GameObject[] attacks;
+
+    private Player player;
+    private Animator bossAnims;
+
+    private float health;
 
     private float timeSinceLastAttack;
+    private float nextAttackTime;
     private int bossType;
+
+    public float Health
+    {
+        get { return health; }
+    }
 
     void Awake()
     {
-        //prepare attacks
-        attacks = new GameObject[5][];
-        attacks[0] = BlueBossAttacks;
-        attacks[1] = GreenBossAttacks;
-        attacks[2] = OrangeBossAttacks;
-        attacks[3] = PinkBossAttacks;
-        attacks[4] = RedBossAttacks;
-
         switch(SceneManager.GetActiveScene().name)
         {
             case "Blue Boss":
@@ -54,10 +55,30 @@ public class BossController : MonoBehaviour
                 bossType = 4;
                 break;
         }
+
+        player = FindObjectOfType<Player>();
+        bossAnims = boss.GetComponent<Animator>();
+        health = startHealth;
+        nextAttackTime = Random.Range(minAttackDelay, maxAttackDelay);
     }
 
     void Update()
     {
-        
+        if(health > 0 && !PauseButton.IsPaused)
+        {
+            timeSinceLastAttack += Time.deltaTime;
+
+            if(timeSinceLastAttack >= nextAttackTime)
+            {
+                if(attacks.Length != 0) //shouldn't be the case when game is released, but it's useful for testing
+                {
+                    int randomIndex = Random.Range(0, attacks.Length);
+                    Instantiate(attacks[randomIndex], player.gameObject.transform.position, Quaternion.identity);
+                }
+
+                nextAttackTime = Random.Range(minAttackDelay, maxAttackDelay);
+                timeSinceLastAttack = 0;
+            }
+        }
     }
 }
