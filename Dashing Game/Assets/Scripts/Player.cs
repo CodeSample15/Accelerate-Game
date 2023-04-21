@@ -115,7 +115,7 @@ public class Player : MonoBehaviour
     public float DashPower
     {
         get { return dashPower; }
-        set { dashPower = value; }
+        set { dashPower = Mathf.Max(0, value); }
     }
 
     public int Score
