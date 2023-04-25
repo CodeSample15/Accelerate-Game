@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class BossController : MonoBehaviour
@@ -9,6 +10,7 @@ public class BossController : MonoBehaviour
 
     [Header("The actual boss in the level")]
     [SerializeField] private GameObject boss;
+    [SerializeField] private GameObject health_bar;
 
     [Header("Boss stats (change these per boss)")]
     [SerializeField] private float minAttackDelay;
@@ -28,6 +30,7 @@ public class BossController : MonoBehaviour
 
     private Player player;
     private Animator bossAnims;
+    private Slider health_bar_slider;
 
     private float _health;
 
@@ -70,6 +73,7 @@ public class BossController : MonoBehaviour
         }
 
         player = FindObjectOfType<Player>();
+        health_bar_slider = health_bar.GetComponentInChildren<Slider>();
         bossAnims = boss.GetComponent<Animator>();
         _health = startHealth;
         nextAttackTime = Random.Range(minAttackDelay, maxAttackDelay);
@@ -101,6 +105,12 @@ public class BossController : MonoBehaviour
 
         //handle boss animations
         bossAnims.SetBool("IsAngry", Vector2.Distance(boss.transform.position, player.gameObject.transform.position) < angryRange);
+    }
+
+    void LateUpdate()
+    {
+        health_bar.transform.position = boss.transform.position;
+        health_bar_slider.value = _health / startHealth;
     }
 
     public void Damage()
