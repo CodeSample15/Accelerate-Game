@@ -3,10 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class BossController : MonoBehaviour
 {
     public static BossController Static_Reference;
+
+    [Header("Things that need to be assigned by developer:")]
+    [SerializeField] private TextMeshProUGUI DisplayText;
+
+    [Space]
 
     [Header("The actual boss in the level")]
     [SerializeField] private GameObject boss;
@@ -27,6 +33,9 @@ public class BossController : MonoBehaviour
 
     [Tooltip("Maximum amount of damage the player can do to the boss")]
     [SerializeField] private float playerDamage; //how much the player can damage the enemy
+
+    [Tooltip("How much money the player can earn (based off of remaining health)")]
+    [SerializeField] private float maxMoneyPossible;
 
     private Player player;
     private Animator bossAnims;
@@ -102,6 +111,15 @@ public class BossController : MonoBehaviour
                 timeSinceLastAttack = 0;
             }
         }
+        else if(_health <= 0)
+        {
+            //give the player money
+
+
+            //kill the player
+
+            Destroy(gameObject);
+        }
 
         //handle boss animations
         bossAnims.SetBool("IsAngry", Vector2.Distance(boss.transform.position, player.gameObject.transform.position) < angryRange);
@@ -115,8 +133,11 @@ public class BossController : MonoBehaviour
 
     public void Damage()
     {
-        _health -= player_power * playerDamage;
+        if (_health > 0)
+        {
+            _health -= player_power * playerDamage;
 
-        bossAnims.SetTrigger("Damage");
+            bossAnims.SetTrigger("Damage");
+        }
     }
 }

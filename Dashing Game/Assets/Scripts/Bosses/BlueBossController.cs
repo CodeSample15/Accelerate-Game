@@ -46,6 +46,10 @@ public class BlueBossController : MonoBehaviour
     private float attackVel;
     private float curAttackSpeed;
 
+    //variables for pausing
+    private bool tempVelSet;
+    private Vector2 tempVel;
+
     void Awake()
     {
         anims = GetComponent<Animator>();
@@ -66,110 +70,138 @@ public class BlueBossController : MonoBehaviour
 
         attackTimeElapsed = 0;
         attackVel = 0;
+
+        tempVelSet = false;
     }
 
     void Update()
     {
-        //handle animations
-        timeSinceLastBlink += Time.deltaTime;
-
-        if(timeSinceLastBlink >= nextBlinkTime)
+        if (!PauseButton.IsPaused && BossController.Static_Reference.Health > 0)
         {
-            anims.SetTrigger("Blink");
-            timeSinceLastBlink = 0;
-            nextBlinkTime = Random.Range(minBlinkTime, maxBlinkTime);
-        }
-
-        //handle attacks
-        if(distanceToPlayer() < AttackRange + 1f)
-            attackBuildup += Time.deltaTime;
-        else
-            attackBuildup = 0;
-
-        if (attackBuildup > maxAttackBuildup && !isAttacking)
-        {
-            //start attack
-            isAttacking = true;
-            attackTimeElapsed = 0f;
-
-            curAttackSpeed = 0;
-            attackVel = 0;
-
-            attackVector = (player.transform.position - transform.position);
-
-            attackParticles.Play();
-            attackParticles.gameObject.transform.rotation.eulerAngles.Set(0, 0, 0); //reset particle rotation
-        }
-
-        if(isAttacking)
-        {
-            //spin the particles to make a ring effect
-            attackParticles.gameObject.transform.Rotate(Vector3.forward * 5f);
-
-            if (distanceToPlayer() < DamageRange)
+            //unpause velocity if that's required
+            if(tempVelSet)
             {
-                player.Health -= AttackStrength * Time.deltaTime;
+                rb.velocity = tempVel;
+                tempVelSet = false;
             }
 
-            attackTimeElapsed += Time.deltaTime;
-            if(attackTimeElapsed >= AttackTime)
+            //handle animations
+            timeSinceLastBlink += Time.deltaTime;
+
+            if (timeSinceLastBlink >= nextBlinkTime)
             {
-                //stop attack
-                isAttacking = false;
+                anims.SetTrigger("Blink");
+                timeSinceLastBlink = 0;
+                nextBlinkTime = Random.Range(minBlinkTime, maxBlinkTime);
+            }
+
+            //handle attacks
+            if (distanceToPlayer() < AttackRange + 1f)
+                attackBuildup += Time.deltaTime;
+            else
                 attackBuildup = 0;
 
-                attackParticles.Stop();
-            }
-        }
+            if (attackBuildup > maxAttackBuildup && !isAttacking)
+            {
+                //start attack
+                isAttacking = true;
+                attackTimeElapsed = 0f;
 
-        anims.SetBool("Attacking", isAttacking);
+                curAttackSpeed = 0;
+                attackVel = 0;
+
+                attackVector = (player.transform.position - transform.position);
+
+                attackParticles.Play();
+                attackParticles.gameObject.transform.rotation.eulerAngles.Set(0, 0, 0); //reset particle rotation
+            }
+
+            if (isAttacking)
+            {
+                //spin the particles to make a ring effect
+                attackParticles.gameObject.transform.Rotate(Vector3.forward * 5f);
+
+                if (distanceToPlayer() < DamageRange)
+                {
+                    player.Health -= AttackStrength * Time.deltaTime;
+                }
+
+                attackTimeElapsed += Time.deltaTime;
+                if (attackTimeElapsed >= AttackTime)
+                {
+                    //stop attack
+                    isAttacking = false;
+                    attackBuildup = 0;
+
+                    attackParticles.Stop();
+                }
+            }
+
+            anims.SetBool("Attacking", isAttacking);
+        }
+        else if(PauseButton.IsPaused)
+        {
+            if (!tempVelSet)
+            {
+                tempVel = rb.velocity;
+                tempVelSet = true;
+            }
+
+            rb.velocity = Vector2.zero;
+        }
     }
 
     void FixedUpdate()
     {
-        //handle movements
-        if (!isAttacking && distanceToPlayer() > AttackRange)
+        if (!PauseButton.IsPaused && BossController.Static_Reference.Health > 0)
         {
-            Vector2 movement = (player.transform.position - transform.position).normalized * (distanceToPlayer() > ConsiderRange ? MoveSpeed/2f : MoveSpeed);
-            rb.velocity = movement;
-        }
-        else if(isAttacking)
-        {
-            curAttackSpeed = Mathf.SmoothDamp(curAttackSpeed, AttackMoveSpeed, ref attackVel, 2f);
-            rb.velocity = attackVector * curAttackSpeed;
-        }
-        else
-        {
-            rb.velocity = Vector2.SmoothDamp(rb.velocity, Vector2.zero, ref smoothStopVel, 0.8f);
+            //handle movements
+            if (!isAttacking && distanceToPlayer() > AttackRange)
+            {
+                Vector2 movement = (player.transform.position - transform.position).normalized * (distanceToPlayer() > ConsiderRange ? MoveSpeed / 2f : MoveSpeed);
+                rb.velocity = movement;
+            }
+            else if (isAttacking)
+            {
+                curAttackSpeed = Mathf.SmoothDamp(curAttackSpeed, AttackMoveSpeed, ref attackVel, 1.2f);
+                rb.velocity = attackVector * curAttackSpeed;
+            }
+            else
+            {
+                rb.velocity = Vector2.SmoothDamp(rb.velocity, Vector2.zero, ref smoothStopVel, 0.8f);
+            }
         }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.collider.CompareTag("Player"))
+        if (!PauseButton.IsPaused && BossController.Static_Reference.Health > 0)
         {
-            if(player.isDashing)
+            if (other.collider.CompareTag("Player"))
             {
-                BossController.Static_Reference.Damage();
+                if (player.isDashing)
+                {
+                    BossController.Static_Reference.Damage();
 
-                //calculate bounce-back vector
-                Vector2 bounce = (player.gameObject.transform.position - transform.position).normalized * bounciness;
+                    //calculate bounce-back vector
+                    Vector2 bounce = (player.gameObject.transform.position - transform.position).normalized * bounciness;
 
-                player.DashPower = 0;
-                player.gameObject.GetComponent<Rigidbody2D>().velocity = bounce;
-                player.KnockBackPlayer(bounce.x);
+                    player.DashPower = 0;
+                    player.gameObject.GetComponent<Rigidbody2D>().velocity = bounce;
+                    player.KnockBackPlayer(bounce.x);
+                }
+                else
+                {
+                    //damage player
+                    player.Health -= AttackStrength * 1.5f; //do a little more damage to punish the player for thinking they can just touch the boss
+                }
             }
-            else
+            else if (other.collider.CompareTag("Ground") && isAttacking)
             {
-                //damage player
-                player.Health -= AttackStrength*1.5f; //do a little more damage to punish the player for thinking they can just touch the boss
+                //bounce off of wall
+                Vector2 direction = Vector2.Reflect(attackVector, other.contacts[0].normal);
+                attackVector = direction.normalized;
             }
-        }
-        else if(other.collider.CompareTag("Ground") && isAttacking)
-        {
-            //bounce off of wall
-            Vector2 direction = Vector2.Reflect(attackVector, other.contacts[0].normal);
-            attackVector = direction.normalized;
         }
     }
 
