@@ -114,9 +114,13 @@ public class BossController : MonoBehaviour
         else if(_health <= 0)
         {
             //give the player money
-
+            PlayerData data = Saver.loadData();
+            data.Money += (int)maxMoneyPossible;
+            Saver.SavePlayer(data);
 
             //kill the player
+            DisplayText.SetText("Boss Defeated!");
+            player.isAlive = false;
 
             Destroy(gameObject);
         }

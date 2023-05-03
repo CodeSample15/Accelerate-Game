@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlueBossController : MonoBehaviour
+public class GreenBossController : MonoBehaviour
 {
     [Header("Functional")]
     [Tooltip("How close the player can get before the countdown begins to an attack")]
@@ -33,7 +33,6 @@ public class BlueBossController : MonoBehaviour
     private float nextBlinkTime;
 
     private Vector2 smoothStopVel; //for smoothly stopping the boss from moving
-    private Vector2 moveVel; //for smoothly moving the player around
 
     //variables used to control whether or not the boss attacks
     private bool isAttacking;
@@ -160,7 +159,7 @@ public class BlueBossController : MonoBehaviour
             if (!isAttacking && distanceToPlayer() > AttackRange)
             {
                 Vector2 movement = (player.transform.position - transform.position).normalized * (distanceToPlayer() > ConsiderRange ? MoveSpeed / 2f : MoveSpeed);
-                rb.velocity = Vector2.SmoothDamp(rb.velocity, movement, ref moveVel, 0.1f);
+                rb.velocity = movement;
             }
             else if (isAttacking)
             {
@@ -195,7 +194,7 @@ public class BlueBossController : MonoBehaviour
                 {
                     //damage player
                     if(!player.isDashing)
-                        player.Health -= AttackStrength * 0.5f;
+                        player.Health -= AttackStrength * 1.5f; //do a little more damage to punish the player for thinking they can just touch the boss
                 }
             }
             else if (other.collider.CompareTag("Ground") && isAttacking)
@@ -203,15 +202,6 @@ public class BlueBossController : MonoBehaviour
                 //bounce off of wall
                 Vector2 direction = Vector2.Reflect(attackVector, other.contacts[0].normal);
                 attackVector = direction.normalized;
-            }
-            else if(other.collider.CompareTag("Player") && isAttacking)
-            {
-                //bounce off player and bounce the player as well
-                Vector2 bounce = (player.gameObject.transform.position - transform.position).normalized * bounciness; //the * bounciness might not really be that necessary, but I'm keeping it out of fear
-
-                attackVector = -bounce.normalized;
-                player.gameObject.GetComponent<Rigidbody2D>().velocity = bounce;
-                player.KnockBackPlayer(bounce.x);
             }
         }
     }

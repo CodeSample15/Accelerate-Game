@@ -137,6 +137,7 @@ public class Player : MonoBehaviour
     public bool isAlive
     {
         get { return health > 0; }
+        set { isAlive = value; }
     }
 
     public float MaxDash
