@@ -131,6 +131,8 @@ public class ZoomFillBox : MonoBehaviour
                     other.GetComponent<Player>().DashPower = other.GetComponent<Player>().MaxDash;
                     refilled = false;
 
+                    lights.enabled = false;
+
                     if (activatedFillBoxes.Count > 1)
                     {
                         resetAllBoxes(); //setting all previously turned off boxes to on

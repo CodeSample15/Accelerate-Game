@@ -89,7 +89,7 @@ public class BlueBossController : MonoBehaviour
             //handle animations
             timeSinceLastBlink += Time.deltaTime;
 
-            if (timeSinceLastBlink >= nextBlinkTime)
+            if (timeSinceLastBlink >= nextBlinkTime && !isAttacking)
             {
                 anims.SetTrigger("Blink");
                 timeSinceLastBlink = 0;

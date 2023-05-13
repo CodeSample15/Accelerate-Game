@@ -37,6 +37,8 @@ public class BossController : MonoBehaviour
     [Tooltip("How much money the player can earn (based off of remaining health)")]
     [SerializeField] private float maxMoneyPossible;
 
+    private CameraShake CamShake;
+
     private Player player;
     private Animator bossAnims;
     private Slider health_bar_slider;
@@ -80,6 +82,8 @@ public class BossController : MonoBehaviour
                 bossType = 4;
                 break;
         }
+
+        CamShake = Camera.main.GetComponent<CameraShake>();
 
         player = FindObjectOfType<Player>();
         health_bar_slider = health_bar.GetComponentInChildren<Slider>();
@@ -140,6 +144,7 @@ public class BossController : MonoBehaviour
         if (_health > 0)
         {
             _health -= player_power * playerDamage;
+            CamShake.Shake();
 
             bossAnims.SetTrigger("Damage");
         }

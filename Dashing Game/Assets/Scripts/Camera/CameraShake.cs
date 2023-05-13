@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class CameraShake : MonoBehaviour
 {
+    [Tooltip("The maximum amount the camera can move in any direction")]
     [SerializeField] private float Intensity;
+
+    [Tooltip("How many times the camera changes its location")]
     [SerializeField] private float Duration;
+
+    [Tooltip("Seconds between each shake")]
     [SerializeField] private float Frequency;
 
     public void Shake()

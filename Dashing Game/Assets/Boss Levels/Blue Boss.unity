@@ -334,7 +334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de6910e6ba0442a4aabe4be03f6ebc1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DisplayText: {fileID: 0}
+  DisplayText: {fileID: 1516247499}
   boss: {fileID: 670067717}
   health_bar: {fileID: 1689854868}
   minAttackDelay: 0
@@ -5442,6 +5442,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5653624545555996445, guid: a6ea50c019e5c1d4585a8abc355a84b7,
+        type: 3}
+      propertyPath: Intensity
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5653624545555996447, guid: a6ea50c019e5c1d4585a8abc355a84b7,
         type: 3}
       propertyPath: m_RootOrder
@@ -5795,11 +5800,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30cf97ed3421b064ab3280c3e20eb6c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackRange: 10
+  AttackRange: 4
   ConsiderRange: 30
   MoveSpeed: 13
-  AttackTime: 6
-  AttackStrength: 15
+  AttackTime: 5
+  AttackStrength: 8
   DamageRange: 7
   AttackMoveSpeed: 30
   minBlinkTime: 2
