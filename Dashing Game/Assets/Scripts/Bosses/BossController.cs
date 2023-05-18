@@ -119,12 +119,23 @@ public class BossController : MonoBehaviour
         {
             //give the player money
             PlayerData data = Saver.loadData();
-            data.Money += (int)maxMoneyPossible;
+            float moneyAdded = 3;
+            data.Money += (int)moneyAdded;
             Saver.SavePlayer(data);
 
             //kill the player
             DisplayText.SetText("Boss Defeated!");
-            player.isAlive = false;
+
+            player.gameObject.SetActive(false);
+
+            player.menu_animations.SetTrigger("FadeIn");
+            player.score_animation.SetTrigger("Move");
+
+            //enable the menu buttons
+            MenuLogic.buttonsActive = true;
+
+            //start the animation for the amount of money being added the player's balance
+            player.money_add_animation.runAnimation(0.7f, (int)(moneyAdded * 0.65f), moneyAdded);
 
             Destroy(gameObject);
         }

@@ -5514,6 +5514,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5653624545555996641, guid: a6ea50c019e5c1d4585a8abc355a84b7,
         type: 3}
+      propertyPath: startSize
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5653624545555996641, guid: a6ea50c019e5c1d4585a8abc355a84b7,
+        type: 3}
       propertyPath: zoomSpeed
       value: 0.01
       objectReference: {fileID: 0}
