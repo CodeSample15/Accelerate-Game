@@ -32,12 +32,13 @@ public class Player : MonoBehaviour
     public Animator score_animation;
     public ParticleSystem jump_particles;
     public ScoreAnimation money_add_animation;
+
+    public static float MaxHealth;
     #endregion
 
     #region Private Variables
     private Rigidbody2D rb;
     private Collider2D col;
-    private LevelController levelController;
 
     private float x;
     private float y;
@@ -177,7 +178,6 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
-        levelController = FindObjectOfType<LevelController>();
 
         if (!isTriangle)
             character_animations = GetComponent<Animator>();
@@ -227,8 +227,10 @@ public class Player : MonoBehaviour
 
         applyUpgrades();
 
-        health = 100f + maxHealthUpgrade;
+        health = 100f + maxHealthUpgrade; //UPGRADE
         dashPower = 100f + maxDashUpgrade;
+
+        MaxHealth = health;
 
         if (SceneManager.GetActiveScene().name != "Main" && LevelController.saved) //if there are saved settings
             loadTempState(); //load temp saved data because the level changed

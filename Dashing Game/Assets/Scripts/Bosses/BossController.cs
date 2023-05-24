@@ -118,9 +118,10 @@ public class BossController : MonoBehaviour
         else if(_health <= 0)
         {
             //give the player money
+            int moneyAdded = (int)(maxMoneyPossible * (player.Health / Player.MaxHealth));
+
             PlayerData data = Saver.loadData();
-            float moneyAdded = 3;
-            data.Money += (int)moneyAdded;
+            data.Money += moneyAdded;
             Saver.SavePlayer(data);
 
             //kill the player
@@ -135,7 +136,7 @@ public class BossController : MonoBehaviour
             MenuLogic.buttonsActive = true;
 
             //start the animation for the amount of money being added the player's balance
-            player.money_add_animation.runAnimation(0.7f, (int)(moneyAdded * 0.65f), moneyAdded);
+            player.money_add_animation.runAnimation(0.7f, (int)(moneyAdded * 0.7f), moneyAdded);
 
             Destroy(gameObject);
         }
