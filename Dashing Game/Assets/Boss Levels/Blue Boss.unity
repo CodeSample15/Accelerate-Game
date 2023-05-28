@@ -335,6 +335,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DisplayText: {fileID: 1516247499}
+  BossDeathParticle: {fileID: 6444583372878321711, guid: af78fa86da3fa634fb57d7529edae7a7,
+    type: 3}
   boss: {fileID: 670067717}
   health_bar: {fileID: 1689854868}
   minAttackDelay: 0
@@ -343,7 +345,7 @@ MonoBehaviour:
   angryRange: 5
   attacks: []
   playerDamage: 70
-  maxMoneyPossible: 0
+  maxMoneyPossible: 200
 --- !u!4 &376072264
 Transform:
   m_ObjectHideFlags: 0
@@ -5738,7 +5740,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 670067717}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 37.27, z: 2.8968}
+  m_LocalPosition: {x: -35.4, y: 45.3, z: 2.8968}
   m_LocalScale: {x: 2.0151038, y: 2.0151038, z: 2.0151038}
   m_Children:
   - {fileID: 2057035728}

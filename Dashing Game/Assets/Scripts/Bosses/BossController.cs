@@ -11,6 +11,7 @@ public class BossController : MonoBehaviour
 
     [Header("Things that need to be assigned by developer:")]
     [SerializeField] private TextMeshProUGUI DisplayText;
+    [SerializeField] private ParticleSystem BossDeathParticle;
 
     [Space]
 
@@ -124,8 +125,15 @@ public class BossController : MonoBehaviour
             data.Money += moneyAdded;
             Saver.SavePlayer(data);
 
+            //kill the boss
+            Instantiate(BossDeathParticle, boss.transform.position, Quaternion.identity);
+            boss.SetActive(false);
+            health_bar.SetActive(false);
+
             //kill the player
+            DisplayText.fontSize = 42f;
             DisplayText.SetText("Boss Defeated!");
+            player.scoreText.SetText("");
 
             player.gameObject.SetActive(false);
 
@@ -136,7 +144,7 @@ public class BossController : MonoBehaviour
             MenuLogic.buttonsActive = true;
 
             //start the animation for the amount of money being added the player's balance
-            player.money_add_animation.runAnimation(0.7f, (int)(moneyAdded * 0.7f), moneyAdded);
+            player.money_add_animation.runAnimation(0.7f, (int)(moneyAdded * 0.6f), moneyAdded);
 
             Destroy(gameObject);
         }

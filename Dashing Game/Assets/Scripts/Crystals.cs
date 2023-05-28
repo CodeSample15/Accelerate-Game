@@ -76,7 +76,7 @@ public class Crystals : MonoBehaviour
 
             elapsedTime = 0;
 
-            hitCooldown = 0.012f;
+            hitCooldown = 0.007f;
 
             lastHitTime = Time.time;
 
@@ -139,15 +139,21 @@ public class Crystals : MonoBehaviour
         }
     }
 
+    void FixedUpdate()
+    {
+        if(!locked && lightningAmount >= maxHits)
+        {
+            //play lightning particles
+            lightning_effect.Play();
+        }
+    }
+
     void Update()
     {
         if (!locked)
         {
             if (lightningAmount == maxHits) //crystal has been hit enough times
             {
-                //play lightning particles
-                lightning_effect.Play();
-
                 //start transition coroutine
                 if (!transitionStarted)
                 {
@@ -201,7 +207,6 @@ public class Crystals : MonoBehaviour
 
                 //calculate random knockback
                 other.gameObject.GetComponent<Player>().KnockBack = -other.gameObject.GetComponent<Rigidbody2D>().velocity * playerBounceBack;
-                Debug.Log((-other.gameObject.GetComponent<Rigidbody2D>().velocity * playerBounceBack).magnitude);
 
                 lightning_effect.Play();
 
@@ -309,7 +314,6 @@ public class Crystals : MonoBehaviour
                 break;
         }
 
-        if (crystalLevel <= unlockedCrystals) return true;
-        else return false;
+        return crystalLevel <= unlockedCrystals;
     }
 }
