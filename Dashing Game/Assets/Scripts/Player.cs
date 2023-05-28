@@ -404,11 +404,14 @@ public class Player : MonoBehaviour
             if(SceneManager.GetActiveScene().name == "Main")
                 enemy_controller.Spawning = false; //enemy controller only exists in main scene
 
+            bool highscore = false;
+
             //save data-----------------------------------------
             if (data.HighScore < score)
             {
                 //new high score
                 data.HighScore = score;
+                highscore = true;
             }
 
             data.isNewPlayer = false; //no longer a new player now that the player has finished a game (CHANGE TO AFTER TUTORIAL IS PLAYED)
@@ -422,6 +425,11 @@ public class Player : MonoBehaviour
             //fade in a black screen
             menu_animations.SetTrigger("FadeIn");
             score_animation.SetTrigger("Move");
+
+            //update score text
+            string scoreTxt = "Score: " + score;
+            if (highscore) scoreTxt += "\n" + "New HighScore!";
+            scoreText.SetText(scoreTxt);
 
             //enable the menu buttons
             MenuLogic.buttonsActive = true;
@@ -438,10 +446,13 @@ public class Player : MonoBehaviour
 
         UpdateScoreSize();
 
-        if (!PauseButton.IsPaused && SceneManager.GetActiveScene().name == "Main")
-            scoreText.text = "Score: " + score.ToString() + "\nWave: " + enemy_controller.getWave;
-        else if (SceneManager.GetActiveScene().name != "Main")
-            scoreText.text = "Score: " + score.ToString() + "\nWave: Boss";
+        if (isAlive)
+        {
+            if (!PauseButton.IsPaused && SceneManager.GetActiveScene().name == "Main")
+                scoreText.text = "Score: " + score.ToString() + "\nWave: " + enemy_controller.getWave;
+            else if (SceneManager.GetActiveScene().name != "Main")
+                scoreText.text = "Score: " + score.ToString() + "\nWave: Boss";
+        }
         //--------------------------------------------
     }
 
