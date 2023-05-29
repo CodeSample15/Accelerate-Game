@@ -8,6 +8,7 @@ public class GreenBossController : MonoBehaviour
     [Tooltip("How close the player can get before the countdown begins to an attack")]
     [SerializeField] private float AttackRange;
     [SerializeField] private float ConsiderRange;
+    [SerializeField] private float maxAttackBuildup;
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float AttackTime;
 
@@ -33,11 +34,11 @@ public class GreenBossController : MonoBehaviour
     private float nextBlinkTime;
 
     private Vector2 smoothStopVel; //for smoothly stopping the boss from moving
+    private Vector2 moveVel; //for smoothly moving the player around
 
     //variables used to control whether or not the boss attacks
     private bool isAttacking;
     private float attackBuildup;
-    private float maxAttackBuildup;
 
     private float attackTimeElapsed;
 
@@ -66,7 +67,6 @@ public class GreenBossController : MonoBehaviour
 
         isAttacking = false;
         attackBuildup = 0;
-        maxAttackBuildup = 2f;
 
         attackTimeElapsed = 0;
         attackVel = 0;
@@ -79,7 +79,7 @@ public class GreenBossController : MonoBehaviour
         if (!PauseButton.IsPaused && BossController.Static_Reference.Health > 0)
         {
             //unpause velocity if that's required
-            if(tempVelSet)
+            if (tempVelSet)
             {
                 rb.velocity = tempVel;
                 tempVelSet = false;
@@ -88,7 +88,7 @@ public class GreenBossController : MonoBehaviour
             //handle animations
             timeSinceLastBlink += Time.deltaTime;
 
-            if (timeSinceLastBlink >= nextBlinkTime)
+            if (timeSinceLastBlink >= nextBlinkTime && !isAttacking)
             {
                 anims.SetTrigger("Blink");
                 timeSinceLastBlink = 0;
@@ -139,7 +139,7 @@ public class GreenBossController : MonoBehaviour
 
             anims.SetBool("Attacking", isAttacking);
         }
-        else if(PauseButton.IsPaused)
+        else if (PauseButton.IsPaused)
         {
             if (!tempVelSet)
             {
@@ -159,7 +159,7 @@ public class GreenBossController : MonoBehaviour
             if (!isAttacking && distanceToPlayer() > AttackRange)
             {
                 Vector2 movement = (player.transform.position - transform.position).normalized * (distanceToPlayer() > ConsiderRange ? MoveSpeed / 2f : MoveSpeed);
-                rb.velocity = movement;
+                rb.velocity = Vector2.SmoothDamp(rb.velocity, movement, ref moveVel, 0.1f);
             }
             else if (isAttacking)
             {
@@ -193,8 +193,18 @@ public class GreenBossController : MonoBehaviour
                 else
                 {
                     //damage player
-                    if(!player.isDashing)
-                        player.Health -= AttackStrength * 1.5f; //do a little more damage to punish the player for thinking they can just touch the boss
+                    if (!player.isDashing)
+                        player.Health -= AttackStrength * 1.3f;
+
+                    if (isAttacking)
+                    {
+                        //bounce off player and bounce the player as well
+                        Vector2 bounce = (player.gameObject.transform.position - transform.position).normalized * bounciness;
+
+                        attackVector = -bounce.normalized;
+                        player.gameObject.GetComponent<Rigidbody2D>().velocity = bounce;
+                        player.KnockBackPlayer(bounce.x);
+                    }
                 }
             }
             else if (other.collider.CompareTag("Ground") && isAttacking)

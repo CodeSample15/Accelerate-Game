@@ -126,7 +126,9 @@ public class BossController : MonoBehaviour
             Saver.SavePlayer(data);
 
             //kill the boss
-            Instantiate(BossDeathParticle, boss.transform.position, Quaternion.identity);
+            BossDeathParticle.gameObject.transform.position = boss.transform.position;
+            BossDeathParticle.Play();
+
             boss.SetActive(false);
             health_bar.SetActive(false);
 
@@ -155,7 +157,12 @@ public class BossController : MonoBehaviour
 
     void LateUpdate()
     {
-        health_bar.transform.position = boss.transform.position;
+        float yOffset = 0;
+
+        if (bossType == 1)
+            yOffset = 0.6f;
+
+        health_bar.transform.position = new Vector2(boss.transform.position.x, boss.transform.position.y + yOffset);
         health_bar_slider.value = _health / startHealth;
     }
 

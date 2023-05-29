@@ -8,6 +8,7 @@ public class BlueBossController : MonoBehaviour
     [Tooltip("How close the player can get before the countdown begins to an attack")]
     [SerializeField] private float AttackRange;
     [SerializeField] private float ConsiderRange;
+    [SerializeField] private float maxAttackBuildup;
     [SerializeField] private float MoveSpeed;
     [SerializeField] private float AttackTime;
 
@@ -38,7 +39,6 @@ public class BlueBossController : MonoBehaviour
     //variables used to control whether or not the boss attacks
     private bool isAttacking;
     private float attackBuildup;
-    private float maxAttackBuildup;
 
     private float attackTimeElapsed;
 
@@ -67,7 +67,6 @@ public class BlueBossController : MonoBehaviour
 
         isAttacking = false;
         attackBuildup = 0;
-        maxAttackBuildup = 2f;
 
         attackTimeElapsed = 0;
         attackVel = 0;
@@ -178,7 +177,7 @@ public class BlueBossController : MonoBehaviour
     {
         if (!PauseButton.IsPaused && BossController.Static_Reference.Health > 0)
         {
-            if (other.collider.CompareTag("Player"))
+            if(other.collider.CompareTag("Player"))
             {
                 if (player.isDashing)
                 {
@@ -196,6 +195,16 @@ public class BlueBossController : MonoBehaviour
                     //damage player
                     if(!player.isDashing)
                         player.Health -= AttackStrength * 0.5f;
+
+                    if (isAttacking)
+                    {
+                        //bounce off player and bounce the player as well
+                        Vector2 bounce = (player.gameObject.transform.position - transform.position).normalized * bounciness;
+
+                        attackVector = -bounce.normalized;
+                        player.gameObject.GetComponent<Rigidbody2D>().velocity = bounce;
+                        player.KnockBackPlayer(bounce.x);
+                    }
                 }
             }
             else if (other.collider.CompareTag("Ground") && isAttacking)
@@ -203,15 +212,6 @@ public class BlueBossController : MonoBehaviour
                 //bounce off of wall
                 Vector2 direction = Vector2.Reflect(attackVector, other.contacts[0].normal);
                 attackVector = direction.normalized;
-            }
-            else if(other.collider.CompareTag("Player") && isAttacking)
-            {
-                //bounce off player and bounce the player as well
-                Vector2 bounce = (player.gameObject.transform.position - transform.position).normalized * bounciness; //the * bounciness might not really be that necessary, but I'm keeping it out of fear
-
-                attackVector = -bounce.normalized;
-                player.gameObject.GetComponent<Rigidbody2D>().velocity = bounce;
-                player.KnockBackPlayer(bounce.x);
             }
         }
     }
