@@ -161,6 +161,8 @@ public class BossController : MonoBehaviour
 
         if (bossType == 1)
             yOffset = 0.6f;
+        else if (bossType == 2)
+            yOffset = 0.9f;
 
         health_bar.transform.position = new Vector2(boss.transform.position.x, boss.transform.position.y + yOffset);
         health_bar_slider.value = _health / startHealth;
