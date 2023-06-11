@@ -66,4 +66,13 @@ public class OrangeBossController : MonoBehaviour
     {
         return Vector2.Distance(transform.position, player.transform.position);
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.CompareTag("Bullet"))
+        {
+            BossController.Static_Reference.Damage();
+            Destroy(other.gameObject);
+        }
+    }
 }

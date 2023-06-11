@@ -11,6 +11,7 @@ TagManager:
   - Lava
   - JumpPad
   - WhiteScreenFade
+  - Boss
   layers:
   - Default
   - TransparentFX

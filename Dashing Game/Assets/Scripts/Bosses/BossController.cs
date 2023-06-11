@@ -57,6 +57,11 @@ public class BossController : MonoBehaviour
         get { return _health; }
     }
 
+    public GameObject Boss
+    {
+        get { return boss; }
+    }
+
     void Awake()
     {
         Static_Reference = this;
@@ -109,6 +114,8 @@ public class BossController : MonoBehaviour
 
             if(timeSinceLastAttack >= nextAttackTime)
             {
+                bossAnims.SetTrigger("Attack");
+
                 int randomIndex = Random.Range(0, attacks.Length);
                 Instantiate(attacks[randomIndex], player.gameObject.transform.position, Quaternion.identity);
 

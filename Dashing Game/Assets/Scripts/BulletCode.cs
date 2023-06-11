@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BulletCode : MonoBehaviour
 {
-    [SerializeField] Player player;
     public enum Types { inactive, spike };
     public Types type;
 
@@ -16,7 +15,11 @@ public class BulletCode : MonoBehaviour
     public float speed;
     public float range;
 
+    public bool ignoreDash;
+
     //private
+    private Player player;
+
     private float distanceTraveled;
 
     //spike bullet
@@ -25,7 +28,10 @@ public class BulletCode : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        player = FindObjectOfType<Player>();
+
         distanceTraveled = 0;
+        ignoreDash = true;
 
         //spike bullet
         rotationSpeed = 1f;
@@ -78,11 +84,16 @@ public class BulletCode : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Player"))
         {
-            if (!player.GetComponent<Player>().isDashing)
+            if (!player.GetComponent<Player>().isDashing && ignoreDash)
             {
                 player.Health -= damage;
                 //player.character_animations.SetTrigger("Damage");
             }
+            else
+            {
+                player.Health -= damage;
+            }
+
             Destroy(gameObject);
         }
     }
