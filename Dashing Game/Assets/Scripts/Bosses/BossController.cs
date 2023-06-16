@@ -203,5 +203,9 @@ public class BossController : MonoBehaviour
         {
             boss.GetComponent<OrangeBossController>().attack();
         }
+        else if(bossType == 3)
+        {
+            boss.GetComponent<PinkBossController>().attack();
+        }
     }
 }
