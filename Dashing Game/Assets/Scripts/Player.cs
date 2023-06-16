@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
+    public static Player staticReference;
+
     #region Public Variables
     [SerializeField] public bool isTriangle; //whether or not the player is using the triangle character (for future updates with character customization)
 
@@ -176,6 +178,8 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
+        staticReference = this;
+
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
 

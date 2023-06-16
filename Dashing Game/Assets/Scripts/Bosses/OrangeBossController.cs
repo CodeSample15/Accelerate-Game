@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class OrangeBossController : MonoBehaviour
 {
+    [Space]
     [Header("Cosmetic")]
     [SerializeField] private GameObject eye;
     [SerializeField] private float minBlinkTime;
@@ -12,6 +13,7 @@ public class OrangeBossController : MonoBehaviour
     [SerializeField] private float maxEyeOffset;
 
     private Player player;
+    private SpikeAttack spiralAttack;
 
     private bool isAttacking;
 
@@ -27,6 +29,7 @@ public class OrangeBossController : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         anims = GetComponent<Animator>();
+        spiralAttack = GetComponentInChildren<SpikeAttack>();
 
         isAttacking = false;
 
@@ -61,6 +64,11 @@ public class OrangeBossController : MonoBehaviour
         }
     }
 
+    public void attack()
+    {
+        spiralAttack.BeginSpawning();
+    }
+
     //helper method
     private float distanceToPlayer()
     {
@@ -71,7 +79,7 @@ public class OrangeBossController : MonoBehaviour
     {
         if(other.CompareTag("Bullet"))
         {
-            BossController.Static_Reference.Damage();
+            TurretController.DamageDone += BossController.Static_Reference.Damage();
             Destroy(other.gameObject);
         }
     }

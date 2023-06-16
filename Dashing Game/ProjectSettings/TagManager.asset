@@ -12,6 +12,7 @@ TagManager:
   - JumpPad
   - WhiteScreenFade
   - Boss
+  - Boss Spike
   layers:
   - Default
   - TransparentFX

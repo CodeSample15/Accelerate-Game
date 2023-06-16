@@ -25,6 +25,8 @@ public class BossController : MonoBehaviour
     [SerializeField] private float startHealth;
     [Tooltip("How close the player needs to be before the boss becomes aggressive")]
     [SerializeField] private float angryRange;
+    [Tooltip("How long the attack animation is before the boss can attack")]
+    [SerializeField] private float attackAnimationTime;
 
     [Space]
 
@@ -95,7 +97,7 @@ public class BossController : MonoBehaviour
         health_bar_slider = health_bar.GetComponentInChildren<Slider>();
         bossAnims = boss.GetComponent<Animator>();
         _health = startHealth;
-        nextAttackTime = Random.Range(minAttackDelay, maxAttackDelay);
+        nextAttackTime = Random.Range(minAttackDelay, maxAttackDelay) / 2; //have half as much time before the first attack
 
         //calculate how strong the player currently is
         PlayerData data = Saver.loadData();
@@ -114,10 +116,7 @@ public class BossController : MonoBehaviour
 
             if(timeSinceLastAttack >= nextAttackTime)
             {
-                bossAnims.SetTrigger("Attack");
-
-                int randomIndex = Random.Range(0, attacks.Length);
-                Instantiate(attacks[randomIndex], player.gameObject.transform.position, Quaternion.identity);
+                StartCoroutine(spawnAttack());
 
                 nextAttackTime = Random.Range(minAttackDelay, maxAttackDelay);
                 timeSinceLastAttack = 0;
@@ -175,14 +174,34 @@ public class BossController : MonoBehaviour
         health_bar_slider.value = _health / startHealth;
     }
 
-    public void Damage()
+    public float Damage()
     {
         if (_health > 0)
         {
-            _health -= player_power * playerDamage;
+            float damage = player_power * playerDamage;
+            _health -= damage;
             CamShake.Shake();
 
             bossAnims.SetTrigger("Damage");
+
+            return damage;
+        }
+
+        return 0;
+    }
+
+    IEnumerator spawnAttack()
+    {
+        bossAnims.SetTrigger("Attack");
+
+        yield return new WaitForSeconds(attackAnimationTime);
+
+        int randomIndex = Random.Range(0, attacks.Length);
+        Instantiate(attacks[randomIndex], player.gameObject.transform.position, Quaternion.identity);
+
+        if(bossType == 2)
+        {
+            boss.GetComponent<OrangeBossController>().attack();
         }
     }
 }

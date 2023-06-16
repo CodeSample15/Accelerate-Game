@@ -4,13 +4,20 @@ using UnityEngine;
 
 public class TurretController : MonoBehaviour
 {
+    public static float DamageDone = 0;
+
     [SerializeField] private GameObject bullet;
+    [SerializeField] private ParticleSystem explosion;
     [SerializeField] private float turnTime;
     [SerializeField] private float fireTime;
     [SerializeField] private float gunOffset;
 
     [SerializeField] private float minSlideOutSpeed;
     [SerializeField] private float maxSlideOutSpeed;
+
+    [Space]
+    [SerializeField] private float lifeSpan;
+    [SerializeField] private float maxDamage;
 
     private Player player;
     private Animator anims;
@@ -24,8 +31,21 @@ public class TurretController : MonoBehaviour
     //how much time has elapsed between each shot
     private float shotTimer;
 
+    //how much time has elapsed since being spawned
+    private float lifeElapsed;
+
+    //how many turrets currently exist in the scene
+    private static int turretCount = 0;
+
     void Awake()
     {
+        turretCount++;
+
+        if (turretCount > 1)
+            Destroy(gameObject);
+
+        DamageDone = 0;
+
         player = FindObjectOfType<Player>();
         anims = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
@@ -68,6 +88,13 @@ public class TurretController : MonoBehaviour
 
                 shotTimer = 0f;
             }
+
+            lifeElapsed += Time.deltaTime;
+
+            if(lifeElapsed > lifeSpan || DamageDone > maxDamage)
+            {
+                StartCoroutine(despawn());
+            }
         }
         else if(!player.isAlive)
         {
@@ -80,7 +107,7 @@ public class TurretController : MonoBehaviour
         transform.position = BossController.Static_Reference.Boss.transform.position;
 
         //create a random vector and apply the velocity to the turret to slide out from
-        Vector2 rand = new Vector2(Random.Range(-1,1), Random.Range(-1,1)).normalized;
+        Vector2 rand = Random.insideUnitCircle.normalized;
         rand *= Random.Range(minSlideOutSpeed, maxSlideOutSpeed);
         rb.velocity = rand;
 
@@ -98,5 +125,29 @@ public class TurretController : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         smoothTracking = false;
+    }
+
+    IEnumerator despawn()
+    {
+        anims.SetTrigger("Despawn");
+        active = false;
+
+        yield return new WaitForSeconds(4f);
+
+        Destroy(gameObject);
+    }
+
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if(other.gameObject.CompareTag("Player") && player.isDashing)
+        {
+            Instantiate(explosion, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
+    }
+
+    void OnDestroy()
+    {
+        turretCount--;
     }
 }
