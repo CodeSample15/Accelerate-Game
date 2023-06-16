@@ -76,7 +76,7 @@ public class Crystals : MonoBehaviour
 
             elapsedTime = 0;
 
-            hitCooldown = 0.007f;
+            hitCooldown = 0.001f;
 
             lastHitTime = Time.time;
 
@@ -211,10 +211,11 @@ public class Crystals : MonoBehaviour
                 lightning_effect.Play();
 
                 targetSpin = new Vector3(0, 0, spin.z + speedIncrease); //increase with respect to the current speed, not the target speed
-                if(lightningAmount < maxHits && Time.time - lastHitTime > hitCooldown)
+                if (lightningAmount < maxHits && Time.time - lastHitTime > hitCooldown)
+                {
                     lightningAmount++;
-
-                lastHitTime = Time.time;
+                    lastHitTime = Time.time;
+                }
             }
         }
     }

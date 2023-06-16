@@ -14489,7 +14489,7 @@ MonoBehaviour:
   bobbleSpeed: 5
   particleEmissionStrength: 5
   lightningEmissionStrength: 1
-  scale: 0.3
+  scale: 0.5259836
   crystalType: 0
 --- !u!61 &2670810314472118986
 BoxCollider2D:
