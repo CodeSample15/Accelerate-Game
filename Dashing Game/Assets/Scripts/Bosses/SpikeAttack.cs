@@ -10,6 +10,9 @@ public class SpikeAttack : MonoBehaviour
     [SerializeField] private float spikeDamage;
     [SerializeField] private float spikeSize;
 
+    [Tooltip("How far the spikes start from the center")]
+    [SerializeField] private float offset;
+
     [Space]
     [SerializeField] private float timePerRotation;
     [SerializeField] private int numRotations;
@@ -20,14 +23,12 @@ public class SpikeAttack : MonoBehaviour
 
     private int activeSpikes;
 
-    private bool spawningSpike;
     private bool isActive;
 
     void Awake()
     {
         timeElapsed = 0f;
         activeSpikes = 0;
-        spawningSpike = false;
         isActive = false;
 
         objectPool = new GameObject[numRotations];
@@ -46,12 +47,6 @@ public class SpikeAttack : MonoBehaviour
     {
         if (!PauseButton.IsPaused && isActive)
         {
-            if (!spawningSpike)
-            {
-                spawningSpike = true;
-                StartCoroutine(spawnSpike());
-            }
-
             timeElapsed += Time.deltaTime;
             if(timeElapsed > attackTime)
             {
@@ -61,9 +56,6 @@ public class SpikeAttack : MonoBehaviour
                     obj.transform.position = transform.position;
                 }
 
-                activeSpikes = 0;
-                spawningSpike = false;
-                timeElapsed = 0;
                 isActive = false;
             }
         }
@@ -71,23 +63,37 @@ public class SpikeAttack : MonoBehaviour
 
     public void BeginSpawning()
     {
+        transform.rotation = Quaternion.Euler(Vector3.zero);
+
         isActive = true;
+        activeSpikes = 0;
+        timeElapsed = 0;
+
+        StartCoroutine(spawn());
     }
 
-    IEnumerator spawnSpike()
+    private IEnumerator spawn()
     {
-        if (activeSpikes < numRotations)
+        while(activeSpikes < numRotations)
         {
-            activeSpikes++;
+            if(!PauseButton.IsPaused)
+            {
+                //spawn a new spike
+                activeSpikes++;
 
-            transform.Rotate(new Vector3(0, 0, 180f / numRotations), Space.World);
-            objectPool[activeSpikes - 1].SetActive(true);
-            objectPool[activeSpikes - 1].transform.rotation = transform.rotation;
+                transform.Rotate(new Vector3(0, 0, 180f / numRotations), Space.World);
+                objectPool[activeSpikes - 1].SetActive(true);
+                objectPool[activeSpikes - 1].transform.rotation = transform.rotation;
+                objectPool[activeSpikes - 1].transform.Translate(objectPool[activeSpikes - 1].transform.right * offset);
+            }
+
+            yield return new WaitForSeconds(timePerRotation);
+
+            if (!isActive)
+                break;
         }
 
-        yield return new WaitForSeconds(timePerRotation);
-
-        spawningSpike = false;
+        yield return new WaitForEndOfFrame();
     }
 
     void OnDestroy()

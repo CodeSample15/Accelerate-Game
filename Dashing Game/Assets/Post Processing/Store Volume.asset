@@ -43,7 +43,7 @@ MonoBehaviour:
     max: 1
   clamp:
     m_OverrideState: 0
-    m_Value: 65472
+    m_Value: 65486.62
     min: 0
   tint:
     m_OverrideState: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
     showEyeDropper: 1
   highQualityFiltering:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 1
   dirtTexture:
     m_OverrideState: 0
     m_Value: {fileID: 0}
