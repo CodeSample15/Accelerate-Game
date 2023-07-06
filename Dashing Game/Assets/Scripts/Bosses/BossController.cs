@@ -110,7 +110,7 @@ public class BossController : MonoBehaviour
     void Update()
     {
         //handle attacks if the boss uses external attacks
-        if(attacks.Length != 0 && _health > 0 && !PauseButton.IsPaused)
+        if((attacks.Length != 0 || (bossType==4 && !boss.GetComponent<RedBossController>().IsAttacking)) && _health > 0 && !PauseButton.IsPaused)
         {
             timeSinceLastAttack += Time.deltaTime;
 
@@ -167,8 +167,10 @@ public class BossController : MonoBehaviour
 
         if (bossType == 1)
             yOffset = 0.6f;
-        else if (bossType == 2)
+        else if (bossType == 2 || bossType == 3)
             yOffset = 0.9f;
+        else if (bossType == 4)
+            yOffset = 3.5f;
 
         health_bar.transform.position = new Vector2(boss.transform.position.x, boss.transform.position.y + yOffset);
         health_bar_slider.value = _health / startHealth;
@@ -190,22 +192,43 @@ public class BossController : MonoBehaviour
         return 0;
     }
 
+    //for red boss to gradually lose health
+    public float Damage(float amount)
+    {
+        if (_health > 0)
+        {
+            float damage = player_power * amount;
+            _health -= damage;
+
+            return damage;
+        }
+
+        return 0;
+    }
+
     IEnumerator spawnAttack()
     {
         bossAnims.SetTrigger("Attack");
 
         yield return new WaitForSeconds(attackAnimationTime);
 
-        int randomIndex = Random.Range(0, attacks.Length);
-        Instantiate(attacks[randomIndex], player.gameObject.transform.position, Quaternion.identity);
+        if (bossType != 4)
+        {
+            int randomIndex = Random.Range(0, attacks.Length);
+            Instantiate(attacks[randomIndex], player.gameObject.transform.position, Quaternion.identity);
 
-        if(bossType == 2)
-        {
-            boss.GetComponent<OrangeBossController>().attack();
+            if (bossType == 2)
+            {
+                boss.GetComponent<OrangeBossController>().attack();
+            }
+            else if (bossType == 3)
+            {
+                boss.GetComponent<PinkBossController>().attack();
+            }
         }
-        else if(bossType == 3)
+        else
         {
-            boss.GetComponent<PinkBossController>().attack();
+            boss.GetComponent<RedBossController>().attack(); //all attacks are being handled by the red boss controller script
         }
     }
 }

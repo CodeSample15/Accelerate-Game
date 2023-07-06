@@ -5,6 +5,7 @@ using UnityEngine;
 public class TurretController : MonoBehaviour
 {
     public static float DamageDone = 0;
+    public bool SlideOut = true;
 
     [SerializeField] private GameObject bullet;
     [SerializeField] private ParticleSystem explosion;
@@ -104,12 +105,15 @@ public class TurretController : MonoBehaviour
 
     IEnumerator startup()
     {
-        transform.position = BossController.Static_Reference.Boss.transform.position;
+        if (SlideOut)
+        {
+            transform.position = BossController.Static_Reference.Boss.transform.position;
 
-        //create a random vector and apply the velocity to the turret to slide out from
-        Vector2 rand = Random.insideUnitCircle.normalized;
-        rand *= Random.Range(minSlideOutSpeed, maxSlideOutSpeed);
-        rb.velocity = rand;
+            //create a random vector and apply the velocity to the turret to slide out from
+            Vector2 rand = Random.insideUnitCircle.normalized;
+            rand *= Random.Range(minSlideOutSpeed, maxSlideOutSpeed);
+            rb.velocity = rand;
+        }
 
         do {
             yield return new WaitForEndOfFrame();
