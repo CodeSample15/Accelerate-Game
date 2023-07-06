@@ -51,10 +51,7 @@ public class SpikeAttack : MonoBehaviour
             if(timeElapsed > attackTime)
             {
                 foreach (GameObject obj in objectPool)
-                {
                     obj.SetActive(false);
-                    obj.transform.position = transform.position;
-                }
 
                 isActive = false;
             }
@@ -84,6 +81,7 @@ public class SpikeAttack : MonoBehaviour
                 transform.Rotate(new Vector3(0, 0, 180f / numRotations), Space.World);
                 objectPool[activeSpikes - 1].SetActive(true);
                 objectPool[activeSpikes - 1].transform.rotation = transform.rotation;
+                objectPool[activeSpikes - 1].transform.position = transform.position;
                 objectPool[activeSpikes - 1].transform.Translate(objectPool[activeSpikes - 1].transform.right * offset);
             }
 

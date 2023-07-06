@@ -95,6 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6594ce3dc3df84f4486869d9a5542f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DetectWalls: 1
   spikeSpeed: 0
   spikeDamage: 0
 --- !u!61 &6059020060737207253

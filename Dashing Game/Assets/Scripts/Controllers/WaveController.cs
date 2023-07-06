@@ -129,8 +129,8 @@ public class WaveController : MonoBehaviour
             {
                 if (player.GetComponent<Player>().isAlive)
                 {
-                    //if (!enemySpawned)
-                        //timeSinceLastEnemySpawn = nextEnemyWait;
+                    if (!enemySpawned)
+                        timeSinceLastEnemySpawn = nextEnemyWait;
 
                     //detecting if it's time to spawn yet or not
                     if (timeSinceLastEnemySpawn >= nextEnemyWait)
