@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
 using UnityEngine.Experimental.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 /*
  * Types of enemies:
@@ -386,6 +387,21 @@ public class Enemy : MonoBehaviour
 
                                 LaserHolder.GetComponent<LineRenderer>().SetPosition(0, transform.position);
                                 LaserHolder.GetComponent<LineRenderer>().SetPosition(1, LaserEndPosition);
+
+                                if (SceneManager.GetActiveScene().name == "Red Boss")
+                                {
+                                    //constantly keep recalculating the lazer position since a lot of stuff is moving (kept seperate from the main game in fear of lag but I think it might be alright to incorporate into the main game later on)
+                                    int groundMask = 1 << 8;
+                                    RaycastHit2D checkHit = Physics2D.Raycast(transform.position, laserDirection, Mathf.Infinity, groundMask);
+                                    if (checkHit.collider != null)
+                                    {
+                                        float distance = checkHit.distance;
+                                        Vector3 scaledLaserDirection = laserDirection * (distance == 0 ? 1000 : distance);
+
+                                        LaserEndPosition = scaledLaserDirection + transform.position;
+                                        LaserEndPosition.z = transform.position.z;
+                                    }
+                                }
 
                                 //calculate if the player touches the laser
                                 int layerMask = 1 << 12 | 1 << 8; //filtering for walls and the player

@@ -48,6 +48,8 @@ public class RedBossController : MonoBehaviour
 
         isAttacking = false;
         turnSpeed = neutralTurnSpeed;
+
+        StartCoroutine(AstarRescan()); //rescan the map to update the pathfinding (DELETE IF LAG IS CAUSED)
     }
 
     void Update()
@@ -77,6 +79,17 @@ public class RedBossController : MonoBehaviour
     public void attack()
     {
         StartCoroutine(RunAttack());
+    }
+
+    private IEnumerator AstarRescan()
+    {
+        while(true)
+        {
+            if(!PauseButton.IsPaused)
+                AstarPath.active.Scan();
+
+            yield return new WaitForSeconds(0.5f); //rescan every half a second
+        }
     }
 
     IEnumerator SpawnEnemies()
