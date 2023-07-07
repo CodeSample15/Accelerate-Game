@@ -220,8 +220,6 @@ public class WaveController : MonoBehaviour
                 enemyObj.GetComponent<Enemy>().Type = t;
                 enemyObj.GetComponent<Enemy>().Colorize();
                 enemyObj.GetComponent<Enemy>().wave = wave;
-
-                //enemiesSpawned++; //update the wave status
             }
         }
     }

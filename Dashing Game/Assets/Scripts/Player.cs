@@ -712,6 +712,39 @@ public class Player : MonoBehaviour
                 }
             }
         }
+        else if(SceneManager.GetActiveScene().name == "Red Boss")
+        {
+            if (dashing)
+            {
+                detectingEnemies = true;
+
+                Collider2D other;
+
+                //looping through each enemy and checking if it is colliding with the player
+                for (int i = 0; i < RedBossController.EnemyPool.Count; i++)
+                {
+                    if (RedBossController.EnemyPool[i] != null)
+                    {
+                        other = RedBossController.EnemyPool[i].GetComponent<Collider2D>();
+                        if (other.IsTouching(col))
+                        {
+                            //particle effect
+                            int enemyType = other.gameObject.GetComponent<Enemy>().Type;
+
+                            //updating stats
+                            StartCoroutine(animateScore(score + pointsPerKill));
+
+                            //giving the player some money
+                            givePlayerMoneyForKill(enemyType);
+
+                            Destroy(RedBossController.EnemyPool[i]);
+                            RedBossController.EnemyPool.RemoveAt(i);
+                            i--;
+                        }
+                    }
+                }
+            }
+        }
 
         detectingEnemies = false;
         yield return null;
