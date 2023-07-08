@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -43047,7 +43047,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   data:
-    dataString: UEsDBBQAAAgIAACYn+u+H7m4cAIAACkFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFlVE1z2jAQ/SuMzg1jE8C4t5YQ0kMCE9LJxRdhrbEGWfJIcvga/ntXso1dcmJ5+3b37Yd8IVyaElKr9FJz9qoYkJ8D4mzyY9A5X+BId0pu+BlazidnNnck6jnv1HKFeOjCjCrAap7+kjvhyAGCleSZ0sWC7WCujDUIZ1QYQJdW1kVLhC4DcsSfh9iFnNAaRc46oxUHgyuaKUgLuqO2xGgYjYMwfBxNG35Nr2QqaFECc9q7qHE4G0ZRW+NxOpyGni6xu4YZDOPY1VNCcNOoI/ZU+u43ZQ4aXPuMU2zWKwqGkSueA9/l1uXth6+yzIBtBGt6euIax1bnJb9VPcuCmn0t8ouKylUaTaZeWJ309Zv/odadaVW8tHXDwNWwOU/37/SUUmN7w+7DT5320M/qQMWebgV85iDf1FKrSjJ0Wl250MrA6Kn7e2ttnkO67/Ba6h1Yld9X1m7W9XD13R/nghdbP8pxDWyE8hP3BwEa1/MHBftzMU0KRJ2KvwY+6K5/V43jmWtj0dV0KZ28raq0o5KFn5nrprJzpSV4uBFdgqTCntaYxt6v8M7XK3vneabuBTXFG1/7MO5CPNzxg+DOtVaH27JMrg6vYPJVZQWX0Il2jjec01xJWV9YfyZt2KbSGU17YbuKs/9Pi0A6ZZNglo3ibDyls/FDNM6yKKQTuo0DFrMJ8bfHJfZJxboW2owHtya75BLvrP2wDJaalv7amaaHJT8Xqi+Qy0xtUg0gV3WKm3LQWAXfJlswjhPagLVc+oWTS0KESvfAklvNxLe6OFpNky5LQkr+paxDEjL3n5KEOPh2zGsNXxwOrnib7Equ/wBQSwMEFAAACAgAAJif63sahnBtAAAAeAAAAAkAJABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQGrVipLLSrOzM9TslIw0TPSMzTXUVBKL0osyCgGihiCOKWZKSB2tFJqslmKqYFFmpFlmolZooWJrrlJWpq5YaJpYpKlQYpliqlSLFB9SWVBql9ibipET0BiSUZaZl5KZl66nntRZoo7yGil2FoAUEsBAi0AFAAACAgAAJif674fubhwAgAAKQUAAAsAJAAAAAAAAAAAAAAAAAAAAGdyYXBoMC5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0BUEsBAi0AFAAACAgAAJif63sahnBtAAAAeAAAAAkAJAAAAAAAAAAAAAAAvQIAAG1ldGEuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLBQYAAAAAAgACALgAAAB1AwAAAAA=
+    dataString: UEsDBBQAAAgIAACYn+ulYdd0awIAACYFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFlVMmS2jAQ/RVK50AZBrPklgDD5MBADZOaiy/CamMVsuSSZNbi39OSbewwJ5r3enm9yDfCpckhtkovNWcrxYD87BBnkx+dhnyDM90rueVXqH2+OLOpc6Le54NarhDvuzCjMrCax7/kXjjnAMFC8kTpbMH2MFPGGoQTKgwgpZV10RKhW4ec8ac7dSEXtAZjZ13RmgadO5oxSAu6ca0dx73xMAjGYTit/Ev3QsaCZjkwp72JGg6C3ktd4mXSC72zxN4qv6Dn8sRKCG4qacRect/6Nk9Bg+udcYqdejlBz1dOge9T67K2w9dJYsBWajW9zLnGmZV5yW9VDjKj5lAqPFJRuEqDcOR1lUlX3/hu39OJVtlbXbcfuBo25fHhg15iamxr0m143mjv+0GdqDjQnYCvFOS7WmpVSIak1YULLQwM5s3fR2uzFOJDg5dSn8Ai/76veq2uh7vv/jwTPNv5UQ5LYCuUn7i/BtC4nT8o2N+KqVIg6lT8NfBJ9+2jqohXro1FqupSOnk7VWjnShZ+Zq6bws6UluDhSnQOkgp72WAa+7zCJ65V9ol5pe75VMUrrn4VTyEebvyD4InaqNNjWSZVpxWYdF1YwSU0oh3xjnOaKSnLC2vPpA7bFjqhcStsX3D2/2kRiEcsDCbJYJoMR3Qy7I6HSTLu05DupgGbspD42+MS+6RiUwqtxoNbk01yiXdWf1U6S01zf+1M09OSXzPVFshloraxBpDrMsVDOWisgk+TLRjHCW3BWi79wsktIkLFB2DRo2bkW12craZRkyUiOT8q65CIzPx3JCIOfhzzRsORw8kVr5Pdyf0fUEsDBBQAAAgIAACYn+t7GoZwbQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM011FQSi9KLMgoBooYgjilmSkgdrRSarJZiqmBRZqRZZqJWaKFia65SVqauWGiaWKSpUGKZYqpUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAACYn+ulYdd0awIAACYFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAACYn+t7GoZwbQAAAHgAAAAJACQAAAAAAAAAAAAAALgCAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAcAMAAAAA
     upgradeData: 
     file_cachedStartup: {fileID: 0}
     data_cachedStartup: 
@@ -43332,6 +43332,11 @@ PrefabInstance:
       propertyPath: target
       value: 
       objectReference: {fileID: 623726155}
+    - target: {fileID: 3723053849466432773, guid: 298dcc7c61ee5ca49a02d9fccef77bab,
+        type: 3}
+      propertyPath: maxAcceleration
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 3723053849466432775, guid: 298dcc7c61ee5ca49a02d9fccef77bab,
         type: 3}
       propertyPath: m_RootOrder
@@ -43345,7 +43350,7 @@ PrefabInstance:
     - target: {fileID: 3723053849466432775, guid: 298dcc7c61ee5ca49a02d9fccef77bab,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 30.5
+      value: 154.2
       objectReference: {fileID: 0}
     - target: {fileID: 3723053849466432775, guid: 298dcc7c61ee5ca49a02d9fccef77bab,
         type: 3}

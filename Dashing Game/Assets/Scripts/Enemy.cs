@@ -141,7 +141,7 @@ public class Enemy : MonoBehaviour
 
         detonationTime = 0.9f; //How much time it takes for the enemy to explode
         timePassed = 0;
-        bomberSpeedChange = 1.3f;
+        bomberSpeedChange = 0.8f; //speed is divided by this much
 
         //Laser:
         LaserShootParticlesPlayed = false;
@@ -165,12 +165,15 @@ public class Enemy : MonoBehaviour
         #endregion
 
         speed = 9;
-        superSpeed = 30;
+        superSpeed = 40;
         superSpeedDistance = 45;
 
         initColors();
 
         timeSinceLastAttack = 0f; //Starts off being able to attack right away
+
+        //force start the loading of a path in case 
+        GetComponent<Seeker>().StartPath(transform.position, Player.staticReference.gameObject.transform.position);
     }
 
     void Update()
@@ -181,8 +184,10 @@ public class Enemy : MonoBehaviour
         //Controlling the stats and movement of the enemy depending on what type it is---------------------------------------------------------------------------------
         if (!PauseButton.IsPaused) //will only move if the game is unpaused
         {
+            float pathDistance = GetComponent<Seeker>().GetCurrentPath() != null ? GetComponent<Seeker>().GetCurrentPath().GetTotalLength() : 0f;
+
             //setting the speed of the enemy back to normal (if it was changed for various reasons)
-            path.maxSpeed = distanceTo(playerGameObject) < superSpeedDistance ? speed : superSpeed;
+            path.maxSpeed = pathDistance < superSpeedDistance ? speed : superSpeed;
 
             switch (Type)
             {

@@ -54,7 +54,7 @@ public class RedBossController : MonoBehaviour
 
     void Update()
     {
-        if(!PauseButton.IsPaused)
+        if(!PauseButton.IsPaused && Player.staticReference.isAlive)
         {
             transform.Rotate(new Vector3(0,0,1) * turnSpeed * Time.deltaTime);
             BossController.Static_Reference.Damage(healthDecay*Time.deltaTime);
