@@ -185,7 +185,7 @@ public class Crystals : MonoBehaviour
                     transform.position = startLocation;
                 }
 
-                if (lastHitTime > 0 && Time.time - lastHitTime > 2.5f) //decrease the amount of lightning every 2.5 seconds when left alone
+                if (lightningAmount > 0 && Time.time - lastHitTime > 2.5f) //decrease the amount of lightning every 2.5 seconds when left alone
                 {
                     lightningAmount--;
                     lastHitTime = Time.time;
