@@ -171,9 +171,6 @@ public class Enemy : MonoBehaviour
         initColors();
 
         timeSinceLastAttack = 0f; //Starts off being able to attack right away
-
-        //force start the loading of a path in case 
-        GetComponent<Seeker>().StartPath(transform.position, Player.staticReference.gameObject.transform.position);
     }
 
     void Update()

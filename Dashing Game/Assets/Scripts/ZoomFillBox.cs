@@ -7,6 +7,7 @@ using UnityEngine.Experimental.Rendering.Universal;
 public class ZoomFillBox : MonoBehaviour
 {
     [SerializeField] public float refillTime;
+    [SerializeField] private float healthRestoreAmount;
 
     private ParticleSystem particles;
     private Light2D lights;
@@ -129,6 +130,7 @@ public class ZoomFillBox : MonoBehaviour
                     timeSinceLastRefill = 0f;
 
                     other.GetComponent<Player>().DashPower = other.GetComponent<Player>().MaxDash;
+                    other.GetComponent<Player>().Health = Mathf.Min(other.GetComponent<Player>().Health + healthRestoreAmount, Player.MaxHealth);
                     refilled = false;
 
                     lights.enabled = false;

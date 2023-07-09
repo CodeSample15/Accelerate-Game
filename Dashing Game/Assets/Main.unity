@@ -685,7 +685,7 @@ PrefabInstance:
     - target: {fileID: 2670810314472118991, guid: abbff8d7a7924e041b555e5d7d1d9276,
         type: 3}
       propertyPath: crystalType
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abbff8d7a7924e041b555e5d7d1d9276, type: 3}
@@ -3639,6 +3639,11 @@ PrefabInstance:
       propertyPath: refillTime
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: 8115546960756809709, guid: dee24eefe7581aa47ba86fbd2f42d11e,
+        type: 3}
+      propertyPath: healthRestoreAmount
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 8115546960756809711, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}
       propertyPath: m_Name
@@ -3738,6 +3743,11 @@ PrefabInstance:
         type: 3}
       propertyPath: refillTime
       value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 8115546960756809709, guid: dee24eefe7581aa47ba86fbd2f42d11e,
+        type: 3}
+      propertyPath: healthRestoreAmount
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8115546960756809711, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}
@@ -25023,6 +25033,11 @@ PrefabInstance:
       propertyPath: refillTime
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: 8115546960756809709, guid: dee24eefe7581aa47ba86fbd2f42d11e,
+        type: 3}
+      propertyPath: healthRestoreAmount
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 8115546960756809711, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}
       propertyPath: m_Name
@@ -33269,6 +33284,11 @@ PrefabInstance:
       propertyPath: refillTime
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: 8115546960756809709, guid: dee24eefe7581aa47ba86fbd2f42d11e,
+        type: 3}
+      propertyPath: healthRestoreAmount
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 8115546960756809711, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}
       propertyPath: m_Name
@@ -40715,6 +40735,11 @@ PrefabInstance:
         type: 3}
       propertyPath: refillTime
       value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 8115546960756809709, guid: dee24eefe7581aa47ba86fbd2f42d11e,
+        type: 3}
+      propertyPath: healthRestoreAmount
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8115546960756809711, guid: dee24eefe7581aa47ba86fbd2f42d11e,
         type: 3}
