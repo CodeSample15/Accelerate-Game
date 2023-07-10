@@ -41938,7 +41938,8 @@ MonoBehaviour:
   GreenEnemyWave: 5
   BlueEnemyWave: 10
   YellowEnemyWave: 15
-  timePerWave: 5
+  timePerWave: 10
+  percentTimeIncreasePerWave: 0.2
   difficultyIncrease: 0
   spawning: 0
 --- !u!1001 &2087928336

@@ -27,6 +27,8 @@ public class WaveController : MonoBehaviour
     [Space]
 
     public float timePerWave;
+    [Tooltip("I know it says percent, but type in amount in decimal form (0.2 == 20%)")]
+    [SerializeField] public float percentTimeIncreasePerWave;
 
     [Header("Difficulty settings")]
     [Tooltip("How much the amount of random time before an enemy spawns in decreased")]
@@ -273,6 +275,7 @@ public class WaveController : MonoBehaviour
         waveActive = true;
 
         curWaveTimeElapsed = 0f;
+        timePerWave += percentTimeIncreasePerWave * timePerWave;
 
         enemiesSpawned = 0;
         timeSinceLastEnemySpawn = 0; //adding some more wait time when a new wave starts
