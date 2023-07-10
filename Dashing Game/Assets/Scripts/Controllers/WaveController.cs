@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class WaveController : MonoBehaviour
 {
@@ -16,11 +17,16 @@ public class WaveController : MonoBehaviour
     public TextMeshProUGUI waveText; //to tell the player what wave they're currently on
     public Animator waveTextAnimation;
     public PauseButton pauseButton;
+    public Image waveProgressBar;
 
     [Header("Enemy spawning")]
     public int GreenEnemyWave = 5; //five waves for the green enemies to start spawning
     public int BlueEnemyWave = 10; //ten waves for the blue enemies to start spawning
     public int YellowEnemyWave = 15; //fifteeen waves for the ghost enemies to start spawning
+
+    [Space]
+
+    public float timePerWave;
 
     [Header("Difficulty settings")]
     [Tooltip("How much the amount of random time before an enemy spawns in decreased")]
@@ -54,6 +60,8 @@ public class WaveController : MonoBehaviour
     private int wave; //current wave
 
     private bool waveActive;
+
+    private float curWaveTimeElapsed;
 
     public List<GameObject> ActiveEnemies
     {
@@ -98,6 +106,8 @@ public class WaveController : MonoBehaviour
 
         enemySpawned = true;
         waveActive = false;
+
+        curWaveTimeElapsed = 0f;
     }
 
     void Start()
@@ -105,6 +115,8 @@ public class WaveController : MonoBehaviour
         //play wave animation
         waveText.SetText("Wave: " + wave.ToString());
         StartCoroutine(animateWaveText());
+
+        waveProgressBar.gameObject.SetActive(true);
     }
 
     void Update()
@@ -152,6 +164,10 @@ public class WaveController : MonoBehaviour
                     {
                         timeSinceLastEnemySpawn += Time.deltaTime;
                     }
+
+                    //update UI
+                    curWaveTimeElapsed += Time.deltaTime;
+                    waveProgressBar.fillAmount = 1 - (curWaveTimeElapsed / timePerWave);
                 }
                 else
                 {
@@ -248,7 +264,7 @@ public class WaveController : MonoBehaviour
 
     public bool waveOver()
     {
-        return !waveActive && Enemies.Count == 0;
+        return (!waveActive && Enemies.Count == 0) || curWaveTimeElapsed > timePerWave;
     }
 
     public void startWave(Vector2 PointOne, Vector2 PointTwo, float SpawnRadius)
@@ -256,8 +272,15 @@ public class WaveController : MonoBehaviour
         //start a new wave
         waveActive = true;
 
+        curWaveTimeElapsed = 0f;
+
         enemiesSpawned = 0;
         timeSinceLastEnemySpawn = 0; //adding some more wait time when a new wave starts
+
+        //delete any remaining enemies from the list
+        foreach (GameObject remainingEnemy in Enemies)
+            Destroy(remainingEnemy);
+        Enemies.Clear();
 
         if (wave != 0)
             enemiesToSpawn += enemyIncreasePerWave;
@@ -277,6 +300,9 @@ public class WaveController : MonoBehaviour
         //play animations and stuff
         waveText.SetText("Next wave: " + wave.ToString());
         StartCoroutine(animateWaveText());
+
+        if(WaveCoroutine != null)
+            StopCoroutine(WaveCoroutine);
 
         WaveCoroutine = WaveRunner(PointOne, PointTwo, SpawnRadius);
         StartCoroutine(WaveCoroutine);
