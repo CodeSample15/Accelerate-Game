@@ -6,18 +6,20 @@ using TMPro;
 
 public class TutorialController : MonoBehaviour
 {
+    public static TutorialController staticRef;
+
     [Header("UI Items")]
     [SerializeField] private GameObject HealthBar;
-    [SerializeField] private GameObject HealthBarIcon;
 
     [Space]
 
     [SerializeField] private GameObject DashBar;
-    [SerializeField] private GameObject DashBarIcon;
 
     [Space]
 
     [SerializeField] private GameObject Minimap;
+    [SerializeField] private GameObject MinimapBorder;
+
     [SerializeField] private GameObject WaveProgressBar;
     [SerializeField] private GameObject ScoreText;
 
@@ -34,13 +36,19 @@ public class TutorialController : MonoBehaviour
     void Awake()
     {
         HealthBar.SetActive(false);
-        HealthBarIcon.SetActive(false);
         DashBar.SetActive(false);
-        DashBarIcon.SetActive(false);
         Minimap.SetActive(false);
+        MinimapBorder.SetActive(false);
         WaveProgressBar.SetActive(false);
         ScoreText.SetActive(false);
 
         ExplanationText.SetText("");
+
+        staticRef = this;
+    }
+
+    public void Triggered(string name)
+    {
+
     }
 }

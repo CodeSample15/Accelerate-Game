@@ -29,4 +29,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Boss Levels/Red Boss.unity
     guid: ffe1eca7a4346d54b97d147c75284cb3
+  - enabled: 1
+    path: Assets/Tutorial.unity
+    guid: 9b35108f6354ed94bb218dbb99e1a087
   m_configObjects: {}
