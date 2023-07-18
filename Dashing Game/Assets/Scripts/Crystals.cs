@@ -17,7 +17,7 @@ public class Crystals : MonoBehaviour
     [SerializeField] private float lightningEmissionStrength;
     [SerializeField] private float scale;
 
-    public enum Type { blue, green, orange, pink, red };
+    public enum Type { blue, green, orange, pink, red, tutorial };
     public Type crystalType;
 
     private ParticleSystem lightning_effect; //plays in bursts
@@ -131,6 +131,12 @@ public class Crystals : MonoBehaviour
                     lightning.trailMaterial.SetVector("_Color", new Vector4(255, 0, 0, 1) * lightningEmissionStrength);
                     lightning_constant.trailMaterial.SetVector("_Color", new Vector4(255, 0, 0, 1) * lightningEmissionStrength);
                     break;
+
+                case Type.tutorial:
+                    sparkle.material.SetVector("_EmissionColor", new Vector3(50, 50, 50) * particleEmissionStrength);
+                    lightning.trailMaterial.SetVector("_Color", new Vector4(50, 50, 50, 1) * lightningEmissionStrength);
+                    lightning_constant.trailMaterial.SetVector("_Color", new Vector4(50, 50, 50, 1) * lightningEmissionStrength);
+                    break;
             }
 
             //set the size of the crystal's box collider to the size of the crystal itself
@@ -143,7 +149,7 @@ public class Crystals : MonoBehaviour
     {
         if(!locked && lightningAmount >= maxHits)
         {
-            //play lightning particles
+            //play lightning particles when transitioning to a boss level (makes the amount of lightning played not tied to frame rate, might change in the future)
             lightning_effect.Play();
         }
     }
@@ -223,11 +229,13 @@ public class Crystals : MonoBehaviour
     IEnumerator transition()
     {
         //transition to appropriate boss level
-        whiteScreenFade.SetTrigger("FadeIn");
+        if(crystalType != Type.tutorial)
+            whiteScreenFade.SetTrigger("FadeIn");
 
         //save player data to temporary object
-        FindObjectOfType<Player>().saveTempState();
-
+        if(crystalType != Type.tutorial)
+            FindObjectOfType<Player>().saveTempState();
+   
         yield return new WaitForSeconds(0.5f);
 
         switch (crystalType)
@@ -250,6 +258,11 @@ public class Crystals : MonoBehaviour
 
             case Type.red:
                 SceneManager.LoadSceneAsync(7);
+                break;
+
+            case Type.tutorial:
+                Player.staticReference.transform.position = new Vector2(-151.15f, -6.86f); //HARDCODE THIS IN
+                gameObject.SetActive(false);
                 break;
         }
     }
@@ -277,11 +290,17 @@ public class Crystals : MonoBehaviour
             case Type.red:
                 GetComponent<SpriteRenderer>().sprite = sprites[4];
                 break;
+
+            case Type.tutorial:
+                GetComponent<SpriteRenderer>().sprite = sprites[5];
+                break;
         }
     }
 
     private bool isUnlocked()
     {
+        if (crystalType == Type.tutorial) return true;
+
         //1, 2, 3, 4, 5
         //b, g, o, p, r
         int unlockedCrystals = Saver.loadData().CrystalsUnlocked;

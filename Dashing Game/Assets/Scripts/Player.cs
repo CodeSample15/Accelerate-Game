@@ -299,28 +299,35 @@ public class Player : MonoBehaviour
                  */
 
                 //only dashes if the dash meter is above a certain point
-                if (dashPower >= minDashPower)
+                if (SceneManager.GetActiveScene().name != "Tutorial" || TutorialController.staticRef.UnlockedDash)
                 {
-                    dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift) || Input.GetButton("joystick button 1"); //checking if the dash button is pressed or not
-
-                    //resetting the dash animation
-                    bar_animation.SetTrigger("Stop");
-                }
-                else if (dashing && dashPower > 0)
-                {
-                    if (dashPower <= 0)
+                    if (dashPower >= minDashPower)
                     {
-                        dashing = false;
-                        dashPower = 0;
+                        dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift) || Input.GetButton("joystick button 1"); //checking if the dash button is pressed or not
+
+                        //resetting the dash animation
+                        bar_animation.SetTrigger("Stop");
+                    }
+                    else if (dashing && dashPower > 0)
+                    {
+                        if (dashPower <= 0)
+                        {
+                            dashing = false;
+                            dashPower = 0;
+                        }
+                        else
+                        {
+                            dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift) || Input.GetButton("joystick button 1");
+                        }
                     }
                     else
                     {
-                        dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift) || Input.GetButton("joystick button 1");
+                        bar_animation.SetTrigger("Recharge");
+                        dashing = false;
                     }
                 }
                 else
                 {
-                    bar_animation.SetTrigger("Recharge");
                     dashing = false;
                 }
 
@@ -403,45 +410,54 @@ public class Player : MonoBehaviour
         else
         {
             //If the player is dead:
-            Instantiate(death_effect, transform.position, Quaternion.identity);
-
-            if(SceneManager.GetActiveScene().name == "Main")
-                enemy_controller.Spawning = false; //enemy controller only exists in main scene
-
-            bool highscore = false;
-
-            //save data-----------------------------------------
-            if (data.HighScore < score)
+            if (SceneManager.GetActiveScene().name != "Tutorial")
             {
-                //new high score
-                data.HighScore = score;
-                highscore = true;
+                Instantiate(death_effect, transform.position, Quaternion.identity);
+
+                if (SceneManager.GetActiveScene().name == "Main")
+                    enemy_controller.Spawning = false; //enemy controller only exists in main scene
+
+                bool highscore = false;
+
+                //save data-----------------------------------------
+                if (data.HighScore < score)
+                {
+                    //new high score
+                    data.HighScore = score;
+                    highscore = true;
+                }
+
+                data.isNewPlayer = false; //no longer a new player now that the player has finished a game (CHANGE TO AFTER TUTORIAL IS PLAYED)
+
+                //calculate the amount of money the player should get
+                data.Money += moneyAdded;
+
+                Saver.SavePlayer(data); //save changes to player files
+                                        //--------------------------------------------------
+
+                //fade in a black screen
+                menu_animations.SetTrigger("FadeIn");
+                score_animation.SetTrigger("Move");
+
+                //update score text
+                string scoreTxt = "Score: " + score;
+                if (highscore) scoreTxt += "\n" + "New HighScore!";
+                scoreText.SetText(scoreTxt);
+
+                //enable the menu buttons
+                MenuLogic.buttonsActive = true;
+
+                //start the animation for the amount of money being added the player's balance
+                money_add_animation.runAnimation(0.7f, (int)(moneyAdded * 0.65f), moneyAdded);
+
+                gameObject.SetActive(false); //"kill" the player
             }
-
-            data.isNewPlayer = false; //no longer a new player now that the player has finished a game (CHANGE TO AFTER TUTORIAL IS PLAYED)
-
-            //calculate the amount of money the player should get
-            data.Money += moneyAdded;
-
-            Saver.SavePlayer(data); //save changes to player files
-            //--------------------------------------------------
-
-            //fade in a black screen
-            menu_animations.SetTrigger("FadeIn");
-            score_animation.SetTrigger("Move");
-
-            //update score text
-            string scoreTxt = "Score: " + score;
-            if (highscore) scoreTxt += "\n" + "New HighScore!";
-            scoreText.SetText(scoreTxt);
-
-            //enable the menu buttons
-            MenuLogic.buttonsActive = true;
-
-            //start the animation for the amount of money being added the player's balance
-            money_add_animation.runAnimation(0.7f, (int)(moneyAdded * 0.65f), moneyAdded);
-
-            gameObject.SetActive(false); //"kill" the player
+            else
+            {
+                //player is playing in tutorial level
+                transform.position = TutorialController.staticRef.checkpoint;
+                health = MaxHealth;
+            }
         }
 
         //update UI-----------------------------------
@@ -696,7 +712,6 @@ public class Player : MonoBehaviour
                         other = enemy_controller.ActiveEnemies[i].GetComponent<Collider2D>();
                         if (other.IsTouching(col))
                         {
-                            //particle effect
                             int enemyType = other.gameObject.GetComponent<Enemy>().Type;
 
                             //updating stats
@@ -728,7 +743,6 @@ public class Player : MonoBehaviour
                         other = RedBossController.EnemyPool[i].GetComponent<Collider2D>();
                         if (other.IsTouching(col))
                         {
-                            //particle effect
                             int enemyType = other.gameObject.GetComponent<Enemy>().Type;
 
                             //updating stats
@@ -739,6 +753,30 @@ public class Player : MonoBehaviour
 
                             Destroy(RedBossController.EnemyPool[i]);
                             RedBossController.EnemyPool.RemoveAt(i);
+                            i--;
+                        }
+                    }
+                }
+            }
+        }
+        else if(SceneManager.GetActiveScene().name == "Tutorial")
+        {
+            if (dashing)
+            {
+                detectingEnemies = true;
+
+                Collider2D other;
+
+                //looping through each enemy and checking if it is colliding with the player
+                for (int i = 0; i < TutorialController.staticRef.TutorialEnemyPool.Count; i++)
+                {
+                    if (TutorialController.staticRef.TutorialEnemyPool[i] != null)
+                    {
+                        other = TutorialController.staticRef.TutorialEnemyPool[i].GetComponent<Collider2D>();
+                        if (other.IsTouching(col))
+                        {
+                            Destroy(TutorialController.staticRef.TutorialEnemyPool[i]);
+                            TutorialController.staticRef.TutorialEnemyPool.RemoveAt(i);
                             i--;
                         }
                     }
