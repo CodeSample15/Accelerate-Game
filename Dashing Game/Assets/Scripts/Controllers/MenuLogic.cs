@@ -63,7 +63,9 @@ public class MenuLogic : MonoBehaviour
     /// </summary>
     public void Play()
     {
-        int nextLevel = Random.Range(2, NumberOfStages+2); //offset by two for the home and store scenes
+        bool isNewPlayer = Saver.loadData().isNewPlayer;
+
+        int nextLevel = isNewPlayer ? 8 : 2; //game is located in scene 2 and tutorial is located in scene 8
 
         //playing button animation if there is one
         if (PressedButtonAnimation != null)

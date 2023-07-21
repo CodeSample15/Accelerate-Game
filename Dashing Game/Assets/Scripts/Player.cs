@@ -285,7 +285,7 @@ public class Player : MonoBehaviour
                 movement.y = joystick.Vertical;
 
                 /*
-                 * MOVEMENT CODE FOR PC ONLY (FOR NOW)
+                 * MOVEMENT CODE FOR PC ONLY
                 */
                 movement.x = Input.GetAxisRaw("Horizontal");
                 movement.y = Input.GetAxisRaw("Vertical");
@@ -295,7 +295,7 @@ public class Player : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown("joystick button 0"))
                     jump();
                 /*
-                 * MOVEMENT CODE FOR PC ONLY (FOR NOW)
+                 * MOVEMENT CODE FOR PC ONLY
                  */
 
                 //only dashes if the dash meter is above a certain point
@@ -426,8 +426,6 @@ public class Player : MonoBehaviour
                     data.HighScore = score;
                     highscore = true;
                 }
-
-                data.isNewPlayer = false; //no longer a new player now that the player has finished a game (CHANGE TO AFTER TUTORIAL IS PLAYED)
 
                 //calculate the amount of money the player should get
                 data.Money += moneyAdded;

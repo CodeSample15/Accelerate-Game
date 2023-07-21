@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Pathfinding;
+using UnityEngine.SceneManagement;
 
 public class TutorialController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class TutorialController : MonoBehaviour
     
     [Header("UI Items")]
     [SerializeField] private GameObject HealthBar;
+    [SerializeField] private Animator FadeAnimation;
 
     [Space]
 
@@ -40,13 +42,18 @@ public class TutorialController : MonoBehaviour
 
     [Header("Items that need to be shown / hidden")]
     [SerializeField] private ZoomFillBox RechargeBox;
+    [SerializeField] private ZoomFillBox RechargeBox2;
 
     private List<GameObject> EnemyPool;
 
     private bool usingController;
     private bool unlockedDash;
     private bool enemiesSpawned;
+
+    //event flags
     private bool endOfFightMessageShown; //after the player fights the enemies in the tutorial, this variable is used to flag whether or not the controller updated the tutorial text box
+    private bool rechargeBoxMessageShown;
+    private bool secondRechargeBoxMessageShown;
 
     public bool UnlockedDash
     {
@@ -66,7 +73,7 @@ public class TutorialController : MonoBehaviour
         MinimapBorder.SetActive(false);
         WaveProgressBar.SetActive(false);
         ScoreText.SetActive(false);
-
+        
         ExplanationText.SetText("");
 
         staticRef = this;
@@ -74,10 +81,19 @@ public class TutorialController : MonoBehaviour
         usingController = false;
         unlockedDash = false;
         enemiesSpawned = false;
+
         endOfFightMessageShown = false;
+        rechargeBoxMessageShown = false;
+        secondRechargeBoxMessageShown = false;
 
         EnemyPool = new List<GameObject>();
         RechargeBox.gameObject.SetActive(false);
+    }
+
+    void Start()
+    {
+        RechargeBox.gameObject.SetActive(false);
+        RechargeBox2.gameObject.SetActive(false);
     }
 
     void Update()
@@ -87,6 +103,8 @@ public class TutorialController : MonoBehaviour
         else if (Input.GetAxis("JoystickChecker") > 0)
             usingController = true;
 
+
+        //event triggers
         if(enemiesSpawned && EnemyPool.Count == 0 && !endOfFightMessageShown)
         {
             //all of the enemies in the tutorial are dead
@@ -94,10 +112,38 @@ public class TutorialController : MonoBehaviour
             ExplanationText.rectTransform.position = new Vector2(-153.3f, -1.25f);
             textAnimation.SetTrigger("Blink");
 
+            Player.staticReference.Health = 50f;
+            Player.staticReference.transform.position = new Vector2(-151.15f, -6.86f);
+
+            RechargeBox.gameObject.SetActive(true);
+
             endOfFightMessageShown = true;
+        }
+
+        if(!rechargeBoxMessageShown && !RechargeBox.Refilled)
+        {
+            ExplanationText.SetText("Refill boxes only recharge once a different refill box is used");
+            ExplanationText.rectTransform.position = new Vector2(-153.3f, -1.25f);
+            textAnimation.SetTrigger("Blink");
+
+            RechargeBox2.gameObject.SetActive(true);
+
+            rechargeBoxMessageShown = true;
+        }
+
+        if(!secondRechargeBoxMessageShown && !RechargeBox2.Refilled)
+        {
+            ExplanationText.SetText("You're ready");
+            ExplanationText.rectTransform.position = new Vector2(-153.3f, -1.25f);
+            textAnimation.SetTrigger("Blink");
+
+            StartCoroutine(EndOfTutorial());
+
+            secondRechargeBoxMessageShown = true;
         }
     }
 
+    //world triggers
     public void Triggered(string name)
     {
         switch(name)
@@ -203,5 +249,19 @@ public class TutorialController : MonoBehaviour
         enemyHolder.Colorize();
 
         EnemyPool.Add(enemyHolder.gameObject);
+    }
+
+    private IEnumerator EndOfTutorial()
+    {
+        FadeAnimation.SetTrigger("Fade");
+
+        //player is no longer a new player
+        PlayerData data = Saver.loadData();
+        data.isNewPlayer = false;
+        Saver.SavePlayer(data);
+
+        yield return new WaitForSeconds(1.5f);
+
+        SceneManager.LoadScene(9);
     }
 }

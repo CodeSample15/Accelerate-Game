@@ -229,8 +229,7 @@ public class Crystals : MonoBehaviour
     IEnumerator transition()
     {
         //transition to appropriate boss level
-        if(crystalType != Type.tutorial)
-            whiteScreenFade.SetTrigger("FadeIn");
+        whiteScreenFade.SetTrigger("FadeIn");
 
         //save player data to temporary object
         if(crystalType != Type.tutorial)
@@ -261,7 +260,7 @@ public class Crystals : MonoBehaviour
                 break;
 
             case Type.tutorial:
-                Player.staticReference.transform.position = new Vector2(-151.15f, -6.86f); //HARDCODE THIS IN
+                Player.staticReference.transform.position = new Vector2(-151.15f, -6.86f);
                 gameObject.SetActive(false);
                 break;
         }

@@ -39,6 +39,11 @@ public class ZoomFillBox : MonoBehaviour
         get { return Mathf.RoundToInt(timeSinceLastRefill); }
     }
 
+    public bool Refilled
+    {
+        get { return refilled; }
+    }
+
     void Awake()
     {
         particles = GetComponentInChildren<ParticleSystem>();
@@ -125,7 +130,7 @@ public class ZoomFillBox : MonoBehaviour
         {
             if (other.gameObject.CompareTag("Player"))
             {
-                if (refilled && other.GetComponent<Player>().DashPower < other.GetComponent<Player>().MaxDash)
+                if (refilled && (other.GetComponent<Player>().DashPower < other.GetComponent<Player>().MaxDash || other.GetComponent<Player>().Health < Player.MaxHealth))
                 {
                     timeSinceLastRefill = 0f;
 
