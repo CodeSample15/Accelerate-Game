@@ -3908,6 +3908,7 @@ MonoBehaviour:
   PressedButtonAnimation: {fileID: 0}
   player: {fileID: 0}
   FadeAnimation: {fileID: 1235849335344301659}
+  WhiteFadeAnimation: {fileID: 0}
   PlayerMovePosition: {x: -129, y: 100}
   AnimationDelay: 0.5
   NumberOfStages: 1

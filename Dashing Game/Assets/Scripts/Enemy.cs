@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour
     //Private
     private Rigidbody2D rb;
     private AIPath path;
+    private Seeker seeker;
     private SpriteRenderer sprite;
     private ParticleSystem deathParticlesInstance;
 
@@ -112,19 +113,20 @@ public class Enemy : MonoBehaviour
         path = GetComponent<AIPath>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
+        seeker = GetComponent<Seeker>();
 
         deathParticlesInstance = Instantiate(DeathParticles, transform.position, Quaternion.identity);
 
         #region Stats
         //Melee:
         MeleeDamage = 15;
-        MeleeAttackSpeed = 2;
+        MeleeAttackSpeed = 1.3f;
 
         //Shooter:
         ShooterDamage = 5;
         ShooterAttackSpeed = 0.8f;
         ShooterRange = 8f;
-        ShooterBulletSpeed = 8f;
+        ShooterBulletSpeed = 9f;
 
         //Bomber:
         BomberDamage = 25; //Damage at the center of the explosion (damage decreases with distance)
@@ -201,11 +203,7 @@ public class Enemy : MonoBehaviour
                     {
                         AttackSpeed = ShooterAttackSpeed;
 
-                        //calculate if the player is in the enemy's line of sight
-                        Vector3 dir = (transform.position - player.transform.position).normalized * -1;
-                        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, distanceTo(playerGameObject) - 1f);
-
-                        if (distanceTo(playerGameObject) < ShooterRange && hit.collider == null)
+                        if (distanceTo(playerGameObject) < ShooterRange && LOS())
                         {
                             path.maxSpeed = 0;
                             InRange = true;
@@ -264,6 +262,14 @@ public class Enemy : MonoBehaviour
                     }
                     break;
             }
+
+            //trying to solve the enemy not moving bug
+            /*
+            if (path.velocity.magnitude == 0 && path.maxSpeed != 0)
+            {
+                Debug.Log(seeker.ToString());
+            }
+            */
         }
         else
         {
@@ -313,7 +319,7 @@ public class Enemy : MonoBehaviour
 
                 //bomber type
                 case 2:
-                    if(distanceTo(playerGameObject) <= Radius && !Detonating)
+                    if(LOS() && distanceTo(playerGameObject) <= Radius && !Detonating)
                     {
                         Detonating = true;
                     }
@@ -349,7 +355,7 @@ public class Enemy : MonoBehaviour
 
                 //Laser type
                 case 3:
-                    if(distanceTo(playerGameObject) < LaserRange && LaserCooldownElapsed > LaserCooldownTime && !ShootingLaser)
+                    if(distanceTo(playerGameObject) < LaserRange && LaserCooldownElapsed > LaserCooldownTime && !ShootingLaser && LOS())
                     {
                         //shooting the laser if the player is close enough to the enemy and the laser isn't on cooldown
                         ShootingLaser = true;
@@ -506,6 +512,16 @@ public class Enemy : MonoBehaviour
         y1 *= y1;
 
         return Mathf.Sqrt(x1 + y1);
+    }
+
+    private bool LOS()
+    {
+        //calculate if the player is in the enemy's line of sight
+        Vector3 dir = (transform.position - player.transform.position).normalized * -1;
+        int layermask = 1 << 8;
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, distanceTo(playerGameObject) - 0.5f, layermask);
+
+        return hit.collider == null;
     }
     
     private void initColors()

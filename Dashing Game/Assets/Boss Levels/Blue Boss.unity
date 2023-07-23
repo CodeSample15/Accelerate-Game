@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -342,8 +342,9 @@ MonoBehaviour:
   maxAttackDelay: 0
   startHealth: 100
   angryRange: 5
+  attackAnimationTime: 0
   attacks: []
-  playerDamage: 70
+  playerDamage: 100
   maxMoneyPossible: 200
 --- !u!4 &376072264
 Transform:
@@ -11628,6 +11629,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -79.399994
+      objectReference: {fileID: 0}
+    - target: {fileID: 9067403891491775909, guid: 1179389a9652efc489c745ae80ae9854,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -44.899994
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1179389a9652efc489c745ae80ae9854, type: 3}

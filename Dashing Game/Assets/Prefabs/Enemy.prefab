@@ -92,8 +92,8 @@ MonoBehaviour:
   orientation: 1
   enableRotation: 0
   autoRepath:
-    mode: 2
-    interval: 0
+    mode: 1
+    interval: 0.05
     sensitivity: 10
     maximumInterval: 2
     visualizeSensitivity: 0
@@ -173,7 +173,6 @@ MonoBehaviour:
   player: {fileID: 0}
   bulletController: {fileID: 0}
   playerGameObject: {fileID: 0}
-  PlayerDamageAnimation: {fileID: 0}
   DeathParticles: {fileID: 3650307596008953324, guid: da1e6ba99f47c634386fb43b2d1afaab,
     type: 3}
   enemyController: {fileID: 0}
@@ -183,6 +182,7 @@ MonoBehaviour:
   - serializedVersion: 2
     rgba: 422
   Type: 0
+  wave: 0
   explosionEffect: {fileID: 428892633806106970, guid: 65c1d1c9ea977a34d98f31e9d95be1e4,
     type: 3}
   cameraShake: {fileID: 0}
