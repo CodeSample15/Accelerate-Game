@@ -144,6 +144,7 @@ public class BossController : MonoBehaviour
             player.scoreText.SetText("");
 
             player.gameObject.SetActive(false);
+            Cursor.visible = true;
 
             player.menu_animations.SetTrigger("FadeIn");
             player.score_animation.SetTrigger("Move");

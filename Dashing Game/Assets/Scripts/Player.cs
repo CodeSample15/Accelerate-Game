@@ -450,7 +450,7 @@ public class Player : MonoBehaviour
                 MenuLogic.buttonsActive = true;
 
                 //start the animation for the amount of money being added the player's balance
-                money_add_animation.runAnimation(0.7f, (int)(moneyAdded * 0.65f), moneyAdded);
+                money_add_animation.runAnimation(0.7f, (int)(moneyAdded * 0.9f), moneyAdded);
 
                 gameObject.SetActive(false); //"kill" the player
             }
