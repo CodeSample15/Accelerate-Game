@@ -325,7 +325,6 @@ public class UgradeScreenController : MonoBehaviour
     {
         CrystalImage.sprite = CrystalSprites[curCrystal];
         CrystalCostDisplay.SetText("$" + CalcCrystalPrice());
-
         Color temp = CrystalImage.color;
 
         //also update the buy button
@@ -334,6 +333,9 @@ public class UgradeScreenController : MonoBehaviour
             CrystalBuyButton.SetActive(true);
             CrystalBuyButton.GetComponentInChildren<TextMeshProUGUI>().SetText(data.CrystalsUnlocked == curCrystal ? "Buy" : "Purchased");
             CrystalBuyButton.GetComponent<Button>().interactable = data.CrystalsUnlocked == curCrystal;
+
+            if(data.CrystalsUnlocked != curCrystal)
+                CrystalCostDisplay.SetText("");
 
             temp.a = 1f;
         }

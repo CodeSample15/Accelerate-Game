@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -5289,8 +5289,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Boss Levels
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 24975338837761246962a117fa873a05, type: 2}
-  m_sharedMaterial: {fileID: 4780897712505528763, guid: 24975338837761246962a117fa873a05,
+  m_fontAsset: {fileID: 11400000, guid: ca9a3764aa779b441a1b1a505b117b6d, type: 2}
+  m_sharedMaterial: {fileID: -170064088734828193, guid: ca9a3764aa779b441a1b1a505b117b6d,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -5315,8 +5315,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 41.98
-  m_fontSizeBase: 41.98
+  m_fontSize: 28.74
+  m_fontSizeBase: 28.74
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
