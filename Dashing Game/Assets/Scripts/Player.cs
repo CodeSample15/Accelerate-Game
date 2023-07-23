@@ -762,6 +762,8 @@ public class Player : MonoBehaviour
                             Destroy(RedBossController.EnemyPool[i]);
                             RedBossController.EnemyPool.RemoveAt(i);
                             i--;
+
+                            BossController.Static_Reference.Damage();
                         }
                     }
                 }
