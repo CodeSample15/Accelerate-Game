@@ -111,6 +111,7 @@ public class UgradeScreenController : MonoBehaviour
         updateCrystalSprite();
 
         curColor = data.SelectedSkin;
+        playerCustomization.setColor(curColor, data.SkinsUnlocked.Contains(curColor), data.SelectedSkin == curColor);
         playerCustomization.SkinCost = 300; //keeping all the set prices in this file for organization
 
         //update arrows that should be showing or not
@@ -383,11 +384,13 @@ public class UgradeScreenController : MonoBehaviour
             data.SelectedSkin = curColor;
 
             Saver.SavePlayer(data);
+            playerCustomization.UpdateCurrent(curColor);
         }
         else if (data.SkinsUnlocked.Contains(curColor) && data.SelectedSkin != curColor)
         {
             data.SelectedSkin = curColor;
             Saver.SavePlayer(data);
+            playerCustomization.UpdateCurrent(curColor);
         }
 
         playerCustomization.setColor(curColor, data.SkinsUnlocked.Contains(curColor), data.SelectedSkin == curColor);

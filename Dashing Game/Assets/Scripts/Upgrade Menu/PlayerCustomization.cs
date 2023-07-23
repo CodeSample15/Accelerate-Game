@@ -18,6 +18,7 @@ public class PlayerCustomization : MonoBehaviour
     [Space]
 
     [SerializeField] private GameObject playerPrev;
+    [SerializeField] private GameObject currentPrev;
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private GameObject BuyButton;
 
@@ -60,14 +61,19 @@ public class PlayerCustomization : MonoBehaviour
             colors = HomeScreenController.PlayerColors;
         else
             colors = HomeScreenController.TempColors(); //temporarily create some testing colors for when the main screen hasn't been run yet
-    }
 
-    void Start()
-    {
-        PlayerData data = Saver.loadData();
+        //store should open on selected and owned skin
+        BuyButton.SetActive(false);
+        priceText.SetText("Selected");
 
-        priceText.SetText("$" + skinCost);
-        setColor(0, true, data.SelectedSkin == 0);
+        try
+        {
+            currentPrev.GetComponent<Image>().color = colors[Saver.loadData().SelectedSkin];
+        }
+        catch
+        {
+            Debug.LogError("Colors not initialized yet!");
+        }
     }
 
     void Update()
@@ -104,9 +110,17 @@ public class PlayerCustomization : MonoBehaviour
             buttonText.SetText("Select");
 
             if (selected)
+            {
                 BuyButton.SetActive(false);
+                priceText.SetText("Selected");
+            }
             else
                 BuyButton.SetActive(true);
         }
+    }
+
+    public void UpdateCurrent(int color)
+    {
+        currentPrev.GetComponent<Image>().color = colors[color];
     }
 }
