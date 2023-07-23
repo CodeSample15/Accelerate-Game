@@ -258,6 +258,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9067403891491775909, guid: 1179389a9652efc489c745ae80ae9854,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -44.899994
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1179389a9652efc489c745ae80ae9854, type: 3}
 --- !u!114 &7399794 stripped
@@ -474,7 +479,7 @@ MonoBehaviour:
   attackAnimationTime: 0
   attacks: []
   playerDamage: 20
-  maxMoneyPossible: 50000
+  maxMoneyPossible: 10000
 --- !u!1001 &108097060
 PrefabInstance:
   m_ObjectHideFlags: 0
