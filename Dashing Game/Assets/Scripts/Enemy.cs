@@ -186,6 +186,9 @@ public class Enemy : MonoBehaviour
             //setting the speed of the enemy back to normal (if it was changed for various reasons)
             path.maxSpeed = pathDistance < superSpeedDistance ? speed : superSpeed;
 
+            if (SceneManager.GetActiveScene().name == "Tutorial")
+                path.maxSpeed = 3f;
+
             switch (Type)
             {
                 case 0:

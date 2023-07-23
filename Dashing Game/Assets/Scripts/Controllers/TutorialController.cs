@@ -149,7 +149,7 @@ public class TutorialController : MonoBehaviour
         switch(name)
         {
             case "Start":
-                ExplanationText.SetText("Use arrow keys, WAD keys, or joystick to move");
+                ExplanationText.SetText("Use arrow keys, W/D keys, or joystick to move");
                 ExplanationText.rectTransform.position = new Vector2(-3.9f, 46.4f);
                 textAnimation.SetTrigger("Blink");
                 break;
@@ -199,9 +199,9 @@ public class TutorialController : MonoBehaviour
                 unlockedDash = true;
 
                 if (usingController)
-                    ExplanationText.SetText("Press the B button to DASH!");
+                    ExplanationText.SetText("Press the B button to DASH. Use the joystick to steer");
                 else
-                    ExplanationText.SetText("Press shift to DASH!");
+                    ExplanationText.SetText("Press shift to DASH. Use arrow keys or WSAD to steer");
 
                 ExplanationText.rectTransform.position = new Vector2(-11.04f, 83.56f);
                 textAnimation.SetTrigger("Blink");
