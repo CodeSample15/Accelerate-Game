@@ -14,6 +14,7 @@ public class MenuLogic : MonoBehaviour
 
     [SerializeField] private GameObject player;
     [SerializeField] private Animator FadeAnimation;
+    [SerializeField] private Animator WhiteFadeAnimation;
     [Tooltip("Where the player will be moved as an animation for the next level to be loaded.")]
     [SerializeField] private Vector2 PlayerMovePosition;
     [SerializeField] public float AnimationDelay;
@@ -106,7 +107,10 @@ public class MenuLogic : MonoBehaviour
         if(player != null)
             player.transform.position = PlayerMovePosition;
 
-        FadeAnimation.SetTrigger("Fade"); //start the black fade animation
+        if (SceneManager.GetActiveScene().name == "Home" && Saver.loadData().isNewPlayer)
+            WhiteFadeAnimation.SetTrigger("FadeIn");
+        else
+            FadeAnimation.SetTrigger("Fade"); //start the black fade animation
 
         yield return new WaitForSeconds(AnimationDelay);
 

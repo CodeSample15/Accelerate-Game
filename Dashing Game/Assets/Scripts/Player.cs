@@ -275,6 +275,7 @@ public class Player : MonoBehaviour
             //only run the main code if the game isn't paused
             if (!PauseButton.IsPaused)
             {
+                Cursor.visible = false;
                 rb.simulated = true;
                 menu_animations.SetBool("Showing", false);
                 MenuLogic.buttonsActive = false; //turning off the buttons
@@ -396,6 +397,7 @@ public class Player : MonoBehaviour
             else
             {
                 //game is paused
+                Cursor.visible = true;
                 rb.simulated = false;
 
                 //bring up pause menu (just regular end of game menu at the moment)
@@ -412,6 +414,8 @@ public class Player : MonoBehaviour
             //If the player is dead:
             if (SceneManager.GetActiveScene().name != "Tutorial")
             {
+                Cursor.visible = true;
+
                 Instantiate(death_effect, transform.position, Quaternion.identity);
 
                 if (SceneManager.GetActiveScene().name == "Main")

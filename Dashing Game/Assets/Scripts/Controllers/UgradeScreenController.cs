@@ -44,6 +44,18 @@ public class UgradeScreenController : MonoBehaviour
     [Space]
     [SerializeField] private PlayerCustomization playerCustomization;
 
+    [Space]
+    [Header("GameObjects that need to be shown / hidden")]
+    [SerializeField] private GameObject RightCustomizationArrow;
+    [SerializeField] private GameObject LeftCustomizationArrow;
+
+    [SerializeField] private GameObject RightCrystalArrow;
+    [SerializeField] private GameObject LeftCrystalArrow;
+
+    [Space]
+    [SerializeField] private GameObject CustomizationBuyButton;
+
+
     //private fields
     private PlayerData data;
 
@@ -81,7 +93,7 @@ public class UgradeScreenController : MonoBehaviour
         DashRechargeStartPrice = 60;
         JumpHeightStartPrice = 30;
 
-        increaseRate = 1.8f;
+        increaseRate = 2.4f;
 
         screen1Anims = Screen1.GetComponent<Animator>();
         screen2Anims = Screen2.GetComponent<Animator>();
@@ -94,12 +106,23 @@ public class UgradeScreenController : MonoBehaviour
         curCrystal = 0;
 
         CrystalBaseCost = 100;
-        CrystalCostMultiplier = 5;
+        CrystalCostMultiplier = 8;
 
         updateCrystalSprite();
 
-        curColor = 0;
+        curColor = data.SelectedSkin;
         playerCustomization.SkinCost = 300; //keeping all the set prices in this file for organization
+
+        //update arrows that should be showing or not
+        if (curCrystal == 4)
+            RightCrystalArrow.SetActive(false);
+        else if (curCrystal == 0)
+            LeftCrystalArrow.SetActive(false);
+
+        if (curColor == playerCustomization.PlayerColors.Length - 1)
+            RightCustomizationArrow.SetActive(false);
+        else if (curColor == 0)
+            LeftCustomizationArrow.SetActive(false);
     }
 
     //private methods
@@ -261,8 +284,10 @@ public class UgradeScreenController : MonoBehaviour
     {
         //right arrow pressed
         curCrystal++;
-        if (curCrystal == 5)
-            curCrystal = 0;
+
+        LeftCrystalArrow.SetActive(true);
+        if (curCrystal == 4)
+            RightCrystalArrow.SetActive(false);
 
         updateCrystalSprite();
     }
@@ -271,8 +296,10 @@ public class UgradeScreenController : MonoBehaviour
     {
         //left arrow pressed
         curCrystal--;
-        if (curCrystal == -1)
-            curCrystal = 4;
+
+        RightCrystalArrow.SetActive(true);
+        if (curCrystal == 0)
+            LeftCrystalArrow.SetActive(false);
 
         updateCrystalSprite();
     }
@@ -316,8 +343,10 @@ public class UgradeScreenController : MonoBehaviour
     {
         //right button pressed
         curColor++;
-        if (curColor == playerCustomization.PlayerColors.Length)
-            curColor = 0;
+
+        LeftCustomizationArrow.SetActive(true);
+        if (curColor == playerCustomization.PlayerColors.Length - 1)
+            RightCustomizationArrow.SetActive(false);
 
         playerCustomization.setColor(curColor, data.SkinsUnlocked.Contains(curColor), data.SelectedSkin == curColor);
     }
@@ -326,8 +355,10 @@ public class UgradeScreenController : MonoBehaviour
     {
         //left button pressed
         curColor--;
-        if (curColor == -1)
-            curColor = playerCustomization.PlayerColors.Length - 1;
+
+        RightCustomizationArrow.SetActive(true);
+        if (curColor == 0)
+            LeftCustomizationArrow.SetActive(false);
 
         playerCustomization.setColor(curColor, data.SkinsUnlocked.Contains(curColor), data.SelectedSkin == curColor);
     }

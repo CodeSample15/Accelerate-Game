@@ -17,11 +17,13 @@ public class PlayerCustomization : MonoBehaviour
 
     [Space]
 
+    [SerializeField] private GameObject playerPrev;
+    [SerializeField] private TextMeshProUGUI priceText;
+    [SerializeField] private GameObject BuyButton;
+
     private Color[] colors;
 
     //for the animation
-    private GameObject playerPrev;
-
     private float curSpeed;
     private float targetSpeed;
 
@@ -29,7 +31,6 @@ public class PlayerCustomization : MonoBehaviour
     private float targetVel;
 
     //for the text display
-    private TextMeshProUGUI priceText;
     private TextMeshProUGUI buttonText;
 
     private int skinCost;
@@ -47,9 +48,7 @@ public class PlayerCustomization : MonoBehaviour
 
     void Awake()
     {
-        playerPrev = transform.Find("Player Preview").gameObject;
-        priceText = transform.Find("Price Text").GetComponent<TextMeshProUGUI>();
-        buttonText = transform.Find("Buy Button").GetComponentInChildren<TextMeshProUGUI>();
+        buttonText = BuyButton.GetComponentInChildren<TextMeshProUGUI>();
 
         curSpeed = 0;
         targetSpeed = TurnSpeedNormal;
@@ -96,8 +95,18 @@ public class PlayerCustomization : MonoBehaviour
         priceText.color = colors[col];
 
         if (!purchased)
+        {
+            BuyButton.SetActive(true);
             buttonText.SetText("Buy");
+        }
         else
-            buttonText.SetText(selected ? "Selected" : "Select");
+        {
+            buttonText.SetText("Select");
+
+            if (selected)
+                BuyButton.SetActive(false);
+            else
+                BuyButton.SetActive(true);
+        }
     }
 }

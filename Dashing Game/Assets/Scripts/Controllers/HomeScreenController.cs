@@ -75,7 +75,7 @@ public class HomeScreenController : MonoBehaviour
             List<int> skins = new List<int>();
             skins.Add(0);
 
-            PlayerData newPlayerData = new PlayerData(true, 0, 0,        //new player, money, and highscore
+            PlayerData newPlayerData = new PlayerData(true, false, 0, 0,        //new player, visited store, money, and highscore
                                                      0, 0, 0, 0, 0,      //upgrades (reset all to zero)
                                                      0,                  //number of crystals unlocked (set to zero)
                                                      skins, 0,           //IDs of currently unlocked skins 

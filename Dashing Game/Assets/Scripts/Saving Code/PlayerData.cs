@@ -7,6 +7,7 @@ public class PlayerData
 {
     //data stored
     private bool newPlayer; // whether or not the player is new to the game
+    private bool visitedStore; //whether or not the player has visited the store before in this game (to trigger tutorial)
     private int money; // amount of in game currency the player has
     private int highScore;
 
@@ -40,6 +41,12 @@ public class PlayerData
     {
         get { return newPlayer; }
         set { newPlayer = value; }
+    }
+
+    public bool VisitedStore
+    {
+        get { return visitedStore; }
+        set { visitedStore = value; }
     }
 
     public int Money
@@ -142,7 +149,7 @@ public class PlayerData
         set { Music = value; }
     }
 
-    public PlayerData(bool newPlayer, int money, int highScore, //basic stats
+    public PlayerData(bool newPlayer, bool visitedStore, int money, int highScore, //basic stats
         int Speed, int MaxHealth, int MaxDash, int DashRecharge, int JumpHeight, //upgrades
         int crystalsUnlocked,
         List<int> skinsUnlocked, int selectedSkin,
@@ -150,6 +157,7 @@ public class PlayerData
         int Volume, bool Music) //sound
     {
         this.newPlayer = newPlayer;
+        this.visitedStore = visitedStore;
         this.money = money;
         this.highScore = highScore;
 
