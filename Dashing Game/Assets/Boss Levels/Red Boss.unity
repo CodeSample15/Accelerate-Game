@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -419,7 +419,7 @@ MonoBehaviour:
   spike: {fileID: 6059020060737207254, guid: 38cf41f1c5d0e604fb1851bc59a8f268, type: 3}
   spikeColor: {r: 1, g: 0, b: 0, a: 1}
   spikeSpeed: 7
-  spikeDamage: 15
+  spikeDamage: 17
   spikeSize: 1
   offset: -13
   timePerRotation: 0.1
@@ -472,14 +472,14 @@ MonoBehaviour:
   BossDeathParticle: {fileID: 1654294279}
   boss: {fileID: 1501463758}
   health_bar: {fileID: 594675160}
-  minAttackDelay: 3
-  maxAttackDelay: 5
-  startHealth: 1000
+  minAttackDelay: 2
+  maxAttackDelay: 3.5
+  startHealth: 3000
   angryRange: 0
   attackAnimationTime: 0
   attacks: []
   playerDamage: 20
-  maxMoneyPossible: 10000
+  maxMoneyPossible: 8000
 --- !u!1001 &108097060
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8017,7 +8017,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ef43a7c77f8a4b46ac421345c5ab505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DamagePerSecond: 300
+  DamagePerSecond: 1300
   TurnSpeed: 60
 --- !u!4 &2096334296691749858
 Transform:

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -206,7 +206,7 @@ PrefabInstance:
     - target: {fileID: 7770252283468870515, guid: 5dbea01ec7eea024c9d9dd8c24139dfb,
         type: 3}
       propertyPath: spikeDamage
-      value: 40
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7770252283468870515, guid: 5dbea01ec7eea024c9d9dd8c24139dfb,
         type: 3}
@@ -1161,13 +1161,13 @@ MonoBehaviour:
   health_bar: {fileID: 1101323823}
   minAttackDelay: 3
   maxAttackDelay: 8
-  startHealth: 700
+  startHealth: 600
   angryRange: 7
   attackAnimationTime: 2.5
   attacks:
   - {fileID: 7432556055825063236, guid: 6a4cd715ff667c241bc5961bc48117e1, type: 3}
-  playerDamage: 30
-  maxMoneyPossible: 1000
+  playerDamage: 50
+  maxMoneyPossible: 1200
 --- !u!4 &812153826
 Transform:
   m_ObjectHideFlags: 0
