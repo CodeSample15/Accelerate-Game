@@ -303,6 +303,11 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -79.399994
       objectReference: {fileID: 0}
+    - target: {fileID: 9067403891491775909, guid: 1179389a9652efc489c745ae80ae9854,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -44.899994
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1179389a9652efc489c745ae80ae9854, type: 3}
 --- !u!114 &13876829 stripped
@@ -488,7 +493,7 @@ PrefabInstance:
     - target: {fileID: 5653624545555996641, guid: a6ea50c019e5c1d4585a8abc355a84b7,
         type: 3}
       propertyPath: startSize
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5653624545555996641, guid: a6ea50c019e5c1d4585a8abc355a84b7,
         type: 3}
@@ -6135,6 +6140,7 @@ MonoBehaviour:
   maxAttackDelay: 0
   startHealth: 200
   angryRange: 7
+  attackAnimationTime: 0
   attacks: []
   playerDamage: 110
   maxMoneyPossible: 600
