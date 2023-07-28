@@ -24,12 +24,12 @@ public class PauseButton : MonoBehaviour
     void Update()
     {
         //pause if escape key is pressed
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && Player.staticReference.isAlive)
         {
             paused = !paused;
         }
 
-        if (Input.GetButtonDown("joystick button 7"))
+        if (Input.GetButtonDown("joystick button 7") && Player.staticReference.isAlive)
         {
             paused = !paused;
         }
