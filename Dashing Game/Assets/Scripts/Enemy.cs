@@ -248,7 +248,7 @@ public class Enemy : MonoBehaviour
 
                 case 3:
                     //Laser
-                    if(distanceTo(playerGameObject) < LaserRange)
+                    if(distanceTo(playerGameObject) < LaserRange && LOS())
                     {
                         path.maxSpeed = 0;
                     }
