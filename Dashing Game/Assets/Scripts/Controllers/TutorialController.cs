@@ -17,6 +17,13 @@ public class TutorialController : MonoBehaviour
 
     [Space]
 
+    [SerializeField] private PhoneBuildScript isPhoneBuild;
+    [SerializeField] private GameObject JumpButton;
+    [SerializeField] private GameObject DashButton;
+    [SerializeField] private GameObject KeyboardGraphic;
+
+    [Space]
+
     [SerializeField] private GameObject DashBar;
 
     [Space]
@@ -73,6 +80,9 @@ public class TutorialController : MonoBehaviour
         MinimapBorder.SetActive(false);
         WaveProgressBar.SetActive(false);
         ScoreText.SetActive(false);
+
+        if (isPhoneBuild.isForPhone)
+            KeyboardGraphic.SetActive(false);
         
         ExplanationText.SetText("");
 
@@ -94,6 +104,9 @@ public class TutorialController : MonoBehaviour
     {
         RechargeBox.gameObject.SetActive(false);
         RechargeBox2.gameObject.SetActive(false);
+
+        JumpButton.SetActive(false);
+        DashButton.SetActive(false);
     }
 
     void Update()
@@ -149,17 +162,31 @@ public class TutorialController : MonoBehaviour
         switch(name)
         {
             case "Start":
-                ExplanationText.SetText("Use arrow keys, W/D keys, or joystick to move");
+                if (isPhoneBuild.isForPhone)
+                    ExplanationText.SetText("Use the joystick to move");
+                else
+                    ExplanationText.SetText("Use arrow keys, W/D keys, or joystick to move");
                 ExplanationText.rectTransform.position = new Vector2(-3.9f, 46.4f);
                 textAnimation.SetTrigger("Blink");
                 break;
 
             case "Jump":
-                if (usingController)
-                    ExplanationText.SetText("Press \"A\" to jump");
+                if (isPhoneBuild.isForPhone)
+                {
+                    ExplanationText.SetText("Press the green button to jump");
+                    ExplanationText.rectTransform.position = new Vector2(21.49f, 46.79f);
+                    JumpButton.SetActive(true);
+                }
                 else
-                    ExplanationText.SetText("Press space to jump");
-                ExplanationText.rectTransform.position = new Vector2(21.49f, 46.04f);
+                {
+                    if (usingController)
+                        ExplanationText.SetText("Press \"A\" to jump");
+                    else
+                        ExplanationText.SetText("Press space to jump");
+
+                    ExplanationText.rectTransform.position = new Vector2(21.49f, 46.04f);
+                }
+
                 textAnimation.SetTrigger("Blink");
                 break;
 
@@ -170,7 +197,7 @@ public class TutorialController : MonoBehaviour
                 break;
 
             case "Wall Jump":
-                ExplanationText.SetText("Wall jump by walking into the wall while repeatedly pressing jump");
+                ExplanationText.SetText("Wall jump by moving into the wall while repeatedly pressing jump");
                 ExplanationText.rectTransform.position = new Vector2(58.42f, 58.38f);
                 textAnimation.SetTrigger("Blink");
                 break;
@@ -198,12 +225,22 @@ public class TutorialController : MonoBehaviour
                 DashBar.SetActive(true);
                 unlockedDash = true;
 
-                if (usingController)
-                    ExplanationText.SetText("Press the B button to DASH. Use the joystick to steer");
+                if (isPhoneBuild.isForPhone)
+                {
+                    ExplanationText.rectTransform.position = new Vector2(-11.04f, 84f);
+                    ExplanationText.SetText("Press the blue button to DASH. Use the joystick to steer");
+                    DashButton.SetActive(true);
+                }
                 else
-                    ExplanationText.SetText("Press shift to DASH. Use arrow keys or WSAD to steer");
+                {
+                    ExplanationText.rectTransform.position = new Vector2(-11.04f, 83.56f);
 
-                ExplanationText.rectTransform.position = new Vector2(-11.04f, 83.56f);
+                    if (usingController)
+                        ExplanationText.SetText("Press the B button to DASH. Use the joystick to steer");
+                    else
+                        ExplanationText.SetText("Press shift to DASH. Use arrow keys or WSAD to steer");
+                }
+
                 textAnimation.SetTrigger("Blink");
                 break;
 

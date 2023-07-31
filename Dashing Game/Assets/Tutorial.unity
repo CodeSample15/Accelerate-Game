@@ -3549,6 +3549,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 949818195}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &959679838 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1253614026372753565, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 1986158752}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &963297780
 GameObject:
   m_ObjectHideFlags: 0
@@ -4009,6 +4015,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1018913637}
   m_CullTransparentMesh: 0
+--- !u!1 &1039321749 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1253614026110384247, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 1986158752}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1062607169
 GameObject:
   m_ObjectHideFlags: 0
@@ -4358,6 +4370,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9aa50938ee4bb8a49bdb3e2e5ebbbc80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1202729932 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7131582213490932516, guid: 1179389a9652efc489c745ae80ae9854,
+    type: 3}
+  m_PrefabInstance: {fileID: 1986158752}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54ab48772c787cb499b0004a26e3c8fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1219756552
@@ -6367,6 +6391,10 @@ MonoBehaviour:
   checkpoint: {x: 0, y: 0}
   HealthBar: {fileID: 755334446}
   FadeAnimation: {fileID: 1389050495}
+  isPhoneBuild: {fileID: 1202729932}
+  JumpButton: {fileID: 959679838}
+  DashButton: {fileID: 1039321749}
+  KeyboardGraphic: {fileID: 234885069}
   DashBar: {fileID: 1478948177}
   Minimap: {fileID: 1124470793}
   MinimapBorder: {fileID: 492547699}

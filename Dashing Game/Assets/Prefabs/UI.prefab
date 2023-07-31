@@ -3236,7 +3236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54ab48772c787cb499b0004a26e3c8fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ForPhone: 0
+  ForPhone: 1
   ItemsToTurnOff:
   - {fileID: 1253614026110384247}
   - {fileID: 1253614026372753565}
