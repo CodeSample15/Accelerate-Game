@@ -11,6 +11,7 @@ public class MenuLogic : MonoBehaviour
     [SerializeField] private GameObject RestartButton;
     [SerializeField] private GameObject ExitButton;
     [SerializeField] private Animator   PressedButtonAnimation;
+    [SerializeField] private PhoneBuildScript ForPhone;
 
     [SerializeField] private GameObject player;
     [SerializeField] private Animator FadeAnimation;
@@ -45,7 +46,11 @@ public class MenuLogic : MonoBehaviour
         {
             HomeButton.SetActive(buttonsActive);
             RestartButton.SetActive(buttonsActive);
-            ExitButton.SetActive(buttonsActive);
+
+            if (!ForPhone.isForPhone)
+                ExitButton.SetActive(buttonsActive);
+            else
+                ExitButton.SetActive(false);
         }
 
         if(RestartButton!=null && buttonsActive && PauseButton.IsPaused)

@@ -270,6 +270,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(CrossPlatformInputManager.GetAxis("Dash"));
         if (isAlive)
         {
             //only run the main code if the game isn't paused
@@ -281,15 +282,19 @@ public class Player : MonoBehaviour
                 MenuLogic.buttonsActive = false; //turning off the buttons
                 paused_text.SetText(""); //the paused text object is literally just the sign that says "Paused"
 
-                //get user controll input (touch screen)
-                movement.x = joystick.Horizontal;
-                movement.y = joystick.Vertical;
-
-                /*
-                 * MOVEMENT CODE FOR PC ONLY
-                */
-                movement.x = Input.GetAxisRaw("Horizontal");
-                movement.y = Input.GetAxisRaw("Vertical");
+                //only take input from the on screen joystick if it is not zero. duh
+                if (joystick.Horizontal > 0 || joystick.Vertical > 0)
+                {
+                    //get user control input (touch screen)
+                    movement.x = joystick.Horizontal;
+                    movement.y = joystick.Vertical;
+                }
+                else
+                {
+                    //get user control input (keyboard / controller)
+                    movement.x = Input.GetAxisRaw("Horizontal");
+                    movement.y = Input.GetAxisRaw("Vertical");
+                }
 
                 spin = -spinModifier * movement.x;
 
