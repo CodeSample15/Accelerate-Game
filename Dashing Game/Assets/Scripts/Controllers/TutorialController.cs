@@ -97,7 +97,6 @@ public class TutorialController : MonoBehaviour
         secondRechargeBoxMessageShown = false;
 
         EnemyPool = new List<GameObject>();
-        RechargeBox.gameObject.SetActive(false);
     }
 
     void Start()
@@ -133,7 +132,7 @@ public class TutorialController : MonoBehaviour
             endOfFightMessageShown = true;
         }
 
-        if(!rechargeBoxMessageShown && !RechargeBox.Refilled)
+        if(!rechargeBoxMessageShown && !RechargeBox.Refilled && endOfFightMessageShown)
         {
             ExplanationText.SetText("Refill boxes only recharge once a different refill box is used");
             ExplanationText.rectTransform.position = new Vector2(-153.3f, -1.25f);
