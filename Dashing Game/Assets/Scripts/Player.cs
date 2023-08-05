@@ -270,7 +270,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(CrossPlatformInputManager.GetAxis("Dash"));
         if (isAlive)
         {
             //only run the main code if the game isn't paused

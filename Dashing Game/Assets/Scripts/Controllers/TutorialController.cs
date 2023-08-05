@@ -101,8 +101,7 @@ public class TutorialController : MonoBehaviour
 
     void Start()
     {
-        RechargeBox.gameObject.SetActive(false);
-        RechargeBox2.gameObject.SetActive(false);
+        StartCoroutine(InitializeFillBoxes());
 
         JumpButton.SetActive(false);
         DashButton.SetActive(false);
@@ -153,6 +152,16 @@ public class TutorialController : MonoBehaviour
 
             secondRechargeBoxMessageShown = true;
         }
+    }
+
+    private IEnumerator InitializeFillBoxes()
+    {
+        //give the fill boxes two frames to initialize
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForEndOfFrame();
+
+        RechargeBox.gameObject.SetActive(false);
+        RechargeBox2.gameObject.SetActive(false);
     }
 
     //world triggers
