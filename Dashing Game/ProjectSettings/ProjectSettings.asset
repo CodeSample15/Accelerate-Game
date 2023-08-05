@@ -138,7 +138,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.3.5
+  bundleVersion: 1.3.6
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -780,7 +780,6 @@ PlayerSettings:
   metroSplashScreenUseBackgroundColor: 0
   platformCapabilities:
     WindowsStoreApps:
-      EnterpriseAuthentication: False
       OfflineMapsManagement: False
       HumanInterfaceDevice: False
       Location: False
@@ -793,6 +792,7 @@ PlayerSettings:
       InternetClientServer: False
       VideosLibrary: False
       Objects3D: False
+      InternetClient: False
       RemoteSystem: False
       BlockedChatMessages: False
       PhoneCall: False
@@ -814,10 +814,10 @@ PlayerSettings:
       PointOfService: False
       RecordedCallsFolder: False
       Contacts: False
-      InternetClient: False
+      Proximity: False
       CodeGeneration: False
       BackgroundMediaPlayback: False
-      Proximity: False
+      EnterpriseAuthentication: False
   metroTargetDeviceFamilies:
     Desktop: False
     Holographic: False
