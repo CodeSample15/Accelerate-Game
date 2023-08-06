@@ -46,6 +46,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -127,6 +128,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -208,6 +210,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -289,6 +292,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -370,6 +374,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -451,6 +456,7 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -557,14 +563,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adb3bbfdf6f1360468e69e8248d8763a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SlideOut: 1
   bullet: {fileID: 5643324108714075652, guid: ed3b2cabdb9ad094087b9006f4f0cc40, type: 3}
   explosion: {fileID: 3388332869261663567, guid: 0366498c689b20640b6e6909fc99f532,
     type: 3}
   turnTime: 0.1
   fireTime: 1
   gunOffset: 0.7
-  minSlideOutSpeed: 20
-  maxSlideOutSpeed: 25
+  minSlideOutSpeed: 15
+  maxSlideOutSpeed: 20
   lifeSpan: 6
   maxDamage: 50
 --- !u!50 &8261068682966698720
