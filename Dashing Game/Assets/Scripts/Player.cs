@@ -71,6 +71,8 @@ public class Player : MonoBehaviour
     private int pointsPerKill;
     private int score;
 
+    private bool dashDisabled;
+
     //movement variables
     private Vector2 movement; //for walking / dashing movement
     private Vector2 lastDashDir; //for dashing
@@ -220,6 +222,8 @@ public class Player : MonoBehaviour
 
         lastDashDir = new Vector2(0, 1);
 
+        dashDisabled = false;
+
         //load player data and apply upgrades
         data = Saver.loadData();
 
@@ -306,29 +310,30 @@ public class Player : MonoBehaviour
                 //only dashes if the dash meter is above a certain point
                 if (SceneManager.GetActiveScene().name != "Tutorial" || TutorialController.staticRef.UnlockedDash)
                 {
-                    if (dashPower >= minDashPower)
-                    {
-                        dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift) || Input.GetButton("joystick button 1"); //checking if the dash button is pressed or not
+                    bool pressingDash = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift) || Input.GetButton("joystick button 1");
 
-                        //resetting the dash animation
+                    if (dashPower > 0 && !dashDisabled)
+                    {
+                        dashing = pressingDash;
                         bar_animation.SetTrigger("Stop");
                     }
-                    else if (dashing && dashPower > 0)
+                    else if(dashPower <= 0)
                     {
-                        if (dashPower <= 0)
-                        {
-                            dashing = false;
-                            dashPower = 0;
-                        }
-                        else
-                        {
-                            dashing = (CrossPlatformInputManager.GetAxis("Dash") == 1) || Input.GetKey(KeyCode.LeftShift) || Input.GetButton("joystick button 1");
-                        }
+                        //player let dash get down to zero, disable dashing until the bar reaches the minimum amount
+                        dashing = false;
+                        dashDisabled = true;
                     }
-                    else
+                    else if(dashDisabled)
                     {
+                        //animate the recharge bar
                         bar_animation.SetTrigger("Recharge");
                         dashing = false;
+
+                        if(dashPower >= minDashPower)
+                        {
+                            //reactivate dash for the user
+                            dashDisabled = false;
+                        }
                     }
                 }
                 else
