@@ -38,6 +38,12 @@ public class UgradeScreenController : MonoBehaviour
 
     [Space]
 
+    [SerializeField] private Sprite[] BossIcons;
+    [SerializeField] private Image BossIconImage;
+    [SerializeField] private GameObject YouMustFightBossObject;
+
+    [Space]
+
     [SerializeField] private TextMeshProUGUI CrystalCostDisplay;
     [SerializeField] private GameObject CrystalBuyButton;
 
@@ -124,6 +130,8 @@ public class UgradeScreenController : MonoBehaviour
             RightCustomizationArrow.SetActive(false);
         else if (curColor == 0)
             LeftCustomizationArrow.SetActive(false);
+
+        YouMustFightBossObject.SetActive(false);
     }
 
     //private methods
@@ -331,21 +339,62 @@ public class UgradeScreenController : MonoBehaviour
         //also update the buy button
         if (data.CrystalsUnlocked >= curCrystal)
         {
+            YouMustFightBossObject.SetActive(false);
             CrystalBuyButton.SetActive(true);
-            CrystalBuyButton.GetComponentInChildren<TextMeshProUGUI>().SetText(data.CrystalsUnlocked == curCrystal ? "Buy" : "Purchased");
-            CrystalBuyButton.GetComponent<Button>().interactable = data.CrystalsUnlocked == curCrystal;
 
-            if(data.CrystalsUnlocked != curCrystal)
+            if (latestBossFought() && data.CrystalsUnlocked == curCrystal)
+            {
+                CrystalBuyButton.GetComponentInChildren<TextMeshProUGUI>().SetText("Buy");
+                CrystalBuyButton.GetComponent<Button>().interactable = true;
+            }
+            else if(data.CrystalsUnlocked == curCrystal)
+            {
+                CrystalBuyButton.SetActive(false);
+                YouMustFightBossObject.SetActive(true);
+                BossIconImage.sprite = BossIcons[curCrystal - 1];
+                CrystalBuyButton.GetComponent<Button>().interactable = true;
+            }
+            else
+            {
+                CrystalBuyButton.GetComponentInChildren<TextMeshProUGUI>().SetText("Purchased");
+                CrystalBuyButton.GetComponent<Button>().interactable = true;
+            }
+
+            if (data.CrystalsUnlocked != curCrystal)
                 CrystalCostDisplay.SetText("");
 
             temp.a = 1f;
         }
         else
         {
+            YouMustFightBossObject.SetActive(false);
             CrystalBuyButton.SetActive(false);
             temp.a = 0.5f;
         }
         CrystalImage.color = temp;
+    }
+
+    private bool latestBossFought()
+    {
+        switch(data.CrystalsUnlocked)
+        {
+            case 0:
+                return true;
+
+            case 1:
+                return data.BlueBossDefeated;
+
+            case 2:
+                return data.GreenBossDefeated;
+
+            case 3:
+                return data.OrangeBossDefeated;
+
+            case 4:
+                return data.PinkBossDefeated;
+        }
+
+        return false;
     }
     #endregion
 

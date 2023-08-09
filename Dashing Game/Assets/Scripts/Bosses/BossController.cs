@@ -129,6 +129,31 @@ public class BossController : MonoBehaviour
 
             PlayerData data = Saver.loadData();
             data.Money += moneyAdded;
+            
+            //update player data
+            switch(bossType)
+            {
+                case 0:
+                    data.BlueBossDefeated = true;
+                    break;
+
+                case 1:
+                    data.GreenBossDefeated = true;
+                    break;
+
+                case 2:
+                    data.OrangeBossDefeated = true;
+                    break;
+
+                case 3:
+                    data.PinkBossDefeated = true;
+                    break;
+
+                case 4:
+                    data.RedBossDefeated = true;
+                    break;
+            }
+
             Saver.SavePlayer(data);
 
             //kill the boss

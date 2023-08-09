@@ -573,7 +573,7 @@ MonoBehaviour:
   minSlideOutSpeed: 15
   maxSlideOutSpeed: 20
   lifeSpan: 6
-  maxDamage: 50
+  maxDamage: 70
 --- !u!50 &8261068682966698720
 Rigidbody2D:
   serializedVersion: 4
