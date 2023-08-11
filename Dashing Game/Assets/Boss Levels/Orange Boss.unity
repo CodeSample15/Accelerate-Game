@@ -238,6 +238,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7770252283468870515, guid: 5dbea01ec7eea024c9d9dd8c24139dfb,
+        type: 3}
+      propertyPath: spikeSpeed
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770252283468870515, guid: 5dbea01ec7eea024c9d9dd8c24139dfb,
+        type: 3}
+      propertyPath: spikeDamage
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770252283468870515, guid: 5dbea01ec7eea024c9d9dd8c24139dfb,
+        type: 3}
+      propertyPath: numRotations
+      value: 21
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5dbea01ec7eea024c9d9dd8c24139dfb, type: 3}
 --- !u!4 &190283975 stripped
@@ -6886,15 +6901,15 @@ MonoBehaviour:
   BossDeathParticle: {fileID: 225834284}
   boss: {fileID: 2052764096}
   health_bar: {fileID: 1649242010}
-  minAttackDelay: 5
+  minAttackDelay: 4.5
   maxAttackDelay: 9
-  startHealth: 300
+  startHealth: 350
   angryRange: 7
   attackAnimationTime: 2.5
   attacks:
   - {fileID: 7432556055825063236, guid: 9a244a3205b76f94ea491d8e60558736, type: 3}
   playerDamage: 50
-  maxMoneyPossible: 600
+  maxMoneyPossible: 900
 --- !u!4 &1834408012
 Transform:
   m_ObjectHideFlags: 0

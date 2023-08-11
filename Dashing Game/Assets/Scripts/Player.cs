@@ -624,16 +624,16 @@ public class Player : MonoBehaviour
     private void givePlayerMoneyForKill(int type)
     {
         if (type == 0)          //Normal
-            moneyAdded += 1;
+            moneyAdded += 2;
 
         else if (type == 1)     //Shooter
-            moneyAdded += 1;
+            moneyAdded += 5;
 
         else if (type == 2)     //Bomber
-            moneyAdded += 2;    //slightly more since they have the chance to explode before you kill them
+            moneyAdded += 8;
 
         else if (type == 3)     //Laser
-            moneyAdded += 2;
+            moneyAdded += 11;
     }
 
     /// <summary>

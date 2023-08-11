@@ -46,6 +46,7 @@ public class UgradeScreenController : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI CrystalCostDisplay;
     [SerializeField] private GameObject CrystalBuyButton;
+    [SerializeField] private GameObject DefeatedBossText;
 
     [Space]
     [SerializeField] private PlayerCustomization playerCustomization;
@@ -336,6 +337,8 @@ public class UgradeScreenController : MonoBehaviour
         CrystalCostDisplay.SetText("$" + CalcCrystalPrice());
         Color temp = CrystalImage.color;
 
+        DefeatedBossText.SetActive(false);
+
         //also update the buy button
         if (data.CrystalsUnlocked >= curCrystal)
         {
@@ -361,7 +364,12 @@ public class UgradeScreenController : MonoBehaviour
             }
 
             if (data.CrystalsUnlocked != curCrystal)
+            {
                 CrystalCostDisplay.SetText("");
+
+                if (bossDefeated(curCrystal))
+                    DefeatedBossText.SetActive(true);
+            }
 
             temp.a = 1f;
         }
@@ -392,6 +400,29 @@ public class UgradeScreenController : MonoBehaviour
 
             case 4:
                 return data.PinkBossDefeated;
+        }
+
+        return false;
+    }
+
+    private bool bossDefeated(int curCrystal)
+    {
+        switch(curCrystal)
+        {
+            case 0:
+                return data.BlueBossDefeated;
+
+            case 1:
+                return data.GreenBossDefeated;
+
+            case 2:
+                return data.OrangeBossDefeated;
+
+            case 3:
+                return data.PinkBossDefeated;
+
+            case 4:
+                return data.RedBossDefeated;
         }
 
         return false;

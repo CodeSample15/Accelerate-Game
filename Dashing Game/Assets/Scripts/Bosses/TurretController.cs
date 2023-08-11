@@ -61,7 +61,7 @@ public class TurretController : MonoBehaviour
 
     void Update()
     {
-        if(!PauseButton.IsPaused && active && player.isAlive)
+        if(!PauseButton.IsPaused && active && player != null && player.isAlive)
         {
             Vector2 diff = (player.transform.position - transform.position).normalized;
 
@@ -97,7 +97,7 @@ public class TurretController : MonoBehaviour
                 StartCoroutine(despawn());
             }
         }
-        else if(!player.isAlive)
+        else if(player == null || !player.isAlive)
         {
             Destroy(gameObject);
         }

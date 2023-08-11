@@ -71,6 +71,9 @@ public class SpikeAttack : MonoBehaviour
 
     private IEnumerator spawn()
     {
+        //randomize the starting rotation of the spike attack
+        transform.rotation = Quaternion.Euler(new Vector3(0, 0, Random.Range(-180, 180)));
+
         while(activeSpikes < numRotations)
         {
             if(!PauseButton.IsPaused)
